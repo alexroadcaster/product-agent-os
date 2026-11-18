@@ -6,7 +6,7 @@
   "source_plan": "docs/planning/methodology-improvement-2026-11-15.md",
   "english_plan": "docs/planning/methodology-improvement-2026-11-15.en.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_a1_a2_a3_local_implementation",
+  "execution_authority": "owner_authorized_a1_a2_a3_a4_bounded_local_implementation",
   "scope": "Internal Product-Agent OS development quality and frontend architecture; user-project capabilities are owned by direction B.",
   "source_snapshot": {
     "git_head": "35458110145d928b9b14d9312b60d852f11f6e88",
@@ -557,7 +557,7 @@
       "id": "PAOS-METH-10",
       "title": "Выделить необходимые shared UI и инфраструктурные модули",
       "title_en": "Extract necessary shared UI and infrastructure modules",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "FSD"
@@ -571,11 +571,21 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — shared frontend ownership",
       "work_locations": [
-        "apps/web/src/ui/Icon.tsx",
-        "apps/web/src/ui/Modal.tsx",
-        "apps/web/src/features/tasks/CommentMarkdown.tsx",
-        "apps/web/src/locales/",
-        "apps/web/src/features/graph/GraphViews.tsx"
+        "apps/web/src/ui/MarkdownBody.tsx",
+        "apps/web/src/ui/markdown.ts",
+        "apps/web/src/ui/external-url.ts",
+        "apps/web/src/features/tasks/",
+        "apps/web/src/features/artifacts/ArtifactExplorer.tsx",
+        "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/fixtures/dashboard-import-baseline.json",
+        "apps/web/src/ui/MermaidView.tsx",
+        "apps/web/src/ui/NetworkView.tsx",
+        "apps/web/src/features/graph/",
+        "apps/web/src/features/workflows/WorkflowManager.tsx",
+        "apps/web/src/features/database/DatabaseExplorer.tsx",
+        "apps/web/src/features/database/CodeDatabaseUsages.tsx",
+        "tests/web/single-window/"
       ],
       "acceptance_criteria": [
         {
@@ -595,8 +605,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 19:04",
+      "execution_authority": "owner_authorized_a4_bounded_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "METH-18 выбрала эту работу и подтверждён конкретный повторно используемый недоменный компонент либо затруднение сопровождения.",
@@ -607,7 +617,7 @@
       "id": "PAOS-METH-11",
       "title": "Стабилизировать публичные интерфейсы домена Tasks",
       "title_en": "Stabilize the public interfaces of the Tasks domain",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "FSD",
@@ -624,10 +634,11 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + builder — task domain",
       "work_locations": [
-        "apps/web/src/features/tasks/model.ts",
-        "apps/web/src/features/tasks/labels.ts",
-        "apps/web/src/features/dashboard/model.ts",
-        "packages/contracts/issues/task-profile.ts"
+        "apps/web/src/features/tasks/read.ts",
+        "apps/web/src/features/team/TeamManager.tsx",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/fixtures/dashboard-import-baseline.json",
+        "tests/web/single-window/func-g01-dashboard-acceptance.mts"
       ],
       "acceptance_criteria": [
         {
@@ -647,8 +658,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 18:31",
+      "execution_authority": "owner_authorized_a4_bounded_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "METH-18 выбрала эту работу после подтверждения повторного использования или сложности сопровождения существующего API Tasks.",
@@ -716,7 +727,7 @@
       "id": "PAOS-METH-13",
       "title": "При подтверждённой пользе улучшить границы Tasks и Workflows",
       "title_en": "Improve Tasks and Workflows boundaries where value is demonstrated",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "methodologies": [
         "FSD",
@@ -736,11 +747,16 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "builder — tasks, затем builder — workflows; sequential",
       "work_locations": [
+        "apps/web/src/features/usage/RunUsage.tsx",
+        "apps/web/src/features/dashboard/Dashboard.tsx",
         "apps/web/src/features/tasks/TaskManager.tsx",
-        "apps/web/src/features/tasks/Editor.tsx",
-        "apps/web/src/features/workflows/WorkflowManager.tsx",
-        "apps/web/src/features/workflows/recipes/",
-        "apps/web/src/ui/App.tsx"
+        "apps/web/src/features/tasks/labels.ts",
+        "apps/web/src/features/sessions/SessionsCatalog.tsx",
+        "apps/web/src/ui/App.tsx",
+        "apps/web/src/locales/action-error.ts",
+        "tests/web/contracts-boundaries.test.mts",
+        "tests/web/fixtures/dashboard-import-baseline.json",
+        "tests/web/single-window/"
       ],
       "acceptance_criteria": [
         {
@@ -760,8 +776,8 @@
         }
       ],
       "verification_profile": "V-WEB",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan",
+      "implementation_at": "18-11-2026 19:36",
+      "execution_authority": "owner_authorized_a4_bounded_local_implementation",
       "direction_id": "A",
       "activation_condition": {
         "ru": "METH-18 выбрала Tasks и/или Workflows после оценки Dashboard. Для каждого выбранного экрана отдельный checkpoint с сохранением draft, CAS, navigation и focus.",

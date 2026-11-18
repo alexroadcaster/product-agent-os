@@ -1,5 +1,17 @@
 # RUNLOG.md
 
+## PAOS-METH-13 — выбранный срез Tasks, 18.11.2026
+
+Панель передана владельцу Usage, два исключения удалены. Проверены возврат к той же задаче, черновики и фокус. Web 709/709 без пропусков, браузер 212/212. Workflows, METH-14 и METH-15 сохраняют `hold`. [Приёмка и откат](docs/planning/methodology-improvement-2026-11-15.md#meth-13-results)
+
+## PAOS-METH-10 — общие Markdown и диаграммы, 18.11.2026
+
+Общие Markdown, Mermaid и D3 вынесены в `ui`. Удалены пять импортов, из них два закреплённых исключения. Осталось 12 исключений. Web 707/707 без пропусков. Браузерные сценарии прошли 131/131 до и после. На момент METH-10 действовал `hold` для METH-13/14/15. [Приёмка METH-10](docs/planning/methodology-improvement-2026-11-15.md#meth-10-results) · [Условия повторного выбора](docs/architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+## PAOS-METH-11 — выбранный объём A4 выполнен, 18.11.2026
+
+TeamManager использует публичный вход Tasks. Два исключения удалены. Web 705/705, браузер 55/55 до и после, четыре файла сборки совпали по SHA-256. [Результат METH-11](docs/planning/methodology-improvement-2026-11-15.md#a4-results)
+
 ## PAOS-METH-A3 — регрессии и передача задачи, 18.11.2026
 
 Выполнены METH-05/06/07. Целевой Web-набор 44/44 и Python 88/88. Исходный и сокращённый handoff подтвердили 6/6 фиксированных решений каждый. Кандидат сохранён для сравнения со статусом `hold`. Следующая работа A4 — METH-11 для TeamManager. [Результаты A3](docs/planning/methodology-improvement-2026-11-15.md#a3-results)

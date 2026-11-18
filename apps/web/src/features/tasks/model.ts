@@ -70,9 +70,6 @@ export function parseDuration(value:string):number|null{
   const [h,m,s]=value.split(':').map(Number);if(m>59||s>59||!Number.isSafeInteger(h*3600+m*60+s))throw new Error('ESTIMATE_FORMAT');
   return h*3600+m*60+s;
 }
-export function safeExternalUrl(value:string):string|null{
-  try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)&&!url.username&&!url.password?url.href:null;}catch{return null;}
-}
 export function targetStatuses(status:string):string[]{return ({backlog:['ready','cancelled'],ready:['backlog','in_progress','cancelled'],in_progress:['review','cancelled'],review:['in_progress','verification','cancelled'],verification:['in_progress','awaiting_acceptance','cancelled'],awaiting_acceptance:['in_progress','done','cancelled'],done:['ready'],cancelled:['backlog']} as Record<string,string[]>)[status]??[];}
 export const lines=(value:string)=>value.split('\n').map(s=>s.trim()).filter(Boolean);
 export function hierarchyStats(tasks:StoredEntity[],taskId:string,registry?:WorkflowRegistry){

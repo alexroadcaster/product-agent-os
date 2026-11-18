@@ -73,19 +73,25 @@ const webRoot='apps/web/src/';
 const dashboard=webRoot+'features/dashboard/';
 const tasks=webRoot+'features/tasks/';
 const tasksReadApi=tasks+'read.ts';
+const runUsage=webRoot+'features/usage/RunUsage.tsx';
+const teamManager=webRoot+'features/team/TeamManager.tsx';
 const app=webRoot+'ui/App.tsx';
-const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx'].map(name=>webRoot+'ui/'+name);
+const sharedPresentation=['MarkdownBody.tsx','markdown.ts','external-url.ts','MermaidView.tsx','NetworkView.tsx'].map(name=>webRoot+'ui/'+name);
+const sharedUi=['CapabilityNotice.tsx','Icon.tsx','Modal.tsx','ProjectFreshness.tsx','MarkdownBody.tsx','external-url.ts'].map(name=>webRoot+'ui/'+name);
 const inPilot=(file:string)=>file.startsWith(dashboard)||file.startsWith(tasks);
 const relativePath=(path:string)=>relative(root,path).replaceAll('\\','/');
 type Edge={from:string;to:string};
 
 function boundaryRule({from,to}:Edge){
+ if(sharedPresentation.includes(from)&&(to.startsWith(webRoot+'features/')||to===app))return 'shared view depends on feature';
+ if(from===runUsage&&(to.startsWith(webRoot+'features/')||to===app))return 'usage depends on screen';
  const fromDashboard=from.startsWith(dashboard),toDashboard=to.startsWith(dashboard);
  const fromTasks=from.startsWith(tasks),toTasks=to.startsWith(tasks);
  if(!inPilot(from)&&!inPilot(to))return;
  if(fromDashboard&&toDashboard||fromTasks&&toTasks)return;
  if(from===app&&(to===dashboard+'Dashboard.tsx'||to===tasks+'TaskManager.tsx'))return;
- if(fromDashboard&&to===tasksReadApi)return;
+ if((fromDashboard||from===teamManager)&&to===tasksReadApi)return;
+ if((fromDashboard||fromTasks)&&to===runUsage)return;
  if(inPilot(from)&&to.startsWith(webRoot+'ui/')&&!sharedUi.includes(to))return 'upward import';
  if(fromTasks&&toDashboard)return 'upward import';
  if(inPilot(from)&&to.startsWith(webRoot+'features/')&&!toTasks)return 'cross-feature import';
@@ -166,27 +172,82 @@ test('Tasks cannot reach App composition or peer screen internals',()=>{
  ]);
 });
 
-test('only Dashboard may use the public Tasks read entry during the pilot',()=>{
- const view=dashboard+'Dashboard.tsx',team=webRoot+'features/team/TeamManager.tsx';
+test('Dashboard and TeamManager use the public Tasks read entry and other consumers stay fenced',()=>{
+ const view=dashboard+'Dashboard.tsx',other=webRoot+'features/team/Other.tsx';
  const files=new Map([
   [view,"import '../tasks/read.ts'; import('../tasks/model.ts');"],
-  [team,"import '../tasks/read.ts';"],
+  [teamManager,"import '../tasks/read.ts'; export { label } from '../tasks/labels.ts'; import('../tasks/model.ts');"],
+  [other,"import '../tasks/read.ts';"],
  ]);
- const actual=inspectWebImports(files,[view,team,tasksReadApi,tasks+'model.ts'],{},()=>false);
+ const actual=inspectWebImports(files,[...files.keys(),tasksReadApi,tasks+'model.ts',tasks+'labels.ts'],{},()=>false);
  assert.deepEqual(actual.diagnostics,[]);
  assert.deepEqual(actual.rules,[
   view+' -> '+tasks+'model.ts [deep Tasks import]',
-  team+' -> '+tasksReadApi+' [non-public consumer]',
+  other+' -> '+tasksReadApi+' [non-public consumer]',
+  teamManager+' -> '+tasks+'labels.ts [non-public consumer]',
+  teamManager+' -> '+tasks+'model.ts [non-public consumer]',
  ]);
+});
+
+test('shared Markdown is available to all three consumers and does not depend on feature internals',()=>{
+ const body=webRoot+'ui/MarkdownBody.tsx',markdown=webRoot+'ui/markdown.ts',url=webRoot+'ui/external-url.ts';
+ const files=new Map([
+  [tasks+'Panels.tsx',"import '../../ui/MarkdownBody.tsx'; import '../../ui/external-url.ts';"],
+  [webRoot+'features/artifacts/ArtifactExplorer.tsx',"import '../../ui/MarkdownBody.tsx';"],
+  [webRoot+'features/sessions/SessionsCatalog.tsx',"import '../../ui/MarkdownBody.tsx';"],
+  [body,"import './markdown.ts';"],
+  [markdown,"import './external-url.ts';"],
+  [url,"import '../features/artifacts/reader.ts';"],
+ ]);
+ const reader=webRoot+'features/artifacts/reader.ts';
+ const actual=inspectWebImports(files,[...files.keys(),reader],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,[url+' -> '+reader+' [shared view depends on feature]']);
+});
+
+test('shared diagrams take presentation inputs and keep graph mapping in its feature',()=>{
+ const mermaid=webRoot+'ui/MermaidView.tsx',network=webRoot+'ui/NetworkView.tsx';
+ const graph=webRoot+'features/graph/',mapping=graph+'diagram-source.ts';
+ const files=new Map([
+  [graph+'GraphExplorer.tsx',"import '../../ui/MermaidView.tsx'; import '../../ui/NetworkView.tsx'; import './diagram-source.ts';"],
+  [webRoot+'features/database/DatabaseExplorer.tsx',"import '../../ui/MermaidView.tsx';"],
+  [webRoot+'features/database/CodeDatabaseUsages.tsx',"import '../../ui/NetworkView.tsx';"],
+  [webRoot+'features/workflows/WorkflowManager.tsx',"import '../../ui/MermaidView.tsx';"],
+  [mermaid,"import '../features/graph/diagram-source.ts';"],
+  [network,"import './App.tsx';"],
+ ]);
+ const actual=inspectWebImports(files,[...files.keys(),mapping,app],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,[
+  mermaid+' -> '+mapping+' [shared view depends on feature]',
+  network+' -> '+app+' [shared view depends on feature]',
+ ]);
+});
+
+test('run usage has its own entry and cannot import screen internals',()=>{
+ const dashboardView=dashboard+'Dashboard.tsx',taskManager=tasks+'TaskManager.tsx';
+ const usage=webRoot+'features/usage/RunUsage.tsx',session=webRoot+'features/sessions/SessionsCatalog.tsx',team=webRoot+'features/team/model.ts';
+ const files=new Map([
+  [taskManager,"import '../usage/RunUsage.tsx';"],
+  [dashboardView,"import '../usage/RunUsage.tsx';"],
+  [session,"import '../usage/RunUsage.tsx';"],
+  [app,"import '../features/usage/RunUsage.tsx';"],
+  [usage,"import '../team/model.ts';"],
+ ]);
+ const actual=inspectWebImports(files,[...files.keys(),team],{},()=>false);
+ assert.deepEqual(actual.diagnostics,[]);
+ assert.deepEqual(actual.rules,[usage+' -> '+team+' [usage depends on screen]']);
 });
 
 test('the Tasks read entry exposes the existing selectors and labels through named exports',async()=>{
  const entry=await import(pathToFileURL(join(root,tasksReadApi)).href);
  const model=await import('../../apps/web/src/features/tasks/model.ts');
  const labels=await import('../../apps/web/src/features/tasks/labels.ts');
- assert.deepEqual(Object.keys(entry).sort(),['errorText','isBlocked','semanticStatus','statusText']);
+ assert.deepEqual(Object.keys(entry).sort(),['durationText','errorText','isBlocked','label','semanticStatus','statusText']);
+ assert.equal(entry.durationText,model.durationText);
  assert.equal(entry.isBlocked,model.isBlocked);
  assert.equal(entry.semanticStatus,model.semanticStatus);
+ assert.equal(entry.label,labels.label);
  assert.equal(entry.statusText,labels.statusText);
  assert.equal(entry.errorText,labels.errorText);
 });

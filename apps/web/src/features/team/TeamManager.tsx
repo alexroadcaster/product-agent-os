@@ -3,8 +3,7 @@ import {SkillGenerator} from '../skills/SkillGenerator.tsx';
 import {AgentDashboard} from '../dashboard/Dashboard.tsx';
 import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
-import {durationText} from '../tasks/model.ts';
-import {label,errorText,type Locale} from '../tasks/labels.ts';
+import {durationText,errorText,label,type Locale} from '../tasks/read.ts';
 
 import type {AssetProfile as Asset,TeamCatalog as Catalog,AssetProposal as Proposal,AssetPreview,AssetAction} from '../../../../../packages/contracts/team/assets.ts';
 type Preview=AssetPreview & {candidate?:Asset};

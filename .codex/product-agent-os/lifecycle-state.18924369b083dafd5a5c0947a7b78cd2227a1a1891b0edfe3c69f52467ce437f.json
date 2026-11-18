@@ -1,39 +1,64 @@
 {
-  "task_id": "PAOS-METH-A3",
+  "task_id": "PAOS-METH-13",
   "session_id": "01a1ef05-e165-77d1-81ab-1d3eb70db443",
   "plan_path": "docs/planning/methodology-improvement-2026-11-15.md",
-  "scope": "PAOS-METH-05, 06 and 07: regression coverage, one handoff candidate, and deterministic comparison",
-  "updated_at": "2026-11-18T18:19:15+03:00",
-  "approval_boundary": "A3 local implementation and bounded synthetic checks in this repository",
-  "status": "ready_for_completion_ledger",
+  "scope": "A4 bounded METH-13: usage owner and Tasks round trip; scoped reads and navigation",
+  "updated_at": "2026-11-18T19:39:47+03:00",
+  "approval_boundary": "Local bounded METH-13 implementation and synthetic browser, HTTP, and repository verification",
+  "status": "ready_for_completion_brief",
   "completion_ready": true,
-  "brief_digest": "sha256:b8153f951fdc7bd6e9d216c58fedcc8945e05aa59cef105c1a9bc092cee1365e",
-  "brief_schema_version": "task_start_brief_v2",
-  "brief_format": "bold_fields",
-  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
-  "task_start_brief_shown": true,
-  "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md and the A3 task, test map and deterministic comparison owners",
+  "brief_digest": "sha256:886e87ac6eea05dfaf6d21542927cf69d780d1e14ae1df730aa72ed0f281b548",
+  "brief_schema_version": "task_scope_note_v1",
+  "brief_format": "concise",
+  "brief_fields_present": [
+    "Scope",
+    "Evidence",
+    "Limits"
+  ],
+  "scope_note_shown": true,
+  "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-13 RU/EN plan and ADR, and frontend owners; Workflows and METH-14/15 retain hold",
   "previous_closure": {
-    "task_id": "PAOS-METH-A2",
-    "status": "ready_for_completion_ledger",
+    "task_id": "PAOS-METH-10",
+    "status": "ready_for_completion_brief",
     "completion_ready": true,
-    "updated_at": "2026-11-18T18:01:33+03:00",
-    "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical task, ADR, frontend and verification owners for A2",
+    "updated_at": "2026-11-18T19:06:29+03:00",
+    "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, canonical RU/EN A4 task and ADR, and frontend owners; METH-13/14/15 remain on hold",
     "previous_closure": {
-      "task_id": "PAOS-METH-A1",
-      "status": "ready_for_completion_ledger",
+      "task_id": "PAOS-METH-11",
+      "status": "ready_for_completion_brief",
       "completion_ready": true,
-      "updated_at": "2026-11-18T17:45:52+03:00",
-      "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and owning A1 task, frontend, design and verification documentation"
+      "updated_at": "2026-11-18T18:34:34+03:00",
+      "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical METH-11 task, ADR and frontend owners",
+      "previous_closure": {
+        "task_id": "PAOS-METH-A3",
+        "status": "ready_for_completion_ledger",
+        "completion_ready": true,
+        "updated_at": "2026-11-18T18:19:15+03:00",
+        "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md and the A3 task, test map and deterministic comparison owners",
+        "previous_closure": {
+          "task_id": "PAOS-METH-A2",
+          "status": "ready_for_completion_ledger",
+          "completion_ready": true,
+          "updated_at": "2026-11-18T18:01:33+03:00",
+          "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical task, ADR, frontend and verification owners for A2",
+          "previous_closure": {
+            "task_id": "PAOS-METH-A1",
+            "status": "ready_for_completion_ledger",
+            "completion_ready": true,
+            "updated_at": "2026-11-18T17:45:52+03:00",
+            "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and owning A1 task, frontend, design and verification documentation"
+          }
+        }
+      }
     }
   },
   "lifecycle_scope": {
     "work_type": "implementation",
-    "size": "large",
+    "size": "bounded",
     "risk": "medium",
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Three dependent tasks covering critical invariants and deterministic evaluation of handoff and approval boundaries"
+    "reason": "One reused service-backed panel with bounded Tasks navigation and existing consumers"
   }
 }

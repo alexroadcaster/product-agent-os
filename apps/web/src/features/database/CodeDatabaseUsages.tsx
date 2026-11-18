@@ -1,6 +1,6 @@
 import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {useEffect,useRef,useState} from 'react';
-import {NetworkView} from '../graph/GraphViews.tsx';
+import {NetworkView} from '../../ui/NetworkView.tsx';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import type {CodeDatabaseStatus,CodeDatabasePage} from '../../../../../packages/contracts/code-database.ts';
 type Props={api:M1Api;projectId:string;locale:'ru'|'en';initialPath?:string;initialTable?:string;initialVisual?:boolean;onOpenFile?:(path:string,line:number)=>void;onOpenTable?:(table:string)=>void};

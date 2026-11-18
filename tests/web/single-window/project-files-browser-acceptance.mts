@@ -78,7 +78,13 @@ try{
   const task={...newM2Task(project.id,randomUUID(),'Structured document link','local-user'),artifacts:[{type:'document',reference:'docs/Guide.md',revision:'0'.repeat(64),provenance:'synthetic fixture',availability:'available'}]};
   referencedTask=task;
   const result=await api('/projects/'+project.id+'/task-manager/commands',{action:'save',task,expectedRevision:0,expectedAuthorityEpoch:project.authorityEpoch,idempotencyKey:randomUUID()});assert.equal(result.status,200);
-  await nav('documents');await page.locator('[name=artifact-task-id]').fill(task.id);await page.getByTestId('artifact-filters').getByRole('button',{name:'Найти / обновить',exact:true}).click();await page.getByTestId('artifact-list').locator('[data-artifact-id]').filter({hasText:'docs/Guide.md'}).click();await page.getByTestId('artifact-reference-state').waitFor();assert.ok((await page.getByTestId('artifact-reference-state').innerText()).includes('устарела'));assert.ok((await page.getByTestId('artifact-reader').innerText()).includes('available'));assert.equal(await page.evaluate(()=>(globalThis as any).G03_XSS),undefined);
+  await nav('documents');await page.locator('[name=artifact-task-id]').fill(task.id);await page.getByTestId('artifact-filters').getByRole('button',{name:'Найти / обновить',exact:true}).click();await page.getByTestId('artifact-list').locator('[data-artifact-id]').filter({hasText:'docs/Guide.md'}).click();await page.getByTestId('artifact-reference-state').waitFor();assert.ok((await page.getByTestId('artifact-reference-state').innerText()).includes('устарела'));
+  const reader=page.getByTestId('artifact-reader'),markdown=reader.locator('.m2-comment-body');
+  await markdown.getByRole('heading',{name:'Synthetic guide',exact:true}).waitFor();
+  assert.ok((await reader.innerText()).includes('available'));
+  assert.ok((await markdown.innerText()).includes('<script>globalThis.G03_XSS=1</script>'));
+  assert.equal(await markdown.locator('script').count(),0);
+  assert.equal(await page.evaluate(()=>(globalThis as any).G03_XSS),undefined);
   await page.getByTestId('artifact-reader').getByRole('button').filter({hasText:task.id}).click();await page.getByTestId('task-manager').waitFor();await wait('linked task loaded',async()=>(await page.getByTestId('task-manager').innerText()).includes(task.title));
  });
  if(phase==='final'){

@@ -16,6 +16,9 @@ const scratch=resolve('.tmp/func-g01-dashboard');await mkdir(scratch,{recursive:
 const fixture=await mkdtemp(join(scratch,'fixture-')),output=await mkdtemp(join(scratch,'evidence-'));
 const workspace=join(fixture,'workspace'),otherRoot=join(fixture,'other'),profile=join(fixture,'profile'),home=join(fixture,'browser');
 await Promise.all([workspace,otherRoot,profile,home].map(p=>mkdir(p)));
+const agentSource=join(workspace,'.codex','agents');
+await mkdir(agentSource,{recursive:true});
+await writeFile(join(agentSource,'a4-reader.toml'),'name = "A4 synthetic reader"\ndescription = "Synthetic Team profile"\ndeveloper_instructions = "Read synthetic tasks."\n');
 const report:any={startedAt:new Date().toISOString(),syntheticOnly:true,providerCalls:false,realCredentials:false,browserPlugin:'not_available',checks:[],pageErrors:[],consoleErrors:[],screenshots:[],externalRequests:[]};
 const check=(name:string,passed:boolean,detail?:unknown)=>report.checks.push({name,passed,...(detail===undefined?{}:{detail})});
 let service:any,context:any,page:any,timer:any,csrf='',locale:'ru'|'en'='ru',stage='setup';
@@ -140,6 +143,39 @@ try{
  check('keyboard_opens_recent_task_in_current_project',await taskTitle.isVisible()&&await page.locator('.navigation select').inputValue()===project.id);
  await nav('overview');await settled();
  check('return_to_dashboard_closes_task_details',await dashboard().isVisible()&&!await detail.count());
+
+ stage='team_read_entry';
+ await nav('agents');
+ const team=page.getByTestId('agent-manager');
+ await team.getByRole('button',{name:'Profiles',exact:true}).click();
+ const asset=team.locator('button[data-asset-id]').filter({hasText:'A4 synthetic reader'});
+ const assetId=await asset.getAttribute('data-asset-id');
+ await asset.click();
+ const teamProfile=team.getByTestId('asset-profile');
+ await teamProfile.waitFor();
+ check('team_current_project_profile_visible',(await teamProfile.innerText()).includes('Synthetic Team profile'));
+ await team.getByRole('button',{name:'Usage',exact:true}).click();
+ const metrics=team.getByTestId('agent-metrics');
+ const metricsPath='**/api/v1/projects/'+project.id+'/team/metrics?*';
+ // Known transport values prove Team formatting while the catalog still uses the real local service.
+ const measuredUsage=(route:any)=>route.fulfill({json:{
+  period:{from:'2026-11-11T00:00:00Z',to:'2026-11-19T00:00:00Z'},
+  denominator:1,source:'synthetic_a4',coverage:{status:'partial',reasons:[]},
+  agents:[{agentId:assetId,startedRuns:1,durationSeconds:61,tokenCount:null,cost:null,outcomes:{completed:1},taskIds:[],sessionIds:[],runIds:[]}],
+ }});
+ await page.route(metricsPath,measuredUsage);
+ try{
+  await metrics.getByRole('button',{name:'Show metrics',exact:true}).click();
+  const summary=metrics.getByText(/Duration: 00:01:01/);
+  await summary.waitFor();
+  check('team_duration_uses_task_format',await summary.isVisible());
+  check('team_missing_telemetry_stays_unknown',/Tokens: Unknown · Cost: Unknown/.test(await summary.innerText()));
+  await shot('en-team-usage');
+ }finally{
+  await page.unroute(metricsPath,measuredUsage);
+ }
+ await nav('overview');await settled();
+
  check('desktop_no_page_overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  await page.setViewportSize({width:390,height:844});await shot('en-dashboard-mobile');check('mobile_no_page_overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
  check('mobile_totals_remain_readable',await dashboard().locator('.dashboard-progress-summary>span').evaluateAll((items:Element[])=>items.every(el=>el.getBoundingClientRect().height<=48)));
@@ -155,11 +191,12 @@ finally{
   'tests/web/contracts-boundaries.test.mts',
   'tests/web/fixtures/dashboard-import-baseline.json',
   'apps/web/src/features/dashboard/Dashboard.tsx',
-  'apps/web/src/features/dashboard/RunUsage.tsx',
+  'apps/web/src/features/usage/RunUsage.tsx',
   'apps/web/src/features/dashboard/model.ts',
   'apps/web/src/features/tasks/read.ts',
   'apps/web/src/features/tasks/model.ts',
   'apps/web/src/features/tasks/labels.ts',
+  'apps/web/src/features/team/TeamManager.tsx',
   'apps/web/src/ui/App.tsx',
   'apps/web/src/ui/ProjectFreshness.tsx',
   'apps/web/src/api/project-freshness.ts',

@@ -14,7 +14,7 @@ async function main(){
  const argv=process.argv.slice(2);
  if(![5,7].includes(argv.length)||argv[0]!=='--synthetic-browser')throw Error('EXPLICIT_SYNTHETIC_BROWSER_REQUIRED');
  const args=Object.fromEntries([argv.slice(1,3),argv.slice(3,5)]);
- const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration','task-overlay','settings-layout','func-g07'].includes(scenario))throw Error('INVALID_SCENARIO');
+ const scenario=argv.length===7&&argv[5]==='--scenario'?argv[6]:'full';if(!['full','settings-cas','markdown','integration','task-overlay','task-usage','settings-layout','func-g07'].includes(scenario))throw Error('INVALID_SCENARIO');
  if(!['--playwright-core','--chromium'].every(k=>isAbsolute(args[k]??'')))throw Error('INSTALLED_BROWSER_PATHS_REQUIRED');
  const scratch=resolve('.tmp/paos-m2');await mkdir(scratch,{recursive:true});
  const fixture=await mkdtemp(join(scratch,'browser-fixture-')),output=await mkdtemp(join(scratch,'browser-evidence-'));
@@ -70,7 +70,7 @@ async function main(){
   async function screenshot(name:string){await page.screenshot({path:join(output,name),fullPage:false,animations:'disabled'});report.screenshots.push(join(output,name));}
   async function geometry(name:string){const size=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));check(name,size.scroll<=size.width+1,size);}
   await page.reload();await page.locator('.navigation select:enabled').waitFor();await page.locator('.navigation select').selectOption(project.id);await nav('tasks');
-  await manager().waitFor();check('new_manager_is_default',await page.getByTestId('task-filters').count()===1);
+  await manager().getByTestId('task-filters').waitFor();check('new_manager_is_default',await manager().getByTestId('task-filters').count()===1);
   check('no_framework_overlay',await page.locator('vite-error-overlay,nextjs-portal').count()===0);
   if(scenario==='settings-layout'){
    step='settings_layout';await nav('settings');const settingsNav=page.getByTestId('settings-navigation');await settingsNav.locator('[data-settings-section=general]').click();
@@ -96,6 +96,60 @@ async function main(){
    const expand=detail().getByTestId('task-expand');await expand.click();check('explicit_expand_opens_modal',await surface.evaluate((element:any)=>element.matches(':modal')));
    await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});await screenshot('task-overlay-dark.png');await page.keyboard.press('Escape');check('explicit_opener_focus_restored',await expand.evaluate((element:any)=>element===document.activeElement));
    check('draft_not_saved_implicitly',(await task(work.id)).title==='Overlay acceptance');check('no_page_errors',report.pageErrors.length===0);check('no_provider_requests',report.blockedRequests.length===0);report.status='passed_task_overlay';return;
+  }
+  if(scenario==='task-usage'){
+   step='task_usage_round_trip';
+   const work=await create('Usage return task'),other=await create('Other usage task');
+   await open(other.id);
+   await open(work.id,'comments');
+   const comments=detail().getByTestId('task-comments'),draft=comments.locator('[name=comment]');
+   await draft.fill('Unsaved comment before usage');
+   const revision=(await task(work.id)).revision;
+   const opener=detail().getByTestId('task-usage-open'),back=manager().getByRole('button',{name:'Вернуться к задаче',exact:true});
+   await opener.focus();await page.keyboard.press('Enter');
+   await back.waitFor();
+   const hasFocus=(locator:any)=>locator.evaluate((element:HTMLElement)=>element===document.activeElement);
+   const focusEntered=await hasFocus(back);
+   const usage=manager().locator('[data-testid=run-usage]:visible');
+   await usage.getByRole('heading',{name:'Измерения PAOS runs',exact:true}).waitFor();
+   check('usage_hides_task_detail',!await detail().isVisible());
+   await usage.getByText('За период нет наблюдаемых runs',{exact:true}).waitFor();
+   const responsePromise=page.waitForResponse((response:any)=>{
+    const url=new URL(response.url());
+    return url.pathname.endsWith('/team/metrics')&&response.request().method()==='GET';
+   });
+   await usage.getByRole('button',{name:'Обновить измерения',exact:true}).click();
+   const response=await responsePromise,url=new URL(response.url());
+   check('usage_metrics_scoped_to_task',response.status()===200&&url.pathname==='/api/v1/projects/'+project.id+'/team/metrics'&&url.searchParams.get('taskId')===work.id&&!url.searchParams.has('sessionId')&&!url.searchParams.has('agentId'));
+   const metrics=await response.json();
+   check('usage_unknown_tokens_and_cost',metrics.totals.tokenCount===null&&metrics.totals.cost===null);
+   await usage.getByText('За период нет наблюдаемых runs',{exact:true}).waitFor();
+   await screenshot('task-usage-panel.png');
+   await back.focus();await page.keyboard.press('Enter');
+   await detail().getByRole('heading',{name:work.title,exact:true}).waitFor();
+   const focusReturned=await hasFocus(opener);
+   check('usage_restores_same_task',await manager().locator('[data-task-id="'+work.id+'"]').first().getAttribute('aria-current')==='true'&&await manager().locator('[data-task-id="'+other.id+'"]').first().getAttribute('aria-current')===null);
+   check('usage_retains_selected_tab',await detail().getByRole('tab',{name:w('comments'),exact:true}).getAttribute('aria-selected')==='true'&&await detail().getByRole('tab').count()===8);
+   check('usage_retains_unsaved_comment',await draft.inputValue()==='Unsaved comment before usage'&&(await snap()).comments.every((comment:any)=>comment.body!=='Unsaved comment before usage'));
+   await screenshot('task-usage-return.png');
+   await tab('summary');await detail().getByTestId('task-expand').click();
+   const editor=detail().getByTestId('task-editor'),title=editor.locator('[name=title]');
+   await title.fill('Unsaved editor title before usage');
+   await opener.focus();await page.keyboard.press('Enter');await back.waitFor();
+   const modalFocusEntered=await hasFocus(back);
+   await back.focus();await page.keyboard.press('Enter');await detail().waitFor();
+   const modalFocusReturned=await hasFocus(opener);
+   check('usage_leaves_existing_inline_return_behavior',!await manager().getByTestId('task-detail-surface').evaluate((element:HTMLDialogElement)=>element.matches(':modal')));
+   await detail().getByTestId('task-expand').click();
+   check('usage_retains_editor_draft',await title.inputValue()==='Unsaved editor title before usage'&&(await task(work.id)).title===work.title&&(await task(work.id)).revision===revision);
+   await page.keyboard.press('Escape');
+   check('usage_returns_keyboard_focus',focusEntered&&focusReturned&&modalFocusEntered&&modalFocusReturned,{focusEntered,focusReturned,modalFocusEntered,modalFocusReturned});
+   await manager().getByRole('button',{name:w('create'),exact:true}).click();
+   const newEditor=manager().locator('.task-list').getByTestId('task-editor');
+   await newEditor.waitFor();
+   check('new_task_after_usage_starts_clean',await newEditor.locator('[name=title]').inputValue()===''&&await newEditor.locator('[name=body]').inputValue()===''&&!await detail().isVisible());
+   check('no_page_errors',report.pageErrors.length===0);check('no_provider_requests',report.blockedRequests.length===0);
+   report.status='passed_task_usage';return;
   }
   if(scenario==='settings-cas'){
    step='settings_cas';await manager().locator('.task-workspace-tabs').getByRole('button',{name:'Настройки задач',exact:true}).click();const settings=page.getByTestId('manager-settings');
@@ -125,12 +179,21 @@ async function main(){
   }
   if(scenario==='markdown'){
    step='markdown';const work=await create('Markdown acceptance');await open(work.id,'comments');const comments=page.getByTestId('task-comments');
-   const body='**Safe bold** [reference](https://example.test/proof) <script>throw new Error("unsafe")</script> ![image](https://example.test/image.png)';
+   const body='**Safe bold** [reference](https://example.test/proof) <script>throw new Error("unsafe")</script> ![image](https://example.test/image.png) [unsafe](javascript:alert)';
    await comments.locator('[name=comment]').fill(body);await comments.locator('form').getByRole('button',{name:w('comment'),exact:true}).click();
    await until('markdown_comment_saved',async()=>(await snap()).comments.some((c:any)=>c.body===body));
+   await comments.getByText('Safe bold',{exact:true}).waitFor();
    check('markdown_strong_rendered',await comments.locator('.m2-comment-body strong').count()===1);
    check('markdown_html_and_images_inert',await comments.locator('script,img').count()===0);
-   check('markdown_safe_link',await comments.locator('.m2-comment-body a').getAttribute('href')==='https://example.test/proof');
+   const link=comments.getByRole('link',{name:'reference',exact:true});
+   check('markdown_safe_link',await link.getAttribute('href')==='https://example.test/proof'&&await link.getAttribute('target')==='_blank'&&await link.getAttribute('rel')==='noopener noreferrer');
+   check('markdown_unsafe_link_is_text',await comments.getByRole('link',{name:'unsafe',exact:true}).count()===0&&(await comments.innerText()).includes('[unsafe](javascript:alert)'));
+   await page.emulateMedia({reducedMotion:'reduce'});
+   await link.focus();await page.keyboard.press('Tab');
+   const reply=comments.getByRole('button',{name:w('reply'),exact:true});
+   check('markdown_tab_order_with_reduced_motion',await reply.evaluate((element:HTMLElement)=>element===document.activeElement&&matchMedia('(prefers-reduced-motion: reduce)').matches));
+   await page.keyboard.press('Shift+Tab');
+   check('markdown_reverse_tab_order',await link.evaluate((element:HTMLElement)=>element===document.activeElement));
    check('no_external_markdown_requests',report.blockedRequests.length===0);check('no_page_errors',report.pageErrors.length===0);
    await screenshot('markdown-safe.png');report.status='passed_markdown_browser';return;
   }
@@ -143,6 +206,10 @@ async function main(){
    await workflow.getByRole('button',{name:'Создать копию',exact:true}).click();await tabs.locator('[data-workflow-section=states]').click();
    await workflow.locator('[name=workflow-state-name-0]').fill('G07 observed backlog');await workflow.getByTestId('workflow-editor').getByRole('button',{name:w('save'),exact:true}).click();
    await until('g07_custom_draft_persisted',async()=>(await snap()).workflows.workflows.some((r:any)=>r.id==='g07-custom'&&r.draft?.states[0].name==='G07 observed backlog'));
+   await tabs.locator('[data-workflow-section=diagram]').click();
+   const diagram=workflow.locator('.ui-mermaid'),svg=diagram.locator('svg');
+   await svg.waitFor();
+   check('g07_workflow_diagram_renders_custom_state',await diagram.getAttribute('aria-busy')==='false'&&(await svg.textContent()??'').includes('G07 observed backlog')&&await diagram.getByRole('alert').count()===0);
    await tabs.locator('[data-workflow-section=publication]').click();await workflow.getByRole('button',{name:'Предпросмотр публикации',exact:true}).click();await workflow.getByRole('button',{name:'Опубликовать проверенную версию',exact:true}).click();
    await until('g07_custom_version_published',async()=>(await snap()).workflows.workflows.some((r:any)=>r.id==='g07-custom'&&r.activeVersion===1));
    await tabs.locator('[data-workflow-section=assignments]').click();await workflow.locator('[name=workflow-type-bug]').selectOption('g07-custom');await workflow.getByRole('button',{name:'Сохранить назначения',exact:true}).click();

@@ -1,4 +1,4 @@
-import {MermaidView} from '../graph/GraphViews.tsx';
+import {MermaidView} from '../../ui/MermaidView.tsx';
 import {useEffect,useState} from 'react';
 import type {M1Api,StoredEntity} from '../../api/client.ts';
 import type {ManagerSnapshot} from '../../../../../packages/contracts/issues/manager.ts';

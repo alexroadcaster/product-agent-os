@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {inlineMarkdown,commentMarkdown} from '../../apps/web/src/features/tasks/comment-markdown.ts';
+import {inlineMarkdown,commentMarkdown} from '../../apps/web/src/ui/markdown.ts';
 
 test('comment subset preserves unsafe links, HTML and images as inert text',()=>{
  const raw='<img src=x onerror=alert(1)> ![remote](https://example.test/a.png) [bad](javascript:alert) [secret](https://user:pass@example.test)';

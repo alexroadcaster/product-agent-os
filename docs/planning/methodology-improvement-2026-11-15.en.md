@@ -68,7 +68,7 @@ Two branches follow METH-01. METH-02 → 03 → 04 defines Dashboard criteria an
 
 METH-08 compared retaining the current modules, strengthening their boundaries, and adopting bounded FSD. The A2 pilot strengthens the boundary in the existing modules. [Decision and rollback criteria](../architecture/decisions/adr-dashboard-task-boundary.en.md)
 
-- `App.tsx` owns composition, session, and active project. Dashboard uses the explicit `features/tasks/read.ts` API for Tasks selectors (`semanticStatus`, `isBlocked`) with a single implementation.
+- `App.tsx` owns composition, session, and active project. Dashboard and TeamManager use `features/tasks/read.ts`. Selectors, duration formatting, and labels have one implementation in Tasks.
 
 - Extract widgets, entities/task and shared only for demonstrated needs. Verify API use and regressions before moving more screens. Shared business contracts remain in `packages/contracts`.
 
@@ -188,6 +188,72 @@ The starting revision was `33244239664817f6dc950b4beed2e74df27e0e35`, with a cle
 | Cost and promotion | Tokens and cost are `unavailable`. Decision `hold`. The candidate stays in the test fixture and active workflows and hooks retain the baseline. |
 
 Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Repeating the same command records workflow and input digests in its own report. A4 starts with bounded METH-11 for TeamManager under the [A2 decision](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout).
+
+## A4 results {#a4-results}
+
+### METH-11 — Tasks reads from TeamManager
+
+Starting revision `ad62af4bded73752b34fc316207c4f81a143dbff`. TeamManager replaced its two direct imports of `tasks/model.ts` and `tasks/labels.ts` with one import of `tasks/read.ts`. The API adds named exports for `durationText` and `label`. TeamManager reuses the existing `errorText` and `Locale` exports. Application edits touch the public entry and its TeamManager consumer.
+
+| METH-11 criterion | Evidence |
+| --- | --- |
+| AC01 — owners and consumers | Dashboard and TeamManager use the Tasks entry. The test verifies that all six functions retain their original implementations. Drafts, commands, and storage retain their owners. |
+| AC02 — contracts and F08 | The boundary test verifies application-independent contracts and a single shared decoder. Data, the service API, and storage migration are outside this change. |
+| AC03 — regressions and exceptions | RED exposed missing exports and rejection of the exact Team consumer. GREEN checks the allowed entry, direct imports of internal modules, and rejection of a peer Team consumer. Removed two TeamManager → Tasks exceptions. Fourteen original exceptions remain, with no additions. |
+
+The paired browser run passed **55/55** checks on each build. Team → Profiles → Usage displayed a profile from the local service, `00:01:01` for 61 seconds, and `Unknown` for unavailable tokens and cost. Only the metrics response is stubbed for this Team scenario. Dashboard retained A2 states and navigation. Verified 17 source, harness, and asset hashes. The four Web build files matched byte for byte before and after. Team and Dashboard screenshots were reviewed.
+
+Browser command: `node tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. Receipts in `.tmp/func-g01-dashboard/` are `evidence-0JlOUf/result.json` before and `evidence-rpRX0B/result.json` after. The RED log is `.tmp/a4-boundary-red.log`.
+
+The final `node --test --test-concurrency=1 tests/web/*.test.mts` passed **705/705** with zero skips, `.tmp/a4-web-final.log`. `npm run check:web-m1` and both `npm run build:web` runs passed. The first focused sandbox run skipped one native junction test. The test passed in the final full Windows run with the authorized synthetic fixture.
+
+Nine exceptions from the original METH-11 group belong to other consumers and are on `hold`.
+
+### METH-10 — shared Markdown and diagrams {#meth-10-results}
+
+Current consumers and baseline rendering supported METH-18 `bounded_go`. Tasks comments, Artifacts documents, and Sessions history use `ui/MarkdownBody.tsx`. Graph, Workflows, and Database use `ui/MermaidView.tsx`. Graph and Database use `ui/NetworkView.tsx`. Five cross-feature imports were removed. Two were recorded in the Dashboard/Tasks exceptions, reducing its count from 14 to 12. [Decisions and rollback](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout)
+
+| METH-10 criterion | Evidence |
+| --- | --- |
+| AC01 — reuse | One component each for Markdown, Mermaid, and D3. A common Markdown parser and HTTP(S) validator. Tasks owns status rules and labels. |
+| AC02 — boundary | Graph passes Mermaid the source from `diagram-source.ts`. Workflows and Database retain their own mappings. Tests reject reverse imports of feature modules and App. Entries use named exports. |
+| AC03 — rendering | The same 131/131 checks passed before and after. Coverage includes safe Markdown, focus with reduced motion, both themes, history anchors, document reading, the workflow diagram, Graph labels and source, Mermaid ERD, and D3 node selection. |
+
+| Runner in `tests/web/single-window/` | Checks | Baseline → final report |
+| --- | ---: | --- |
+| `m2-task-manager-browser-acceptance.mts --scenario markdown` | 14 | `.tmp/paos-m2/browser-evidence-{mbuVyg,LzCf0B}/m2-browser-result.json` |
+| `m2b-browser-acceptance.mts` | 52 | `.tmp/paos-m2b/browser-evidence-{PhPQlI,dLoY40}/result.json` |
+| `project-files-browser-acceptance.mts --phase final` | 19 | `.tmp/func-g03/browser-final/evidence-{LD26Ga,SAhkrQ}/result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario func-g07` | 34 | `.tmp/paos-m2/browser-evidence-{cPDYYl,syOtnm}/m2-browser-result.json` |
+| `graph-database-browser-acceptance.mts --scope renderers` | 12 | `.tmp/func-g04/browser-acceptance/evidence-{L1llhm,aoGNmq}/result.json` |
+
+The baseline included local METH-11 changes on top of `ad62af4bded73752b34fc316207c4f81a143dbff`. The diagram baseline already included the Markdown move. CSS and local Mermaid asset SHA-256 hashes matched. Final JS SHA-256 is `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4`. Commands are in `TEST.md`.
+
+Broader baseline routes exited 1 before the respective moves. M2c `full` stopped at a hidden node and `ui-v3` at `all_fifteen_destinations` (`.tmp/paos-m2c/browser-evidence-{MccD1e,M23WP5}/result.json`). Full Graph/Database passed 11 steps, including rendering, then stopped at `source registration idle` in its 200-table series (`.tmp/func-g04/browser-acceptance/evidence-S02lS2/failed.json`). The focused mode verifies rendering, source and build binding, and no external traffic. Waiting for the visible Markdown fixed a post-save test race (initial failure in `.tmp/paos-m2/browser-evidence-cTEqb8/m2-browser-result.json`).
+
+At METH-10 closure, METH-13/14/15 were on `hold`. [Current rollout decisions](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout)
+
+### METH-13 — Usage ownership and return to task {#meth-13-results}
+
+METH-18 selected a bounded Tasks change. Frontend Usage owns the panel, UTC dates, coverage and reads through `M1Api.teamMetrics`. Tasks owns navigation back to the selected task. `RunUsage.tsx` is the single entry for Tasks, Sessions, project overview and Dashboard/agent views. All callers previously supplied the API and project. The unused fallback in `UsageDashboard` was removed. HTTP, contract and storage are preserved. Task-specific error hints stay in Tasks.
+
+The same task, active tab and unsaved drafts were preserved in the baseline. Keyboard focus was lost on both transitions. The final build focuses “Back to task” on entry and “Usage analytics” on return, from both inline and expanded task views. A new task starts clean. The local server received a metrics GET with only the selected `taskId`. Sessions retained `sessionId`. Project and agent measurements retained their scopes and unknown token/cost state.
+
+The architecture check rejects reverse imports from Usage. It removes two exceptions, from 12 to 10. Workflows remains outside the selected change. Existing draft/CAS, keyboard tabs and queue regression checks ran. [ADR and rollback](../architecture/decisions/adr-dashboard-task-boundary.en.md#a2-rollout)
+
+| Runner under `tests/web/single-window/` | Checks | Final report |
+| --- | ---: | --- |
+| `m2-task-manager-browser-acceptance.mts --scenario task-usage` | 18 | `.tmp/paos-m2/browser-evidence-pZdsNA/m2-browser-result.json` |
+| `m2b-browser-acceptance.mts` | 53 | `.tmp/paos-m2b/browser-evidence-krz1wj/result.json` |
+| `agent-capabilities-browser-acceptance.mts` | 16 | `.tmp/func-g05/browser-acceptance/evidence-TozeA0/result.json` |
+| `func-g01-dashboard-acceptance.mts` | 55 | `.tmp/func-g01-dashboard/evidence-eIYkSM/result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario task-overlay` | 19 | `.tmp/paos-m2/browser-evidence-xNDl0A/m2-browser-result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario settings-cas` | 17 | `.tmp/paos-m2/browser-evidence-kG2FEd/m2-browser-result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario func-g07` | 34 | `.tmp/paos-m2/browser-evidence-iyXABc/m2-browser-result.json` |
+
+Baseline keyboard RED: `.tmp/paos-m2/browser-evidence-0vKqEJ/m2-browser-result.json`, 14 assertions passed and focus failed. Baseline comparison reports for Sessions, project and Dashboard/Team: `.tmp/paos-m2b/browser-evidence-YN4sd4/result.json`, `.tmp/func-g05/browser-acceptance/evidence-uonXro/result.json`, and `.tmp/func-g01-dashboard/evidence-4Xa2Rs/result.json`. The first final M2b run passed session filtering and timed out later at the agent statistics button (`.tmp/paos-m2b/browser-evidence-8bOJCh/result.json`). The separate rerun passed all 53 checks. Task overlay initially observed the loading placeholder (`.tmp/paos-m2/browser-evidence-xxPkOY/m2-browser-result.json`). Waiting for the task filters fixed the runner race.
+
+The Tasks screenshots capture the analytics panel and the restored focus with a visible unsaved comment. Baseline and final main JS SHA-256: `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4` and `d33b602822c02d9288672de72461b699e3e07c157132bb30ade365e9de46727d`. Browser checks use local synthetic data. See `TEST.md`.
 
 ## Task index
 
@@ -623,15 +689,15 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 
 - Task: PAOS-METH-10
 - Task name: Extract necessary shared UI and infrastructure modules
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner-requested local implementation after checking the hold conditions.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:04
 - Depends on: PAOS-METH-18
 - Blocks: None.
 - External references: None; this plan owns the work.
@@ -639,44 +705,44 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 - Short description: Extract a proven non-domain component after the METH-18 decision and inspection of its existing owner.
 - Technical value: Extract a proven non-domain component after the METH-18 decision and inspection of its existing owner.
 - Product value: Remove shared presentation dependencies on internal task/graph screens.
-- Scope: `apps/web/src/ui/Icon.tsx`; `apps/web/src/ui/Modal.tsx`; `apps/web/src/features/tasks/CommentMarkdown.tsx`; `apps/web/src/locales/`; `apps/web/src/features/graph/GraphViews.tsx`. Future work locations, not files changed now.
+- Scope: `apps/web/src/ui/MarkdownBody.tsx`; `apps/web/src/ui/markdown.ts`; `apps/web/src/ui/external-url.ts`; `apps/web/src/features/tasks/`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `apps/web/src/ui/MermaidView.tsx`; `apps/web/src/ui/NetworkView.tsx`; `apps/web/src/features/graph/`; `apps/web/src/features/workflows/WorkflowManager.tsx`; `apps/web/src/features/database/DatabaseExplorer.tsx`; `apps/web/src/features/database/CodeDatabaseUsages.tsx`; `tests/web/single-window/`.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
-- Expected result: Minimal shared public APIs, compatibility bridges and an updated migration map.
+- Expected result: Shared Markdown, Mermaid, and D3 components with data preparation in their existing features.
 - Acceptance criteria: PAOS-METH-10-AC01: Tie each extraction to the problem selected in METH-18 and current consumers. Shared may contain only needed primitives, safe Markdown/rendering or i18n infrastructure. Keep task status rules and task labels with their domain. PAOS-METH-10-AC02: Separate generic rendering from graph-domain mapping only with proven reuse; avoid wildcard public exports and new frontend→backend dependencies. PAOS-METH-10-AC03: Keep compatibility reexports one-way with single implementations/state; preserve theme/focus/Markdown-safety/reduced-motion regressions.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: This is a behavior-preserving move; do not change visual design, sanitization policy, APIs or data. The current request authorizes planning only.
+- Verification gates: V-WEB. Focused and full Web tests, type-check, build, and paired browser runs. [Results](#meth-10-results)
+- Risks / approval gates: Local move preserving visual behavior, URL validation, APIs, and data.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
-- Agents: builder — shared frontend ownership; proposed ownership; delegation=0 now.
-- Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
-- Output artifacts: Minimal shared public APIs, compatibility bridges and an updated migration map.
-- Next step: METH-18 selected this work and identified a specific reusable non-domain component or maintenance problem. Confirm the selected scope and obtain separate implementation authority.
+- Agents: Primary agent, shared frontend slice owner, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging. FSD rules checked through Context7.
+- Output artifacts: Shared Markdown, Mermaid and D3 renderers, boundary tests, and the consumer map in the ADR.
+- Next step: METH-13/14/15 await the reconsideration conditions in the ADR.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: This is a behavior-preserving move; do not change visual design, sanitization policy, APIs or data.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Moved the Markdown renderer, parser, URL validator, Mermaid and D3. Updated all current consumers.
+- files touched / work locations: See Scope and [acceptance evidence](#meth-10-results).
+- technical value delivered: Removed five cross-feature imports, including two recorded exceptions. The test rejects reverse dependencies.
+- product value delivered: Preserved rendering, focus, and safety of links and diagrams in the checked scenarios.
+- actual implementation date and time: 18-11-2026 19:04
+- verification evidence: Full Web 707/707 with zero skips (`.tmp/meth-10-web-final.log`), focused tests 19/19, type-check and build passed. [Paired browser 131/131](#meth-10-results)
+- residual risks: Twelve previous exceptions remain. The results record limits of the broader browser scenarios.
+- follow-up: Keep using the boundary test for shared renderers. The ADR records conditions for METH-13/14/15.
 
 ### Task `PAOS-METH-11`
 
 - Task: PAOS-METH-11
 - Task name: Stabilize the public interfaces of the Tasks domain
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner requested the selected A4 scope.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:31
 - Depends on: PAOS-METH-18
 - Blocks: None.
 - External references: PAOS-FUNC-08
@@ -684,30 +750,30 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 - Short description: Extend the existing Tasks boundary where there is a demonstrated need. Extracting entities/task requires a clear benefit for consumers.
 - Technical value: Extend the existing Tasks boundary where there is a demonstrated need. Extracting entities/task requires a clear benefit for consumers.
 - Product value: Let dashboard and team use a stable task API instead of deep imports into a task screen.
-- Scope: `apps/web/src/features/tasks/model.ts`; `apps/web/src/features/tasks/labels.ts`; `apps/web/src/features/dashboard/model.ts`; `packages/contracts/issues/task-profile.ts`. Future work locations, not files changed now.
+- Scope: `apps/web/src/features/tasks/read.ts`; `apps/web/src/features/team/TeamManager.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
 - Expected result: An ADR-backed public API, transition adapters where needed and regression evidence.
 - Acceptance criteria: PAOS-METH-11-AC01: Reusable selectors/status presentation/task labels have one owner and confirmed consumers. Extract entities/task only with demonstrated value. Drafts and commands remain interaction-owned and backend authority is preserved. PAOS-METH-11-AC02: Keep packages/contracts application-independent and free of React/UI imports; preserve F08 types and decode/persistence semantics. PAOS-METH-11-AC03: Pilot consumers use an explicit public API; semanticStatus/isBlocked/aggregation and contract-boundary tests pass, and legacy bridges have removal owners.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Do not duplicate business rules between service and UI or change progress/blocked semantics for structure. The current request authorizes planning only.
+- Verification gates: V-WEB. Results are in the Completion Report.
+- Risks / approval gates: Nine original METH-11 edges are on hold outside the selected scope. The ADR records rollback.
 - Complexity: M
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
 - Agents: architect + builder — task domain; proposed ownership; delegation=0 now.
 - Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
 - Output artifacts: An ADR-backed public API, transition adapters where needed and regression evidence.
-- Next step: METH-18 selected this work after confirming reuse or a maintenance problem with the existing Tasks API. Confirm the selected scope and obtain separate implementation authority.
+- Next step: The selected scope is complete. The ADR records the current A4 decisions.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Do not duplicate business rules between service and UI or change progress/blocked semantics for structure.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Moved TeamManager to the shared Tasks entry. Removed two direct imports and two exceptions.
+- files touched / work locations: apps/web/src/features/tasks/read.ts; apps/web/src/features/team/TeamManager.tsx; tests/web/contracts-boundaries.test.mts; tests/web/fixtures/dashboard-import-baseline.json; tests/web/single-window/func-g01-dashboard-acceptance.mts; ADR; PLAN.md; RUNLOG.md
+- technical value delivered: Six named functions retain single implementations. The check allows the public entry for Dashboard and TeamManager.
+- product value delivered: Team profile, duration formatting, and unknown telemetry are preserved. Dashboard scenarios pass.
+- actual implementation date and time: 18-11-2026 18:31
+- verification evidence: Two expected RED failures. Web 705/705. Browser 55/55 before and after. All four build files have matching SHA-256 digests.
+- residual risks: Nine original METH-11 edges are on hold outside the selected scope. The ADR records rollback.
+- follow-up: The selected scope is complete. The ADR records the current A4 decisions.
 
 ### Task `PAOS-METH-12`
 
@@ -758,15 +824,15 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 
 - Task: PAOS-METH-13
 - Task name: Improve Tasks and Workflows boundaries where value is demonstrated
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD, Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Owner-requested local Tasks implementation after verifying Usage and the return path.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:36
 - Depends on: PAOS-METH-18
 - Blocks: None.
 - External references: PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-21
@@ -774,30 +840,30 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 - Short description: Deliver METH-18-selected changes as separate checkpoints and preserve editor and queue semantics.
 - Technical value: Deliver METH-18-selected changes as separate checkpoints and preserve editor and queue semantics.
 - Product value: Isolate two coupled user journeys while preserving unfinished work.
-- Scope: `apps/web/src/features/tasks/TaskManager.tsx`; `apps/web/src/features/tasks/Editor.tsx`; `apps/web/src/features/workflows/WorkflowManager.tsx`; `apps/web/src/features/workflows/recipes/`; `apps/web/src/ui/App.tsx`. Future work locations, not files changed now.
+- Scope: `apps/web/src/features/usage/RunUsage.tsx`; `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/tasks/TaskManager.tsx`; `apps/web/src/features/tasks/labels.ts`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/ui/App.tsx`; `apps/web/src/locales/action-error.ts`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/single-window/`.
 - Non-goals: New product features, provider/credentials, target/Git/publication/production; other FUNC/Web statuses; anything outside this slice.
-- Expected result: Selected Tasks and/or Workflows checkpoints with their guards and owner doc updates where needed.
+- Expected result: A dedicated RunUsage entry, retained task and draft, restored focus, and removal of two exceptions.
 - Acceptance criteria: PAOS-METH-13-AC01: METH-18 explicitly selected Tasks and/or Workflows. Each selected screen has separate source hashes, checks, visual evidence and reversible changes. If both are selected and a dependency exists, do Tasks first. PAOS-METH-13-AC02: Preserve F03 new-task reset, F04 workflow drafts/CAS, dialog focus/eight tabs, preview/confirmation and queue controls; do not claim full F21 recovery closure. PAOS-METH-13-AC03: Migrated consumers do not depend on sibling-screen internals; remove migrated edges from baseline exceptions and add interaction features only for real responsibilities.
-- Verification gates: V-WEB; profile above; current TEST routing takes precedence; execute during future implementation.
-- Risks / approval gates: Serialize shared App/navigation/labels edits; no new workflow rules, DB migrations or scope expansion. The current request authorizes planning only.
+- Verification gates: V-WEB. Focused tests, type-check, build, full Web, and Tasks/Usage browser verification. [Verification](#meth-13-results)
+- Risks / approval gates: Local slice with synthetic data. Preserve the read API, metrics scopes and existing Tasks contracts.
 - Complexity: L
 - Estimated execution time: Estimate after current discovery and bounded-slice selection; no calendar commitment.
-- Agents: builder — tasks, then builder — workflows; sequential; proposed ownership; delegation=0 now.
-- Skills: build-web-apps:frontend-testing-debugging; for future UI verification only; architecture follows the ADR.
-- Output artifacts: Selected Tasks and/or Workflows checkpoints with their guards and owner doc updates where needed.
-- Next step: METH-18 selected Tasks and/or Workflows after evaluating Dashboard. Each selected screen has a separate checkpoint protecting drafts, CAS, navigation and focus. Confirm the selected scope and obtain separate implementation authority.
+- Agents: Primary agent, frontend Usage and Tasks slice ownership, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. FSD boundary checked through Context7.
+- Output artifacts: Shared RunUsage, verified task return, browser reports, and bilingual ADR.
+- Next step: Workflows stays on hold pending its own decision with draft, CAS, focus, and queue checks.
 
 #### Completion Report
 
-- status: planned
-- what was done: Implementation not started; task card authored.
-- files touched / work locations: No implementation files changed now; future locations are listed in Scope.
-- technical value delivered: Not claimed before implementation.
-- product value delivered: Not claimed before implementation.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Only plan preparation is checked; this task's AC are not claimed as executed.
-- residual risks: Serialize shared App/navigation/labels edits; no new workflow rules, DB migrations or scope expansion.
-- follow-up: Select the next authorized slice from the DAG; no automatic start.
+- status: implemented
+- what was done: Moved the Usage panel and its callers. Tasks restores keyboard focus when entering and leaving analytics.
+- files touched / work locations: See Scope and the [results](#meth-13-results).
+- technical value delivered: Removed Tasks and Sessions dependencies on Dashboard and two pinned exceptions. The check rejects reverse imports.
+- product value delivered: Restored keyboard navigation and preserved the selected task, tab, and drafts.
+- actual implementation date and time: 18-11-2026 19:36
+- verification evidence: Full Web 709/709 with zero skips (`.tmp/meth-13-web-final.log`), focused tests 49/49 and browser checks 212/212. Type-check and build passed. [Reports](#meth-13-results)
+- residual risks: Acceptance covers the selected Tasks slice and tested panel consumers. Workflows and F21 remain separate decisions.
+- follow-up: Reconsider Workflows only with its own outcome and checks under the ADR.
 
 ### Task `PAOS-METH-14`
 
@@ -1017,7 +1083,7 @@ Python routing, lifecycle, behavioral/transcript, and A3 checks passed 88/88. Re
 #### Completion Report
 
 - status: implemented
-- what was done: Kept the Dashboard pilot and selected a narrow METH-11 scope for TeamManager. METH-10/13/14/15 are on hold.
+- what was done: Kept the Dashboard pilot and selected a narrow METH-11 scope for TeamManager. METH-10/13/14/15 were initially put on hold.
 - files touched / work locations: docs/architecture/decisions/adr-dashboard-task-boundary.md; docs/architecture/decisions/adr-dashboard-task-boundary.en.md; PLAN.md; RUNLOG.md; docs/frontend/index*.md; docs/planning/methodology-improvement-2026-11-15.*
 - technical value delivered: Recorded the boundary comparison, change size, measurable two-exception target, and rollback.
 - product value delivered: A3 can start at METH-05. A4 expansion first tests one analogous consumer.

@@ -1,5 +1,17 @@
 # TEST.md
 
+## PAOS-METH-13 — Usage и возврат к задаче, 18.11.2026 {#meth-13-verification}
+
+`node --test tests/web/contracts-boundaries.test.mts tests/web/ui-m2-manager.test.mts tests/web/ui-v3-dashboard.test.mts tests/web/ui-draft-autosave.test.mts tests/web/ui-draft-registry.test.mts tests/web/recipe-recovery.test.mts tests/web/agent-capabilities-api.test.mts` проверяет вход Usage, формат ошибок, CAS, черновики и очередь. Полный Web — `node --test --test-concurrency=1 tests/web/*.test.mts`. Браузерные маршруты запускаются с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. `--scenario task-usage` проверяет вход с клавиатуры, GET с `taskId`, сохранение черновика, возврат фокуса и чистый новый редактор. [Остальные маршруты и отчёты](docs/planning/methodology-improvement-2026-11-15.md#meth-13-results)
+
+## PAOS-METH-10 — общие Markdown и диаграммы, 18.11.2026 {#meth-10-verification}
+
+`node --test tests/web/contracts-boundaries.test.mts tests/web/m2-comment-markdown.test.mts tests/web/ui-m2-manager.test.mts` проверяет импорты общих рендереров, синтаксис Markdown и URL. В браузере запустить пять маршрутов из [отчёта METH-10](docs/planning/methodology-improvement-2026-11-15.md#meth-10-results) с `--synthetic-browser --playwright-core <installed-path> --chromium <installed-path>` и указанными вариантами. В паре сборок покрыты комментарии, история, документы, клавиатурный фокус при reduced motion, обе темы, Mermaid для Graph/Workflows/Database и выбор узлов D3. Полный Web-набор, проверка типов и сборка следуют профилю V-WEB.
+
+## PAOS-METH-11 — общий вход чтения Tasks, 18.11.2026
+
+`node --test tests/web/contracts-boundaries.test.mts` проверяет точный набор именованных экспортов, идентичность реализаций, разрешённые входы Dashboard и TeamManager и запрещённые обходы. `ui-v3-dashboard.test.mts` и `ui-m2-manager.test.mts` покрывают агрегацию, статусы и длительность. Сценарий Dashboard ниже включает Team → Profiles → Usage на синтетическом проекте. Профиль читает реальный локальный сервис, а ответ метрик содержит известную длительность и неизвестные токены и стоимость. [Точные команды, подтверждение и откат](docs/planning/methodology-improvement-2026-11-15.md#a4-results)
+
 ## PAOS-METH-05 — критические регрессии
 
 | Риск | Инвариант | Минимальная надёжная проверка |

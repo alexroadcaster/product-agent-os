@@ -1,15 +1,16 @@
 import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {useEffect,useState} from 'react';
 import type {M1Api} from '../../api/client.ts';
-import {errorText,type Locale} from '../tasks/read.ts';
+import {actionErrorText} from '../../locales/action-error.ts';
+import type {UiLocale} from '../../locales/messages.ts';
 import type {RunMetrics} from '../../../../../packages/contracts/telemetry/run-metrics.ts';
 
 /** Numeric receipts share one API projection across project, task, session and agent views. */
-export function RunUsage({api,projectId,locale,taskId,sessionId,agentId}:{api:M1Api;projectId:string;locale:Locale;taskId?:string;sessionId?:string;agentId?:string}){
+export function RunUsage({api,projectId,locale,taskId,sessionId,agentId}:{api:M1Api;projectId:string;locale:UiLocale;taskId?:string;sessionId?:string;agentId?:string}){
  const w=(ru:string,en:string)=>locale==='ru'?ru:en;
  const [period,setPeriod]=useState(()=>({from:new Date(Date.now()-7*86400000).toISOString().slice(0,10),to:new Date(Date.now()+86400000).toISOString().slice(0,10)})),[data,setData]=useState<RunMetrics>(),[error,setError]=useState(''),[revision,setRevision]=useState(0),[limit,setLimit]=useState(50);
  useEffect(()=>{let stale=false;setData(undefined);setError('');setLimit(50);const scope={...(taskId?{taskId}:{}),...(sessionId?{sessionId}:{}),...(agentId?{agentId}:{})};
-  void api.teamMetrics(projectId,period.from+'T00:00:00.000Z',period.to+'T00:00:00.000Z',scope).then(v=>{if(!stale)setData(v as RunMetrics);}).catch(e=>{if(!stale)setError(errorText(locale,e));});return()=>{stale=true;};
+  void api.teamMetrics(projectId,period.from+'T00:00:00.000Z',period.to+'T00:00:00.000Z',scope).then(v=>{if(!stale)setData(v as RunMetrics);}).catch(e=>{if(!stale)setError(actionErrorText(locale,e));});return()=>{stale=true;};
  },[api,projectId,taskId,sessionId,agentId,period.from,period.to,revision]);
  return <section data-testid="run-usage" className="panel"><h2>{w('Измерения PAOS runs','PAOS run measurements')}</h2><form onSubmit={e=>{e.preventDefault();setRevision(n=>n+1);}}><label>{w('С даты UTC','From date UTC')}<input type="date" required value={period.from} onChange={e=>setPeriod(p=>({...p,from:e.target.value}))}/></label><label>{w('До даты UTC (не включая)','To date UTC (exclusive)')}<input type="date" required value={period.to} onChange={e=>setPeriod(p=>({...p,to:e.target.value}))}/></label><button>{w('Обновить измерения','Refresh measurements')}</button></form>
  {error&&<p role="alert">{error}</p>}{!data&&!error&&<p role="status">{w('Загрузка измерений…','Loading measurements…')}</p>}

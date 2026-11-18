@@ -68,7 +68,7 @@ P1 — защита контрактов и достоверность приё�
 
 METH-08 сравнила сохранение текущих модулей, усиление их границ и локальный FSD. Пилот A2 усилил границу в текущих модулях. [Решение и условия отката](../architecture/decisions/adr-dashboard-task-boundary.md)
 
-- `App.tsx` владеет композицией, сессией и активным проектом. Dashboard использует явный API `features/tasks/read.ts` для селекторов Tasks (`semanticStatus`, `isBlocked`) с одной реализацией.
+- `App.tsx` владеет композицией, сессией и активным проектом. Dashboard и TeamManager используют `features/tasks/read.ts`. Селекторы, форматирование длительности и подписи имеют одну реализацию в Tasks.
 
 - Выделять widgets, entities/task и shared только при подтверждённой потребности. Пригодность API и регрессии проверяются до переноса других экранов. Общие business contracts остаются в `packages/contracts`.
 
@@ -188,6 +188,72 @@ Baseline METH-01 — чистое рабочее дерево на `bd7d9135f994
 | Стоимость и применение | Токены и стоимость — `unavailable`. Решение — `hold`; кандидат хранится как тестовый вход, действующие workflow и хуки сохранены. |
 
 Python-проверки маршрутизации, lifecycle, behavioral/transcript и A3 — 88/88. При повторном сравнении используется та же команда, а хеши версий и входов записываются в его отчёт. Следующий вход A4 — ограниченная METH-11 для TeamManager по [решению A2](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout).
+
+## Результаты A4 {#a4-results}
+
+### METH-11 — чтение Tasks из TeamManager
+
+Исходная ревизия — `ad62af4bded73752b34fc316207c4f81a143dbff`. TeamManager заменил два прямых импорта из `tasks/model.ts` и `tasks/labels.ts` одним импортом из `tasks/read.ts`. API получил два именованных экспорта — `durationText` и `label`. Существующие `errorText` и тип `Locale` использованы как есть. Изменения кода приложения ограничены публичным входом и импортером TeamManager.
+
+| Критерий METH-11 | Подтверждение |
+| --- | --- |
+| AC01 — владельцы и потребители | Dashboard и TeamManager используют вход Tasks. Тест подтверждает тождество шести функций исходным реализациям. Драфты, команды и хранение остаются у своих владельцев. |
+| AC02 — contracts и F08 | Тест границ подтверждает независимость contracts и единственный общий decoder. Данные, API сервиса и миграция хранилища этим срезом не затронуты. |
+| AC03 — регрессии и исключения | RED показал отсутствующие экспорты и отказ точного потребителя Team. GREEN проверил разрешённый вход, прямые импорты внутренних модулей и отказ соседнего Team-потребителя. Сняты два исключения TeamManager → Tasks. Осталось 14 исходных исключений без добавлений. |
+
+Браузерная пара прошла **55/55** проверок в каждой сборке. В Team → Profiles → Usage синтетический проект показал профиль из локального сервиса, `00:01:01` для 61 секунды и `Unknown` для неизвестных токенов и стоимости. Фикстура подставляет только ответ метрик в этом сценарии. Dashboard сохранил состояния и навигацию A2. Проверены 17 хешей исходников, harness и ассетов. Четыре файла сборки Web совпали побайтно до и после. Снимки Team и Dashboard проверены.
+
+Команда браузерной пары — `node tests/web/single-window/func-g01-dashboard-acceptance.mts --synthetic-browser --playwright-core <installed-path> --chromium <installed-path>`. Отчёты в `.tmp/func-g01-dashboard/`: `evidence-0JlOUf/result.json` до перехода и `evidence-rpRX0B/result.json` после. RED — `.tmp/a4-boundary-red.log`.
+
+Итоговый `node --test --test-concurrency=1 tests/web/*.test.mts` прошёл **705/705**, без пропусков, `.tmp/a4-web-final.log`. `npm run check:web-m1` и обе сборки `npm run build:web` прошли. В первом целевом прогоне sandbox пропустил одну проверку native junction. Она прошла в итоговом полном Windows-прогоне с разрешённой синтетической fixture.
+
+Девять исключений исходной группы METH-11 относятся к другим потребителям и отмечены `hold`.
+
+### METH-10 — общие Markdown и диаграммы {#meth-10-results}
+
+Действующие потребители и проверка исходного рендера дали основание для `bounded_go` по METH-18. Комментарии Tasks, документы Artifacts и история Sessions используют `ui/MarkdownBody.tsx`. Graph, Workflows и Database используют `ui/MermaidView.tsx`. Graph и Database используют `ui/NetworkView.tsx`. Удалены пять импортов между feature-модулями. Два входили в закреплённый список исключений Dashboard/Tasks, который сократился с 14 до 12. [Решения и откат](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+| Критерий METH-10 | Подтверждение |
+| --- | --- |
+| AC01 — переиспользование | По одному компоненту Markdown, Mermaid и D3. Парсер и HTTP(S)-валидатор общие. Метки и правила статусов принадлежат Tasks. |
+| AC02 — граница | Graph передаёт Mermaid готовый текст из `diagram-source.ts`. Workflows и Database сохраняют собственную подготовку данных. Тест отклоняет обратные импорты feature-модулей и App. Используются именованные входы. |
+| AC03 — рендер | 131/131 тех же проверок до и после переноса. Проверены безопасный Markdown, фокус при reduced motion, обе темы, якорь истории, чтение документа, диаграмма процесса, подписи и исходник Graph, Mermaid ERD и выбор узлов D3. |
+
+| Маршрут в `tests/web/single-window/` | Проверок | Исходный отчёт → итоговый |
+| --- | ---: | --- |
+| `m2-task-manager-browser-acceptance.mts --scenario markdown` | 14 | `.tmp/paos-m2/browser-evidence-{mbuVyg,LzCf0B}/m2-browser-result.json` |
+| `m2b-browser-acceptance.mts` | 52 | `.tmp/paos-m2b/browser-evidence-{PhPQlI,dLoY40}/result.json` |
+| `project-files-browser-acceptance.mts --phase final` | 19 | `.tmp/func-g03/browser-final/evidence-{LD26Ga,SAhkrQ}/result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario func-g07` | 34 | `.tmp/paos-m2/browser-evidence-{cPDYYl,syOtnm}/m2-browser-result.json` |
+| `graph-database-browser-acceptance.mts --scope renderers` | 12 | `.tmp/func-g04/browser-acceptance/evidence-{L1llhm,aoGNmq}/result.json` |
+
+Исходная сборка содержала локальный METH-11 поверх `ad62af4bded73752b34fc316207c4f81a143dbff`. Для пары диаграмм контрольная сборка уже включала перенос Markdown. CSS и локальный Mermaid-ассет совпали по SHA-256. SHA-256 итогового JS — `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4`. Команды в `TEST.md`.
+
+Широкие маршруты до соответствующего переноса остановились с кодом 1. M2c `full` остановился на невидимом узле, `ui-v3` — на `all_fifteen_destinations` (`.tmp/paos-m2c/browser-evidence-{MccD1e,M23WP5}/result.json`). Полный Graph/Database прошёл 11 шагов, в том числе рендер, и остановился на `source registration idle` в серии для 200 таблиц (`.tmp/func-g04/browser-acceptance/evidence-S02lS2/failed.json`). Узкий режим проверяет рендер, исходники, сборку и отсутствие внешнего трафика. В сценарии Markdown явное ожидание рендера устранило гонку после сохранения комментария (исходная остановка в `.tmp/paos-m2/browser-evidence-cTEqb8/m2-browser-result.json`).
+
+При закрытии METH-10 задачи METH-13/14/15 были на `hold`. [Действующие решения ADR](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+### METH-13 — владелец Usage и возврат к задаче {#meth-13-results}
+
+METH-18 выбрала узкий срез Tasks. Frontend Usage владеет панелью, периодом UTC, покрытием и чтением через `M1Api.teamMetrics`. Tasks владеет возвратом к выбранной задаче. `RunUsage.tsx` — единый вход для Tasks, Sessions, обзора проекта, Dashboard и представления агента. Все вызовы передавали API и проект, поэтому неиспользуемая ветка `UsageDashboard` удалена. HTTP, контракт и хранение сохранены. Подсказки ошибок Tasks принадлежат Tasks.
+
+Исходная сборка сохраняла задачу, вкладку и черновики. Клавиатурный фокус терялся в обе стороны. Итоговая сборка ставит фокус на «Вернуться к задаче» при входе и на «Аналитика расхода» при возврате из обычной и развёрнутой карточки. Новый редактор задачи открывается пустым. Локальный сервис получил GET измерений только с выбранным `taskId`. Sessions сохранила `sessionId`, а обзор проекта и агент сохранили свои области измерений и неизвестные значения токенов и стоимости.
+
+Тест границ отклоняет обратные импорты из Usage. Удалены два исключения, осталось 10 из 12. Workflows сохраняет `hold`. Выполнены действующие регрессии черновиков, CAS, клавиатурных вкладок и очереди. [ADR и откат](../architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout)
+
+| Маршрут в `tests/web/single-window/` | Проверок | Итоговый отчёт |
+| --- | ---: | --- |
+| `m2-task-manager-browser-acceptance.mts --scenario task-usage` | 18 | `.tmp/paos-m2/browser-evidence-pZdsNA/m2-browser-result.json` |
+| `m2b-browser-acceptance.mts` | 53 | `.tmp/paos-m2b/browser-evidence-krz1wj/result.json` |
+| `agent-capabilities-browser-acceptance.mts` | 16 | `.tmp/func-g05/browser-acceptance/evidence-TozeA0/result.json` |
+| `func-g01-dashboard-acceptance.mts` | 55 | `.tmp/func-g01-dashboard/evidence-eIYkSM/result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario task-overlay` | 19 | `.tmp/paos-m2/browser-evidence-xNDl0A/m2-browser-result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario settings-cas` | 17 | `.tmp/paos-m2/browser-evidence-kG2FEd/m2-browser-result.json` |
+| `m2-task-manager-browser-acceptance.mts --scenario func-g07` | 34 | `.tmp/paos-m2/browser-evidence-iyXABc/m2-browser-result.json` |
+
+Исходный RED фокуса: `.tmp/paos-m2/browser-evidence-0vKqEJ/m2-browser-result.json`, 14 успешных проверок и один отказ. Исходные отчёты Sessions, обзора проекта и Dashboard/Team: `.tmp/paos-m2b/browser-evidence-YN4sd4/result.json`, `.tmp/func-g05/browser-acceptance/evidence-uonXro/result.json` и `.tmp/func-g01-dashboard/evidence-4Xa2Rs/result.json`. Первый итоговый M2b прошёл проверку фильтра Sessions и позже остановился на кнопке статистики агента (`.tmp/paos-m2b/browser-evidence-8bOJCh/result.json`). Отдельный повтор прошёл 53/53. Первый task-overlay поймал состояние загрузки (`.tmp/paos-m2/browser-evidence-xxPkOY/m2-browser-result.json`). Явное ожидание фильтров устранило гонку теста.
+
+Снимки Tasks фиксируют панель аналитики и возврат с фокусом и видимым черновиком комментария. SHA-256 основного JS до и после: `93a317adde4841d0a1181a42a55f1137c498524ffd43a20413ff1289803c3ae4` и `d33b602822c02d9288672de72461b699e3e07c157132bb30ade365e9de46727d`. Браузерные проверки выполнялись на локальных синтетических данных. Команды в `TEST.md`.
 
 ## Индекс задач
 
@@ -623,15 +689,15 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 
 - Task: PAOS-METH-10
 - Task name: Выделить необходимые shared UI и инфраструктурные модули
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Локальная реализация по запросу владельца после проверки условий hold.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:04
 - Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: Нет; текущий план — владелец.
@@ -639,44 +705,44 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 - Short description: Выделить подтверждённый недоменный компонент после решения METH-18 и проверки существующего владельца.
 - Technical value: Выделить подтверждённый недоменный компонент после решения METH-18 и проверки существующего владельца.
 - Product value: Убрать зависимость общих представлений от внутренних task/graph screens.
-- Scope: `apps/web/src/ui/Icon.tsx`; `apps/web/src/ui/Modal.tsx`; `apps/web/src/features/tasks/CommentMarkdown.tsx`; `apps/web/src/locales/`; `apps/web/src/features/graph/GraphViews.tsx`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/ui/MarkdownBody.tsx`; `apps/web/src/ui/markdown.ts`; `apps/web/src/ui/external-url.ts`; `apps/web/src/features/tasks/`; `apps/web/src/features/artifacts/ArtifactExplorer.tsx`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `apps/web/src/ui/MermaidView.tsx`; `apps/web/src/ui/NetworkView.tsx`; `apps/web/src/features/graph/`; `apps/web/src/features/workflows/WorkflowManager.tsx`; `apps/web/src/features/database/DatabaseExplorer.tsx`; `apps/web/src/features/database/CodeDatabaseUsages.tsx`; `tests/web/single-window/`.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Минимальный shared public API, compatibility bridges и обновлённая migration map.
+- Expected result: Общие компоненты Markdown, Mermaid и D3; подготовка данных остаётся в feature-модулях.
 - Acceptance criteria: PAOS-METH-10-AC01: Каждое выделение привязано к выбранной METH-18 проблеме и актуальным потребителям. В shared попадают только востребованные primitives, safe Markdown/rendering или i18n infrastructure. Task status rules и task labels остаются у домена. PAOS-METH-10-AC02: Mermaid/graph renderer разделён на generic rendering и domain mapping только при подтверждённом reuse; no wildcard public exports, frontend→backend зависимости не добавлены. PAOS-METH-10-AC03: Compatibility reexports однонаправленные, implementation/state единственные; прежние theme/focus/Markdown-safety/reduced-motion regressions проходят.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Это behavior-preserving move; не менять visual design, sanitize policy, API или данные. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Целевые тесты, полный Web, проверка типов, сборка и парная браузерная проверка. [Результаты](#meth-10-results)
+- Risks / approval gates: Локальный перенос с сохранением визуального поведения, проверки URL, API и данных.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
-- Agents: builder — shared frontend ownership; proposed ownership, сейчас delegation=0.
-- Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Минимальный shared public API, compatibility bridges и обновлённая migration map.
-- Next step: METH-18 выбрала эту работу и подтверждён конкретный повторно используемый недоменный компонент либо затруднение сопровождения. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Agents: Основной агент, владелец среза shared frontend, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging. Правила FSD сверены через Context7.
+- Output artifacts: Общие рендереры Markdown, Mermaid и D3, проверки границ и карта потребителей в ADR.
+- Next step: METH-13/14/15 ждут условий повторного выбора в ADR.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Это behavior-preserving move; не менять visual design, sanitize policy, API или данные.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Перенесены Markdown-рендерер, парсер, валидатор URL, Mermaid и D3. Переключены все действующие потребители.
+- files touched / work locations: См. Scope и [приёмку](#meth-10-results).
+- technical value delivered: Удалены пять импортов между feature-модулями, в том числе два исключения. Тест отклоняет обратные зависимости.
+- product value delivered: Сохранены рендер, фокус и безопасность ссылок и диаграмм в проверенных сценариях.
+- actual implementation date and time: 18-11-2026 19:04
+- verification evidence: Полный Web 707/707 без пропусков (`.tmp/meth-10-web-final.log`), целевой набор 19/19, проверка типов и сборка успешны. [Браузерная пара 131/131](#meth-10-results)
+- residual risks: Осталось 12 прежних исключений. Ограничения широких браузерных сценариев зафиксированы в разделе результатов.
+- follow-up: Сохранять границу общих рендереров через существующий тест. Условия METH-13/14/15 зафиксированы в ADR.
 
 ### Task `PAOS-METH-11`
 
 - Task: PAOS-METH-11
 - Task name: Стабилизировать публичные интерфейсы домена Tasks
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Реализация выбранного объёма A4 по запросу владельца.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 18:31
 - Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: PAOS-FUNC-08
@@ -684,30 +750,30 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 - Short description: Расширить существующую границу Tasks по подтверждённой необходимости. Выделение entities/task требует прозрачной пользы для потребителей.
 - Technical value: Расширить существующую границу Tasks по подтверждённой необходимости. Выделение entities/task требует прозрачной пользы для потребителей.
 - Product value: Dashboard и team используют стабильный task API вместо deep imports в task screen.
-- Scope: `apps/web/src/features/tasks/model.ts`; `apps/web/src/features/tasks/labels.ts`; `apps/web/src/features/dashboard/model.ts`; `packages/contracts/issues/task-profile.ts`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/features/tasks/read.ts`; `apps/web/src/features/team/TeamManager.tsx`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/single-window/func-g01-dashboard-acceptance.mts`.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
 - Expected result: Поддержанный ADR публичный API, переходные адаптеры при необходимости и regression evidence.
 - Acceptance criteria: PAOS-METH-11-AC01: Повторно используемые selectors/status presentation/task labels имеют одного владельца и подтверждённых потребителей. Entities/task выделяется только при доказанной пользе. Draft и commands остаются у interaction, backend authority сохраняется. PAOS-METH-11-AC02: packages/contracts остаётся application-independent, не импортирует React/UI; типы и decode/persistence semantics F08 сохраняются. PAOS-METH-11-AC03: Потребители пилота используют явный public API; tests semanticStatus/isBlocked/aggregation и contracts boundaries проходят, legacy bridges имеют removal owner.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Не копировать business rules между сервисом и UI и не менять подсчёт прогресса/blocked ради структуры. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Результат указан в Completion Report.
+- Risks / approval gates: Девять прежних связей в группе METH-11 получили hold за пределами выбранного объёма. Условия отката в ADR.
 - Complexity: M
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
 - Agents: architect + builder — task domain; proposed ownership, сейчас delegation=0.
 - Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
 - Output artifacts: Поддержанный ADR публичный API, переходные адаптеры при необходимости и regression evidence.
-- Next step: METH-18 выбрала эту работу после подтверждения повторного использования или сложности сопровождения существующего API Tasks. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Next step: Выбранный объём завершён. Действующие решения A4 зафиксированы в ADR.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Не копировать business rules между сервисом и UI и не менять подсчёт прогресса/blocked ради структуры.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: TeamManager переведён на общий вход Tasks. Два прямых импорта и два исключения удалены.
+- files touched / work locations: apps/web/src/features/tasks/read.ts; apps/web/src/features/team/TeamManager.tsx; tests/web/contracts-boundaries.test.mts; tests/web/fixtures/dashboard-import-baseline.json; tests/web/single-window/func-g01-dashboard-acceptance.mts; ADR; PLAN.md; RUNLOG.md
+- technical value delivered: Шесть именованных функций сохраняют одну реализацию. Тест разрешает публичный вход Dashboard и TeamManager.
+- product value delivered: Профиль, отображение длительности и неизвестной telemetry в Team сохраняются. Сценарии Dashboard проходят.
+- actual implementation date and time: 18-11-2026 18:31
+- verification evidence: Два ожидаемых RED. Web 705/705. Браузер 55/55 до и после. Все четыре файла сборки совпали по SHA-256.
+- residual risks: Девять прежних связей в группе METH-11 получили hold за пределами выбранного объёма. Условия отката в ADR.
+- follow-up: Выбранный объём завершён. Действующие решения A4 зафиксированы в ADR.
 
 ### Task `PAOS-METH-12`
 
@@ -758,15 +824,15 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 
 - Task: PAOS-METH-13
 - Task name: При подтверждённой пользе улучшить границы Tasks и Workflows
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Delivery group: A4
 - Methodologies: FSD, Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested multi-slice methodology/FSD plan; planning only.
+- Plan trigger: Локальная реализация среза Tasks по запросу владельца после проверки Usage и возврата.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 18-11-2026 19:36
 - Depends on: PAOS-METH-18
 - Blocks: Нет.
 - External references: PAOS-FUNC-03, PAOS-FUNC-04, PAOS-FUNC-21
@@ -774,30 +840,30 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 - Short description: Вынести выбранные METH-18 изменения в самостоятельные checkpoints и сохранить semantics редактора и очереди.
 - Technical value: Вынести выбранные METH-18 изменения в самостоятельные checkpoints и сохранить semantics редактора и очереди.
 - Product value: Изолировать два наиболее связанных пользовательских сценария и сохранить незавершённую работу.
-- Scope: `apps/web/src/features/tasks/TaskManager.tsx`; `apps/web/src/features/tasks/Editor.tsx`; `apps/web/src/features/workflows/WorkflowManager.tsx`; `apps/web/src/features/workflows/recipes/`; `apps/web/src/ui/App.tsx`. Будущие work locations, не список изменённых сейчас файлов.
+- Scope: `apps/web/src/features/usage/RunUsage.tsx`; `apps/web/src/features/dashboard/Dashboard.tsx`; `apps/web/src/features/tasks/TaskManager.tsx`; `apps/web/src/features/tasks/labels.ts`; `apps/web/src/features/sessions/SessionsCatalog.tsx`; `apps/web/src/ui/App.tsx`; `apps/web/src/locales/action-error.ts`; `tests/web/contracts-boundaries.test.mts`; `tests/web/fixtures/dashboard-import-baseline.json`; `tests/web/single-window/`.
 - Non-goals: Новые продуктовые функции, provider/credentials, target/Git/publication/production; чужие FUNC/Web статусы; всё вне указанного slice.
-- Expected result: Выбранные Tasks и/или Workflows checkpoints с guards и обновлёнными owner docs при необходимости.
+- Expected result: Выделенный вход RunUsage, сохранение выбранной задачи и черновика, восстановление фокуса, снятие двух исключений.
 - Acceptance criteria: PAOS-METH-13-AC01: METH-18 явно выбрала Tasks и/или Workflows. Каждый экран имеет отдельные source hashes, проверки, visual evidence и обратимые изменения. Если выбраны оба и выявлена зависимость, Tasks идёт первым. PAOS-METH-13-AC02: Сохранены F03 new-task reset, F04 workflow drafts/CAS, dialog focus/8 tabs, preview/confirmation и queue controls; full F21 recovery не объявляется закрытой. PAOS-METH-13-AC03: Migrated consumers не зависят от соседних screen internals; перенесённые edges удалены из baseline exceptions, новые interaction features создаются только при реальной ответственности.
-- Verification gates: V-WEB; профиль выше; текущий маршрут TEST имеет приоритет; запуск при будущей реализации.
-- Risks / approval gates: Shared App/navigation/labels changes последовательны; без новых workflow rules, DB migrations и scope расширения. Текущий запрос разрешает только планирование.
+- Verification gates: V-WEB. Целевые тесты, проверка типов, сборка, полный Web и браузерные проверки Tasks/Usage. [Верификация](#meth-13-results)
+- Risks / approval gates: Локальный срез с синтетическими данными. При переносе UI сохраняются API чтения, области метрик и действующие контракты Tasks.
 - Complexity: L
 - Estimated execution time: Оценить после актуального discovery и выбора bounded slice; календарное обещание не дано.
-- Agents: builder — tasks, затем builder — workflows; sequential; proposed ownership, сейчас delegation=0.
-- Skills: build-web-apps:frontend-testing-debugging; только для будущей UI проверки; архитектурные решения по ADR.
-- Output artifacts: Выбранные Tasks и/или Workflows checkpoints с guards и обновлёнными owner docs при необходимости.
-- Next step: METH-18 выбрала Tasks и/или Workflows после оценки Dashboard. Для каждого выбранного экрана отдельный checkpoint с сохранением draft, CAS, navigation и focus. Сверить выбранный scope и отдельно подтвердить полномочия на реализацию.
+- Agents: Основной агент, владение срезом frontend Usage и Tasks, delegation=0.
+- Skills: documentation-and-adrs; tdd; build-web-apps:frontend-testing-debugging; build-web-apps:react-best-practices. Граница FSD сверена через Context7.
+- Output artifacts: Общий RunUsage, проверенный возврат к задаче, отчёты браузера и двуязычный ADR.
+- Next step: Workflows сохраняет отдельный hold до своего решения с проверками черновиков, CAS, фокуса и очереди.
 
 #### Completion Report
 
-- status: planned
-- what was done: Реализация не начата; сформирована карточка.
-- files touched / work locations: Сейчас implementation files не менялись; будущие locations указаны в Scope.
-- technical value delivered: Не заявлена до реализации.
-- product value delivered: Не заявлена до реализации.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Проверяется только подготовка плана; выполнение AC этой задачи не заявлено.
-- residual risks: Shared App/navigation/labels changes последовательны; без новых workflow rules, DB migrations и scope расширения.
-- follow-up: Выбор следующего разрешённого slice по DAG; автоматический старт запрещён.
+- status: implemented
+- what was done: Перенесены панель Usage и потребители. Tasks возвращает фокус при входе в аналитику и выходе из неё.
+- files touched / work locations: См. Scope и [результаты](#meth-13-results).
+- technical value delivered: Сняты зависимости Tasks и Sessions от Dashboard и два закреплённых исключения. Проверка запрещает обратные импорты.
+- product value delivered: Восстановлен клавиатурный путь, сохранены выбранная задача, вкладка и черновики.
+- actual implementation date and time: 18-11-2026 19:36
+- verification evidence: Полный Web 709/709 без пропусков (`.tmp/meth-13-web-final.log`), целевые 49/49, браузер 212/212. Проверка типов и сборка успешны. [Отчёты](#meth-13-results)
+- residual risks: Приёмка ограничена выбранным срезом Tasks и проверенными потребителями панели. Решения по Workflows и F21 отдельные.
+- follow-up: Рассматривать Workflows только с собственным результатом и проверками по ADR.
 
 ### Task `PAOS-METH-14`
 
@@ -1017,7 +1083,7 @@ Python-проверки маршрутизации, lifecycle, behavioral/transc
 #### Completion Report
 
 - status: implemented
-- what was done: Принято решение сохранить пилот Dashboard и выбрать узкий объём METH-11 для TeamManager. Для METH-10/13/14/15 установлен hold.
+- what was done: Принято решение сохранить пилот Dashboard и выбрать узкий объём METH-11 для TeamManager. Первоначально для METH-10/13/14/15 установлен hold.
 - files touched / work locations: docs/architecture/decisions/adr-dashboard-task-boundary.md; docs/architecture/decisions/adr-dashboard-task-boundary.en.md; PLAN.md; RUNLOG.md; docs/frontend/index*.md; docs/planning/methodology-improvement-2026-11-15.*
 - technical value delivered: Зафиксированы сравнение границ, объём изменения, целевой результат в два исключения и откат.
 - product value delivered: A3 может начинаться с METH-05. При расширении A4 сначала проверяется аналогичный одиночный потребитель.

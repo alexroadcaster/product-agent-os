@@ -1,6 +1,8 @@
 import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {graphCapabilityState} from '../../ui/capability.ts';
-import {NetworkView,MermaidView} from './GraphViews.tsx';
+import {NetworkView} from '../../ui/NetworkView.tsx';
+import {MermaidView} from '../../ui/MermaidView.tsx';
+import {diagramSource} from './diagram-source.ts';
 import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
 import type {GraphNode,GraphPage,GraphStatus,GraphEdgeType} from '../../../../../packages/contracts/graph/code-graph.ts';
@@ -35,7 +37,7 @@ export function GraphExplorer({api,projectId,locale,initialNodeId,onOpenTask,onO
    {page?.path&&<p role="status" data-testid="graph-path-state">{w('Статический путь','Static path')}: {page.path.state} · {page.path.nodeIds.length} · {page.path.reason}</p>}{page&&<p>{page.state} · {w('Узлов на экране','Nodes on screen')}: {primary.length} + {page.contextNodes.length} {w('контекстных','context')}{page.partial?' · '+w('Часть графа; используйте поиск и соседей','Partial graph; use search and neighbors'):''}</p>}
    <div className="task-layout m2-task-layout"><section className="panel" style={{minWidth:0}}>
     {layout==='graph'&&<NetworkView nodes={visible} edges={visibleEdges} selected={selected} onSelect={setSelected} locale={locale}/>}
-    {layout==='mermaid'&&<MermaidView nodes={visible} edges={visibleEdges} locale={locale}/>}
+    {layout==='mermaid'&&<MermaidView source={diagramSource(visible,visibleEdges)} locale={locale}/>}
     <ul hidden={layout!=='list'} className="records" data-testid="graph-node-list">{shown.map(n=><li key={n.id}><button data-graph-node={n.id} aria-current={selected===n.id?'true':undefined} onClick={()=>setSelected(n.id)}><strong>{n.name}</strong><small>{n.kind} · {n.relativePath} · {n.scope} · {n.namespace}</small>{n.reason&&<small>{n.reason}</small>}</button></li>)}</ul>{page&&!shown.length&&<p>{label(locale,'empty')}</p>}{more&&<button data-testid="graph-more" disabled={busy||primary.length>=200} onClick={()=>void load(page!.revision,true)}>{w('Следующие узлы','More nodes')}</button>}{primary.length>=200&&more&&<p>{w('Лимит списка200. Уточните поиск или выберите соседей.','List limit200. Refine search or select neighbors.')}</p>}
    </section><aside className="panel" data-testid="graph-inspector" style={{minWidth:0}}>{node?<><h3>{node.name}</h3><p>{node.kind} · {node.relativePath} · {node.scope} · {node.namespace}</p>{node.anchor&&<p>{w('Определение','Definition')}: {node.anchor.line}:{node.anchor.column} · UTF-16 [{node.anchor.start},{node.anchor.end})</p>}<button disabled={busy||node.kind==='unresolved'||page?.state==='stale'} onClick={()=>void openSource()}>{w('Открыть исходник','Open source')}</button>{onOpenFile&&<button disabled={page?.state==='stale'} onClick={()=>onOpenFile(node.relativePath,node.anchor?.line??1)}>{w('Открыть в файлах','Open in Files')}</button>}<button disabled={busy} onClick={()=>{setNeighborhood(true);setQuery('');void load(page!.revision,false,node.id,'');}}>{w('Раскрыть соседей','Expand neighbors')}</button>
     {source&&<section data-testid="graph-source"><p>{source.relativePath} · {source.sha256} · [{source.start},{source.end})</p><pre className="diff">{source.content}</pre>{source.redacted&&<p>{w('Чувствительный source скрыт','Sensitive source redacted')}</p>}</section>}

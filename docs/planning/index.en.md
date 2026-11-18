@@ -9,7 +9,7 @@ The Russian catalog lists all 42 relocated files and the new 16-task documentati
 
 ## Current methodology directions
 
-- [A — Product-Agent OS internal quality](methodology-improvement-2026-11-15.en.md). Twelve A1–A3 tasks implemented. Of the five A4 cards, only the bounded METH-11 scope was selected. Legacy METH-16 remains a reference. [JSON v2](methodology-improvement-2026-11-15.en.json)
+- [A — Product-Agent OS internal quality](methodology-improvement-2026-11-15.en.md). Fifteen tasks implemented, including METH-10, METH-11 and the Tasks slice of METH-13. METH-14 and METH-15 remain on `hold`. Legacy METH-16 remains a reference. [JSON v2](methodology-improvement-2026-11-15.en.json)
 - [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md): 26 planned tasks, [JSON](user-project-methodologies-2026-11-15.json), [Russian](user-project-methodologies-2026-11-15.md). Independent directions; planning starts no implementation.
 
 ## Working plans translated in DG01

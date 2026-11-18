@@ -2,7 +2,7 @@ import {CapabilityNotice} from '../../ui/CapabilityNotice.tsx';
 import {databaseCapabilityState} from '../../ui/capability.ts';
 import {useEffect,useRef,useState} from 'react';
 import {HttpApiError,type M1Api} from '../../api/client.ts';
-import {MermaidView} from '../graph/GraphViews.tsx';
+import {MermaidView} from '../../ui/MermaidView.tsx';
 import type {DatabaseMapStatus,DatabaseMapPage,DatabaseSchemaChanges} from '../../../../../packages/contracts/database-map.ts';
 import './database.css';
 

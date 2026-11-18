@@ -1,8 +1,19 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHttpApi} from '../../apps/web/src/api/client.ts';
-import {draftTask,selectTasks,defaultView,durationText,readView,safeExternalUrl,hierarchyStats} from '../../apps/web/src/features/tasks/model.ts';
+import {draftTask,selectTasks,defaultView,durationText,readView,hierarchyStats} from '../../apps/web/src/features/tasks/model.ts';
+import {safeExternalUrl} from '../../apps/web/src/ui/external-url.ts';
+import {errorText} from '../../apps/web/src/features/tasks/labels.ts';
+import {actionErrorText} from '../../apps/web/src/locales/action-error.ts';
 import {isExecutionTarget} from '../../apps/web/src/api/session-target.ts';
+
+test('usage read errors retain the localized fallback while Tasks retains its own revision hint',()=>{
+  const usageError=Object.assign(new Error('Invalid metrics period'),{code:'INVALID_PERIOD'});
+  assert.equal(actionErrorText('ru',usageError),'Действие не выполнено: Error: Invalid metrics period (INVALID_PERIOD)');
+  assert.equal(actionErrorText('en',usageError),errorText('en',usageError));
+  assert.equal(errorText('en',new Error('REVISION_CONFLICT')),
+    'Action failed: Data changed. Refresh, compare and retry; your draft is retained. (REVISION_CONFLICT)');
+});
 
 test('Task Manager commands share paired CSRF and authority without exposing data in URLs',async()=>{
   const calls:{url:string;options?:RequestInit}[]=[];

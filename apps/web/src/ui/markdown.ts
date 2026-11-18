@@ -1,4 +1,4 @@
-import {safeExternalUrl} from './model.ts';
+import {safeExternalUrl} from './external-url.ts';
 
 export type Inline = {kind:'text'|'strong'|'em'|'code';text:string}|{kind:'link';text:string;href:string};
 export type Block = {kind:'paragraph'|'heading'|'code';text:string}|{kind:'list';items:string[]};

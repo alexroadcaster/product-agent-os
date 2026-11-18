@@ -1,0 +1,23 @@
+import {useEffect,useId,useRef,useState} from 'react';
+import mermaidUrl from '@mermaid-js/tiny/dist/mermaid.tiny.js?url';
+
+type Mermaid={initialize:(config:Record<string,unknown>)=>void;render:(id:string,source:string)=>Promise<{svg:string}>};
+declare global {interface Window {mermaid:Mermaid}}
+let loading:Promise<Mermaid>|undefined;
+/** A local, pinned script is loaded only on demand; no CDN or graph data leaves the process. */
+function loadMermaid(){return loading??=(new Promise<Mermaid>((resolve,reject)=>{const script=document.createElement('script');script.src=mermaidUrl;script.onload=()=>resolve(window.mermaid);script.onerror=()=>{script.remove();loading=undefined;reject(new Error('MERMAID_LOAD_FAILED'));};document.head.append(script);}));}
+let rendering=Promise.resolve();
+export function MermaidView({source,locale,initialFit=false,selectableEntities,onSelectEntity}:{initialFit?:boolean;source:string;locale:'ru'|'en';selectableEntities?:Array<{id:string;name:string}>;onSelectEntity?:(name:string)=>void}){
+ const [scale,setScale]=useState(1),[size,setSize]=useState({width:720,height:440});
+ const id=useId().replace(/[^a-zA-Z0-9]/g,''),host=useRef<HTMLDivElement>(null),[error,setError]=useState(''),[busy,setBusy]=useState(true),[theme,setTheme]=useState(document.documentElement.dataset.theme);
+ useEffect(()=>{const observer=new MutationObserver(()=>setTheme(document.documentElement.dataset.theme));observer.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});return()=>observer.disconnect();},[]);
+ useEffect(()=>{let ignore=false;setBusy(true);setError('');host.current?.replaceChildren();rendering=rendering.catch(()=>{}).then(async()=>{if(ignore)return;try{const mermaid=await loadMermaid();if(ignore)return;mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:theme==='dark'?'dark':'default',flowchart:{htmlLabels:false},fontFamily:'Segoe UI, sans-serif'});const result=await mermaid.render('paos'+id,source);if(!ignore&&host.current){host.current.innerHTML=result.svg;setBusy(false);}}catch(e){if(!ignore){setError(String(e));setBusy(false);}}});return()=>{ignore=true;};},[source,theme,id]);
+ useEffect(()=>{if(busy)return;const svg=host.current?.querySelector('svg'),box=svg?.viewBox.baseVal;if(box?.width&&box.height){setSize({width:box.width,height:box.height});setScale(initialFit?Math.min(1,(host.current!.clientWidth-24)/box.width,480/box.height):Math.min(1,Math.max(.75,(host.current!.clientWidth-24)/box.width)));}},[busy,initialFit]);
+ useEffect(()=>{const svg=host.current?.querySelector('svg');if(svg){svg.style.width=`${size.width*scale}px`;svg.style.height=`${size.height*scale}px`;svg.style.maxWidth='none';svg.style.maxHeight='none';svg.style.minHeight='0';}},[size,scale]);
+ useEffect(()=>{if(busy||!onSelectEntity||!selectableEntities)return;const cleanup:Array<()=>void>=[];
+  for(const entity of selectableEntities){const group=Array.from(host.current?.querySelectorAll<SVGGElement>('g[id]')??[]).find(g=>g.id.includes(entity.id));if(!group)continue;group.setAttribute('role','button');group.setAttribute('tabindex','0');group.setAttribute('aria-label',entity.name);group.dataset.entityName=entity.name;
+   const click=()=>onSelectEntity(entity.name),key=(event:KeyboardEvent)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();click();}};group.addEventListener('click',click);group.addEventListener('keydown',key);cleanup.push(()=>{group.removeEventListener('click',click);group.removeEventListener('keydown',key);});}
+  return()=>cleanup.forEach(fn=>fn());
+ },[busy,selectableEntities,onSelectEntity]);
+ return <><div className="m2-actions mermaid-toolbar"><button disabled={busy} aria-label={locale==='ru'?'Уменьшить схему':'Zoom diagram out'} onClick={()=>setScale(n=>Math.max(.1,n/1.25))}>−</button><span>{Math.round(scale*100)}%</span><button disabled={busy} aria-label={locale==='ru'?'Увеличить схему':'Zoom diagram in'} onClick={()=>setScale(n=>Math.min(3,n*1.25))}>+</button><button disabled={busy} onClick={()=>setScale(Math.min((host.current?.clientWidth??720)/size.width,480/size.height))}>{locale==='ru'?'Вписать схему':'Fit diagram'}</button><button disabled={busy} onClick={()=>setScale(1)}>100%</button></div><div className="ui-mermaid" data-renderer="mermaid" aria-busy={busy} tabIndex={0} aria-label={locale==='ru'?'Схема с прокруткой':'Scrollable diagram'}>{busy&&<p role="status">{locale==='ru'?'Строим схему…':'Rendering diagram…'}</p>}{error&&<p role="alert">{error}</p>}<div ref={host}/></div><details><summary>{locale==='ru'?'Исходник Mermaid':'Mermaid source'}</summary><pre className="diff">{source}</pre></details></>;
+}

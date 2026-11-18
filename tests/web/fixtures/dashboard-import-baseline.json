@@ -3,22 +3,8 @@
   "groups": [
     {
       "owner": "Tasks frontend maintainers",
-      "removal_task": "PAOS-METH-13",
-      "edges": [
-        "features/tasks/TaskManager.tsx -> features/dashboard/Dashboard.tsx [upward import]"
-      ]
-    },
-    {
-      "owner": "Tasks and shared UI maintainers",
-      "removal_task": "PAOS-METH-10",
-      "edges": [
-        "features/artifacts/ArtifactExplorer.tsx -> features/tasks/CommentMarkdown.tsx [non-public consumer]",
-        "features/sessions/SessionsCatalog.tsx -> features/tasks/CommentMarkdown.tsx [non-public consumer]"
-      ]
-    },
-    {
-      "owner": "Tasks frontend maintainers",
       "removal_task": "PAOS-METH-11",
+      "status": "hold",
       "edges": [
         "features/artifacts/ArtifactExplorer.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/artifacts/DocumentApply.tsx -> features/tasks/labels.ts [non-public consumer]",
@@ -26,18 +12,9 @@
         "features/graph/GraphExplorer.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/sessions/SessionsCatalog.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/skills/SkillGenerator.tsx -> features/tasks/labels.ts [non-public consumer]",
-        "features/team/TeamManager.tsx -> features/tasks/labels.ts [non-public consumer]",
-        "features/team/TeamManager.tsx -> features/tasks/model.ts [non-public consumer]",
         "features/workflows/WorkflowManager.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/workflows/recipes/QueueManager.tsx -> features/tasks/labels.ts [non-public consumer]",
         "features/workflows/recipes/RecipeRunner.tsx -> features/tasks/labels.ts [non-public consumer]"
-      ]
-    },
-    {
-      "owner": "Dashboard and Sessions frontend maintainers",
-      "removal_task": "PAOS-METH-15",
-      "edges": [
-        "features/sessions/SessionsCatalog.tsx -> features/dashboard/Dashboard.tsx [non-public consumer]"
       ]
     },
     {
