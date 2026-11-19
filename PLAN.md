@@ -30,7 +30,7 @@ F30/F31/F32 implemented / poc_research_locally_verified,3/3; [решения и 
 
 Выполнены все 17 исполняемых задач A в выбранном объёме. METH-15 закрыла четыре границы Sessions, Artifacts, Graph и App. Workflows, Skills, кандидат handoff и пять прежних исключений сохраняют отдельные решения `hold`. METH-16 ссылается на B. [Результаты A4](docs/planning/methodology-improvement-2026-11-15.md#a4-results) · [Решения A4](docs/architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout) · [JSON A](docs/planning/methodology-improvement-2026-11-15.json)
 
-В плане B выполнены 26 из 26 задач в локальном объёме. PMETH-23 закрыта после расширенной синтетической приёмки B3/B4 и повторов `create` и `modify`. Следующий этап оценки пользы — PMETH-24. Для поставки действует утверждённый владельцем `hold`. [План B](docs/planning/user-project-methodologies-2026-11-15.md) · [Приёмка B3/B4](docs/superpowers/specs/paos-pmeth-23-expanded-evidence.md#create-recovery-closure) · [Решение о поставке](docs/superpowers/specs/paos-pmeth-b2-evidence.md#rollout-decision)
+В плане B выполнены 26 из 26 задач в локальном объёме. PMETH-23 закрыта после расширенной синтетической приёмки B3/B4 и повторов `create` и `modify`. PMETH-24 завершила измерение на четырёх синтетических парах, широкая польза остаётся `insufficient_evidence`. Следующее решение о поставке относится к PMETH-25. Действует утверждённый владельцем `hold`. [План B](docs/planning/user-project-methodologies-2026-11-15.md) · [Приёмка B3/B4](docs/superpowers/specs/paos-pmeth-23-expanded-evidence.md#create-recovery-closure) · [Оценка пользы](docs/superpowers/specs/paos-pmeth-24-paired-evidence.md) · [Решение о поставке](docs/superpowers/specs/paos-pmeth-b2-evidence.md#rollout-decision)
 
 ## FUNC-G01 — закрыта, 15.11.2026
 

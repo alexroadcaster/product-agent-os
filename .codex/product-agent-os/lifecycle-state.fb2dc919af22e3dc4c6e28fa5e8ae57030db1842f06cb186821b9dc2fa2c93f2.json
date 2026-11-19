@@ -1,17 +1,17 @@
 {
   "session_id": "01a1f328-4111-7ae3-8471-529a465b0323",
-  "task_id": "PAOS-PMETH-23 recipe create recovery closure",
-  "previous_task_id": "PAOS-PMETH-23 B3 B4 profile qualification",
+  "task_id": "PAOS-PMETH-24 paired Codex usefulness evaluation",
+  "previous_task_id": "PAOS-PMETH-23 recipe create recovery closure",
   "plan_path": "docs/planning/user-project-methodologies-2026-11-15.md",
-  "scope": "Fix verified recipe create continuation, preserve file identity and no replay, requalify the current runtime and update PMETH-23.",
-  "approval_boundary": "Local source and regression edits, disposable synthetic projects and natively qualified checks; release hold applies.",
+  "scope": "Preregister and run eight paired synthetic Codex CLI trials, record quality, timing, usage and limits.",
+  "approval_boundary": "User-requested bounded Codex trials through existing ChatGPT sign-in, synthetic content only, no real projects or release changes.",
   "lifecycle_scope": {
-    "work_type": "fix", "size": "large", "risk": "high", "financially_material": false, "release_or_readiness": true, "explicit_packet_request": false, "reason": "The fix changes native recipe file admission and recovery evidence."
+    "work_type": "implementation", "size": "large", "risk": "high", "financially_material": false, "release_or_readiness": true, "explicit_packet_request": false, "reason": "The comparative evaluation produces evidence for a future owner rollout decision and uses bounded provider access."
   },
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
-  "updated_at": "2026-11-19T14:55:54+03:00",
-  "brief_digest": "sha256:9c2a838be580cf60f5fc23ce2ae592b84a072e2d201ba6ddfcaddcad5270ba19",
+  "updated_at": "2026-11-19T15:20:32+03:00",
+  "brief_digest": "sha256:22b39832f4e0403464b3bd2ee41927f4d24456db2e05cd5f60104c7383c560fa",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],

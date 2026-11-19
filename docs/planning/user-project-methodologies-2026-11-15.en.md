@@ -1437,14 +1437,14 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 #### Completion Report
 
 - status: implemented
-- what was done: Ran four owner-authorized Codex trials. All found the correct first step. Evidence is insufficient to establish usefulness or speedup.
-- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
-- technical value delivered: Verified in the approved B2 scope.
-- product value delivered: A recorded outcome for the owner’s rollout decision.
+- what was done: Ran four matched Codex pairs on synthetic cases. Each arm had 4/4 correct first checks and verified outcomes.
+- files touched / work locations: [PMETH-24 paired evaluation](../superpowers/specs/paos-pmeth-24-paired-evidence.en.md).
+- technical value delivered: Preregistered cases, thresholds, time and token usage. A local verifier performed the checks Codex selected.
+- product value delivered: One backend bug pair exceeded the timing threshold, with `insufficient_evidence` for the profile. The two docs-only cases returned `no_benefit`.
 - actual implementation date and time: 19-11-2026 11:10
-- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
-- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
-- follow-up: PAOS-PMETH-25.
+- verification evidence: [Receipts for both series](../superpowers/specs/paos-pmeth-24-paired-receipts.json) · [Historical B2 pilot](../superpowers/specs/paos-pmeth-b2-evidence.en.md#usefulness-pilot).
+- residual risks: Broad usefulness remains `insufficient_evidence`. Autonomous tool use, currency cost and real projects were outside the measurement. Delivery remains on `hold`.
+- follow-up: PAOS-PMETH-25, owner decision about delivery.
 
 ### Task `PAOS-PMETH-25`
 

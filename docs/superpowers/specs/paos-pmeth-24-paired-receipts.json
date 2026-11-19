@@ -1,0 +1,881 @@
+{
+  "schema_version": 1,
+  "source_status": "local protocol and sanitized Codex CLI telemetry",
+  "records": {
+    "initial_protocol": {
+      "sha256": "8986ecae1a4d3eae4c5109ced08fc8b4e66f9966ac3e70d07f4d083204ad9c8c",
+      "record": {
+        "registered_utc": "2026-11-19T12:07:38.260169+00:00",
+        "approval": "current owner request for eight matched synthetic Codex trials",
+        "base_git_revision": "2939c996786b74041d23b020e1160e3ae11dca49",
+        "harness_sha256": "580d32e6076bf7897c22b3d31cdd96e23228290a27a9a057a4fa753b287ee236",
+        "codex_binary_sha256": "8d06dc231dba649c7d48d3eecab239c452a1ac498c41dd6492a6f301b90a22ce",
+        "schema_sha256": "8fa99c654310c993535c240928ea6f139b6412f37fbd51c1e58e68c942f46a29",
+        "model": "gpt-6.1-sol",
+        "reasoning": "medium",
+        "timeout_s": 120,
+        "order": [
+          [
+            "counter-bug",
+            "baseline"
+          ],
+          [
+            "counter-docs",
+            "advised"
+          ],
+          [
+            "bound-bug",
+            "advised"
+          ],
+          [
+            "cache-docs",
+            "baseline"
+          ],
+          [
+            "cache-docs",
+            "advised"
+          ],
+          [
+            "bound-bug",
+            "baseline"
+          ],
+          [
+            "counter-docs",
+            "baseline"
+          ],
+          [
+            "counter-bug",
+            "advised"
+          ]
+        ],
+        "identity": "fresh ephemeral CLI processes; same immutable fixture cwd within each pair",
+        "treatment": "append actual Product-Agent OS advice projection to identical prompt, no other input change",
+        "base_prompt_sha256": "bcefc263a1ef484aab05cdc4e7d7e86706228609b711880744335113a8b757ff",
+        "scope": "ChatGPT signed-in CLI; standard speed; four synthetic workspaces; bounded local read/test MCP only",
+        "metrics": {
+          "quality": "exact oracle result, grounded in actual named RED or both docs+source reads",
+          "first_choice": "first executed regression; docs first implementation read other than docs/support",
+          "time": "perf_counter_ns from process launch to decisive MCP call; total to child exit",
+          "effort": "all tool calls, duplicate or non-useful calls counted as extras, tool denials explicit",
+          "usage": "turn.completed usage input, cached input, output, reasoning if emitted; actual money unavailable unless reported",
+          "not_measured": [
+            "repair",
+            "reopens",
+            "post-fix defects",
+            "real-world owner acceptance",
+            "billable currency"
+          ]
+        },
+        "decision": {
+          "eligibility": "two complete attributable pairs per type; preserved fixture bytes; no policy violation",
+          "benefit": "both pairs retain or improve quality and each strictly improves quality, saves >=1 extra action or saves >=20% to decisive check",
+          "no_benefit": "both pairs complete, neither shows qualifying improvement; applies only to this fixture set",
+          "otherwise": "insufficient_evidence; report time/token tradeoffs independently of quality",
+          "sensitivity": "include measured local CLI advice generation latency in candidate end-to-end time as a separate comparison",
+          "stop": "stop on provider or instrumentation failure preventing comparable initial trial; retain attempted row; no silent retries"
+        },
+        "settings": [
+          "model_provider=\"openai\"",
+          "model_reasoning_effort=\"medium\"",
+          "approval_policy=\"never\"",
+          "web_search=\"disabled\"",
+          "features.shell_tool=false",
+          "features.apps=false",
+          "features.plugins=false",
+          "features.goals=false",
+          "features.memories=false",
+          "features.code_mode=false",
+          "features.computer_use=false",
+          "features.browser_use=false",
+          "features.browser_use_external=false",
+          "allow_browser_and_computer_use=false",
+          "agents.enabled=false",
+          "project_doc_max_bytes=0",
+          "skills.include_instructions=false",
+          "memories.use_memories=false",
+          "memories.generate_memories=false",
+          "tools.update_plan.enabled=false"
+        ],
+        "scenarios": {
+          "counter-bug": {
+            "profile": "backend_bug",
+            "file_hashes": {
+              "AGENTS.md": "ea19c3349f8557771ca3780d214bfc264c24e7ba67aaf1bb35bbcb529e9aa777",
+              "counter.py": "f43bc7753958834e4a408e81529998b2e9e67f392e6878dee844f8ab990b121e",
+              "guide.md": "2d052986426172800183ab03382848e37cf37d6e263adb1c85599288fa6f26c0",
+              "preview.py": "0f4c186059662b0fa1aff3d75b5e7e9d7a601e5d712936c25a9dd3172ee41be0",
+              "pyproject.toml": "af69f09da26d222ea622d67aba1485b1cdac767a5d35834bea355727fd7af5a2",
+              "task.json": "c94e1388a8f240dc0be7575694b8ddb0b15a595da5d38fdfc4620fd70143bc4e",
+              "TEST.md": "ea96a82f2688081ea7b0712d01abf98606edcbe47a3897a31389629868e26e89",
+              "test_counter.py": "b57a0606ab4844c79de5a236e25783d5fa2a6bbc9b74c2f22e27ba2e2573f6a6"
+            },
+            "question": "Investigate the report that increment(3) does not return 4.",
+            "oracle": {
+              "verification": "run_named_test",
+              "target": "python -B -m unittest test_counter.CounterTest.test_increment_by_one",
+              "actual": 5,
+              "expected": 4,
+              "finding": "regression_failure"
+            },
+            "useful_reads": [
+              "counter.py",
+              "test_counter.py",
+              "TEST.md"
+            ],
+            "advice": {
+              "kind": "run_regression",
+              "target": "python -B -m unittest test_counter.CounterTest.test_increment_by_one"
+            },
+            "local_advice_precompute_ns": 304631500
+          },
+          "bound-bug": {
+            "profile": "backend_bug",
+            "file_hashes": {
+              "AGENTS.md": "ea19c3349f8557771ca3780d214bfc264c24e7ba67aaf1bb35bbcb529e9aa777",
+              "bounds.py": "8d21ec0d44da7f855ebf2ffa9396b34432c2fc07059a9097c84326954d4633b9",
+              "pyproject.toml": "af69f09da26d222ea622d67aba1485b1cdac767a5d35834bea355727fd7af5a2",
+              "README.md": "35b1f80600bc9a5aa15909f3c041747f9818d14bafb08b2c9a227cc5f11627e0",
+              "task.json": "3d0566ee0c4c7283ff2418930a824846c49d01e829658b39e291a202e0c09ebe",
+              "TEST.md": "04da3184adde6911cb9a849254aa8afbe3e5d08e0f7d408dbebf6fdd70c746c5",
+              "test_bounds.py": "bd18acb3c7643abe1507753dfac2ee8344bd9f1885b9625ab1c8d08a756134e8"
+            },
+            "question": "Investigate the report that minimum_limit(-5) is below the documented lower bound of 3.",
+            "oracle": {
+              "verification": "run_named_test",
+              "target": "python -B -m unittest test_bounds.BoundsTest.test_minimum_is_three",
+              "actual": 2,
+              "expected": 3,
+              "finding": "regression_failure"
+            },
+            "useful_reads": [
+              "bounds.py",
+              "test_bounds.py",
+              "TEST.md"
+            ],
+            "advice": {
+              "kind": "run_regression",
+              "target": "python -B -m unittest test_bounds.BoundsTest.test_minimum_is_three"
+            },
+            "local_advice_precompute_ns": 298809900
+          },
+          "counter-docs": {
+            "profile": "docs_only",
+            "file_hashes": {
+              "AGENTS.md": "ea19c3349f8557771ca3780d214bfc264c24e7ba67aaf1bb35bbcb529e9aa777",
+              "counter.py": "f43bc7753958834e4a408e81529998b2e9e67f392e6878dee844f8ab990b121e",
+              "guide.md": "2d052986426172800183ab03382848e37cf37d6e263adb1c85599288fa6f26c0",
+              "preview.py": "0f4c186059662b0fa1aff3d75b5e7e9d7a601e5d712936c25a9dd3172ee41be0",
+              "pyproject.toml": "af69f09da26d222ea622d67aba1485b1cdac767a5d35834bea355727fd7af5a2",
+              "task.json": "b26e7da6e5e91f076f34c645d2b32455b5db453023c8a34f712e34a95aa0a99d",
+              "TEST.md": "ea96a82f2688081ea7b0712d01abf98606edcbe47a3897a31389629868e26e89",
+              "test_counter.py": "b57a0606ab4844c79de5a236e25783d5fa2a6bbc9b74c2f22e27ba2e2573f6a6"
+            },
+            "question": "Verify the increment(3) example in guide.md against the current public implementation.",
+            "oracle": {
+              "verification": "compare_source",
+              "target": "counter.py",
+              "actual": 5,
+              "expected": 4,
+              "finding": "documentation_mismatch"
+            },
+            "useful_reads": [
+              "guide.md",
+              "counter.py"
+            ],
+            "advice": {
+              "kind": "check_source",
+              "target": "counter.py"
+            },
+            "local_advice_precompute_ns": 302632300
+          },
+          "cache-docs": {
+            "profile": "docs_only",
+            "file_hashes": {
+              "AGENTS.md": "ea19c3349f8557771ca3780d214bfc264c24e7ba67aaf1bb35bbcb529e9aa777",
+              "cache.py": "f4613f37ea1a52c8ae03e0846ab354072e207ac33345ccee46a28608ef9f211b",
+              "legacy_example.py": "29dd886a2ed463b1c3f467ca11a56bc10255783eca14d479f37a015314c4ba04",
+              "manual.md": "9266b9f871a7df1e3431c46180f244ccdd6b225542cb0b0cf8689ac516b64053",
+              "pyproject.toml": "af69f09da26d222ea622d67aba1485b1cdac767a5d35834bea355727fd7af5a2",
+              "README.md": "9cdc592a64d0104c6c982d626b29eb75520694fdb3c8116005823445ffcec0cb",
+              "task.json": "9afaa5bfcda698d7d100a0d9dfc744afdf63f7be824865cae247a2b18fedd8e8"
+            },
+            "question": "Verify the default cache lifetime in manual.md against the current implementation.",
+            "oracle": {
+              "verification": "compare_source",
+              "target": "cache.py",
+              "actual": 45,
+              "expected": 60,
+              "finding": "documentation_mismatch"
+            },
+            "useful_reads": [
+              "manual.md",
+              "cache.py"
+            ],
+            "advice": {
+              "kind": "check_source",
+              "target": "cache.py"
+            },
+            "local_advice_precompute_ns": 299770000
+          }
+        }
+      }
+    },
+    "excluded_initial_receipt": {
+      "sha256": "c6c15affb655a91f1c2ba0d8ea871c24de926f37b96f2d41c9107f996214ec18",
+      "record": {
+        "preregistered_sha256": "8986ecae1a4d3eae4c5109ced08fc8b4e66f9966ac3e70d07f4d083204ad9c8c",
+        "rows": [
+          {
+            "id": "counter-bug-baseline",
+            "case": "counter-bug",
+            "profile": "backend_bug",
+            "arm": "baseline",
+            "elapsed_ms": 15734.906,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34625,
+              "cached_input_tokens": 22784,
+              "output_tokens": 167,
+              "reasoning_output_tokens": 32
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "1f307e7dbb0c3a46dde03eb27178d1f9a60e2e53c4458a72f28c5ff96debf89e",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "counter-docs-advised",
+            "case": "counter-docs",
+            "profile": "docs_only",
+            "arm": "advised",
+            "elapsed_ms": 12784.923,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34595,
+              "cached_input_tokens": 22656,
+              "output_tokens": 177,
+              "reasoning_output_tokens": 17
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "61eeafb9224c3863fe62462c50bb737b500a90d3f4f7df053534659df91d1806",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "bound-bug-advised",
+            "case": "bound-bug",
+            "profile": "backend_bug",
+            "arm": "advised",
+            "elapsed_ms": 15898.227,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34808,
+              "cached_input_tokens": 22784,
+              "output_tokens": 240,
+              "reasoning_output_tokens": 107
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "a8e04d0cd7d49dd7b0b436813e79c48e48f337f1569bd1f1b89c885ee800a55e",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "cache-docs-baseline",
+            "case": "cache-docs",
+            "profile": "docs_only",
+            "arm": "baseline",
+            "elapsed_ms": 13223.101,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34524,
+              "cached_input_tokens": 11136,
+              "output_tokens": 163,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "7ea5b48b33e2184cd941915cfe3057f92fa0d7c827f4db9ed7ab90a6c5b5642c",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "cache-docs-advised",
+            "case": "cache-docs",
+            "profile": "docs_only",
+            "arm": "advised",
+            "elapsed_ms": 11581.035,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34504,
+              "cached_input_tokens": 22528,
+              "output_tokens": 126,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "0778ccfe72943247913e0643d09f09116def7506b13c2ecdc4f02de3ba1b442d",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "bound-bug-baseline",
+            "case": "bound-bug",
+            "profile": "backend_bug",
+            "arm": "baseline",
+            "elapsed_ms": 14982.491,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 46529,
+              "cached_input_tokens": 34432,
+              "output_tokens": 204,
+              "reasoning_output_tokens": 15
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "7b4558944ae202edd28b863cf4498025665424e430bf44149922f9e5f6113add",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "counter-docs-baseline",
+            "case": "counter-docs",
+            "profile": "docs_only",
+            "arm": "baseline",
+            "elapsed_ms": 12699.799,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34502,
+              "cached_input_tokens": 22528,
+              "output_tokens": 155,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "52ab9df4a98affff8ceef1695417f5346ebf8e36c4c30302a2fbd0112c1b969c",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          },
+          {
+            "id": "counter-bug-advised",
+            "case": "counter-bug",
+            "profile": "backend_bug",
+            "arm": "advised",
+            "elapsed_ms": 11727.098,
+            "to_decisive_check_ms": null,
+            "first_choice_correct": false,
+            "grounded_outcome_correct": false,
+            "oracle_matched": null,
+            "tool_calls": 0,
+            "extra_actions": 0,
+            "denied_actions": 0,
+            "calls": [],
+            "usage": {
+              "input_tokens": 34758,
+              "cached_input_tokens": 22784,
+              "output_tokens": 150,
+              "reasoning_output_tokens": 23
+            },
+            "money": null,
+            "fixture_preserved": true,
+            "unexpected_items": [],
+            "unexpected_mcp_server": false,
+            "mcp_started": true,
+            "exit": 0,
+            "timeout": false,
+            "malformed_jsonl": 0,
+            "turn_completed": 1,
+            "diagnostic_categories": [],
+            "stdout_sha256": "f0ad7ee554e3ee8360d517c3609219500302faf921e8d5ee16b0ca7fc086481a",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "valid": true
+          }
+        ],
+        "complete": true,
+        "temporary_workspaces_cleaned": true
+      }
+    },
+    "amended_protocol": {
+      "sha256": "3716c6adb2ba3801278ac8a7c1d24c4bd8d9100545bb81b87ad77ea22f907a68",
+      "record": {
+        "registered_utc": "2026-11-19T12:15:55.407444+00:00",
+        "supersedes": "8986ecae1a4d3eae4c5109ced08fc8b4e66f9966ac3e70d07f4d083204ad9c8c",
+        "excluded_receipt_sha256": "c6c15affb655a91f1c2ba0d8ea871c24de926f37b96f2d41c9107f996214ec18",
+        "harness_sha256": "8197c5bf2636df797b4398e96ec946046d078dba8fa79019cf9c68b81a521947",
+        "original_harness_sha256": "580d32e6076bf7897c22b3d31cdd96e23228290a27a9a057a4fa753b287ee236",
+        "reason": "Initial MCP catalog was absent from model request despite handshake and tools/list.",
+        "settings": [
+          "model_provider=\"openai\"",
+          "model_reasoning_effort=\"medium\"",
+          "approval_policy=\"never\"",
+          "web_search=\"disabled\"",
+          "features.shell_tool=false",
+          "features.apps=false",
+          "features.plugins=false",
+          "features.goals=false",
+          "features.memories=false",
+          "features.code_mode=false",
+          "features.computer_use=false",
+          "features.browser_use=false",
+          "features.browser_use_external=false",
+          "agents.enabled=false",
+          "project_doc_max_bytes=0",
+          "skills.include_instructions=false",
+          "memories.use_memories=false",
+          "memories.generate_memories=false",
+          "tools.update_plan.enabled=false"
+        ],
+        "model": "gpt-6.1-sol",
+        "reasoning": "medium",
+        "order": [
+          [
+            "counter-bug",
+            "baseline"
+          ],
+          [
+            "counter-docs",
+            "advised"
+          ],
+          [
+            "bound-bug",
+            "advised"
+          ],
+          [
+            "cache-docs",
+            "baseline"
+          ],
+          [
+            "cache-docs",
+            "advised"
+          ],
+          [
+            "bound-bug",
+            "baseline"
+          ],
+          [
+            "counter-docs",
+            "baseline"
+          ],
+          [
+            "counter-bug",
+            "advised"
+          ]
+        ],
+        "prompts": {
+          "counter-bug": {
+            "baseline": "0fc2bf55528b1a437822e828fda5253b8432585e36f31c2f2db4750f8b5bcc1b",
+            "advised": "b2a5c962ab2c7be5fbda75b0b438498e54678093ca1e3bef520d4f1afdfc3349"
+          },
+          "bound-bug": {
+            "baseline": "b7dee46f820e3449ad964b32de093f1c3984ce821edd93ebd81ba391f55ac1dc",
+            "advised": "1c1d59b2f78d5b8f48cf36adcd1453263bf5e0e590e296948d39f59d2797809c"
+          },
+          "counter-docs": {
+            "baseline": "99b91fca64c43a53505a5a9f5a56cea7ce4dd1451b22519037bb7200ebd97ef8",
+            "advised": "a74e943269a4b0b5d88ecee5d29b2b7336725a9f2e778fa187827c568ce9d82a"
+          },
+          "cache-docs": {
+            "baseline": "27825b3b09d2c9e174cd83814f93d8f7092ca659f9936a44d0dfde446266b45b",
+            "advised": "2c5e7788daea81c92382bf2c4bc4efc99d8dfad7dec5379134849ec74c5b462b"
+          }
+        },
+        "quality": "exact target selected and exact answer, supported by local execution of that selection",
+        "decisive_time": "from process launch through independently verifying selected first check, present for original target only",
+        "effort": "count only selected extra or incorrect actions; iterative autonomous tool effort unavailable under output schema",
+        "decision": {
+          "eligibility": "two complete attributable pairs per type; preserved fixture bytes; no policy violation",
+          "benefit": "both pairs retain or improve quality and each strictly improves quality, saves >=1 extra action or saves >=20% to decisive check",
+          "no_benefit": "both pairs complete, neither shows qualifying improvement; applies only to this fixture set",
+          "otherwise": "insufficient_evidence; report time/token tradeoffs independently of quality",
+          "sensitivity": "include measured local CLI advice generation latency in candidate end-to-end time as a separate comparison",
+          "stop": "stop on provider or instrumentation failure preventing comparable initial trial; retain attempted row; no silent retries"
+        }
+      }
+    },
+    "scored_receipt": {
+      "sha256": "312a329bb842f2f54203ab97b788adbf4f22e91315760256489f3f2c9e6927e2",
+      "record": {
+        "protocol": "3716c6adb2ba3801278ac8a7c1d24c4bd8d9100545bb81b87ad77ea22f907a68",
+        "rows": [
+          {
+            "case": "counter-bug",
+            "profile": "backend_bug",
+            "arm": "baseline",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6314.947,
+            "cli_elapsed_ms": 6144.097,
+            "elapsed_ms": 6314.947,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "exit": 1,
+              "assertion": [
+                5,
+                4
+              ]
+            },
+            "usage": {
+              "input_tokens": 11532,
+              "cached_input_tokens": 0,
+              "output_tokens": 48,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "stdout_sha256": "f298d5d738a136e4e10afe9bf1538fd24962ca7f6d629b33e98a143ec9453ffe",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "counter-docs",
+            "profile": "docs_only",
+            "arm": "advised",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6191.896,
+            "cli_elapsed_ms": 6190.008,
+            "elapsed_ms": 6191.896,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "guide": "guide.md",
+              "source": "counter.py",
+              "actual": 5,
+              "expected": 4
+            },
+            "usage": {
+              "input_tokens": 11553,
+              "cached_input_tokens": 0,
+              "output_tokens": 64,
+              "reasoning_output_tokens": 27
+            },
+            "money": null,
+            "stdout_sha256": "65877599b94d8d5759b3223178c676d5892484efdcbcd4efb91f8a161d1d30e3",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "bound-bug",
+            "profile": "backend_bug",
+            "arm": "advised",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 5366.949,
+            "cli_elapsed_ms": 5205.449,
+            "elapsed_ms": 5366.949,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "exit": 1,
+              "assertion": [
+                2,
+                3
+              ]
+            },
+            "usage": {
+              "input_tokens": 11562,
+              "cached_input_tokens": 0,
+              "output_tokens": 49,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "stdout_sha256": "9a016ae2155b47170b8e683b88cce4b5e4e5e4efd888935d095fd13ad4a0e771",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "cache-docs",
+            "profile": "docs_only",
+            "arm": "baseline",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6164.149,
+            "cli_elapsed_ms": 6162.43,
+            "elapsed_ms": 6164.149,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "guide": "manual.md",
+              "source": "cache.py",
+              "actual": 45,
+              "expected": 60
+            },
+            "usage": {
+              "input_tokens": 11425,
+              "cached_input_tokens": 0,
+              "output_tokens": 58,
+              "reasoning_output_tokens": 21
+            },
+            "money": null,
+            "stdout_sha256": "daba6bd94992e448553e27b208430384fe2dcf18c4740aa48ce41fae7fc1a0b3",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "cache-docs",
+            "profile": "docs_only",
+            "arm": "advised",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6021.659,
+            "cli_elapsed_ms": 6020.436,
+            "elapsed_ms": 6021.659,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "guide": "manual.md",
+              "source": "cache.py",
+              "actual": 45,
+              "expected": 60
+            },
+            "usage": {
+              "input_tokens": 11445,
+              "cached_input_tokens": 7296,
+              "output_tokens": 62,
+              "reasoning_output_tokens": 25
+            },
+            "money": null,
+            "stdout_sha256": "f053983ef729bc45166561d04900255f42f697b135dc17f6369510a488d6a913",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "bound-bug",
+            "profile": "backend_bug",
+            "arm": "baseline",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 7355.592,
+            "cli_elapsed_ms": 7192.798,
+            "elapsed_ms": 7355.592,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "exit": 1,
+              "assertion": [
+                2,
+                3
+              ]
+            },
+            "usage": {
+              "input_tokens": 11528,
+              "cached_input_tokens": 0,
+              "output_tokens": 49,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "stdout_sha256": "39ce221b5d8e4ae7a6e52329620df4ed0c8b7c4c6dc3f6207222f90e049c1ef1",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "counter-docs",
+            "profile": "docs_only",
+            "arm": "baseline",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6006.707,
+            "cli_elapsed_ms": 6005.341,
+            "elapsed_ms": 6006.707,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "guide": "guide.md",
+              "source": "counter.py",
+              "actual": 5,
+              "expected": 4
+            },
+            "usage": {
+              "input_tokens": 11533,
+              "cached_input_tokens": 0,
+              "output_tokens": 62,
+              "reasoning_output_tokens": 25
+            },
+            "money": null,
+            "stdout_sha256": "dea02ede75466e2055e89bb12e00695a659f695974160fffbb7118d8a69270ef",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          },
+          {
+            "case": "counter-bug",
+            "profile": "backend_bug",
+            "arm": "advised",
+            "valid": true,
+            "exit": 0,
+            "errors": 0,
+            "turn_completed": 1,
+            "unexpected_items": [],
+            "first_choice_correct": true,
+            "grounded_outcome_correct": true,
+            "to_decisive_check_ms": 6626.183,
+            "cli_elapsed_ms": 6463.58,
+            "elapsed_ms": 6626.183,
+            "extra_actions": 0,
+            "fixture_check_executed": true,
+            "observation": {
+              "exit": 1,
+              "assertion": [
+                5,
+                4
+              ]
+            },
+            "usage": {
+              "input_tokens": 11565,
+              "cached_input_tokens": 0,
+              "output_tokens": 48,
+              "reasoning_output_tokens": 0
+            },
+            "money": null,
+            "stdout_sha256": "5694439205d61258716dc803bc8faebc5224fc3d22245b1f4d7e812d824b2ce5",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "fixture_preserved": true
+          }
+        ],
+        "complete": true,
+        "temporary_workspaces_cleaned": true
+      }
+    }
+  }
+}

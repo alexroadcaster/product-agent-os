@@ -1437,14 +1437,14 @@ Stop при неподтверждённом source/authority, stale approval, o
 #### Completion Report
 
 - status: implemented
-- what was done: Проведены четыре одобренных прогона Codex. Все выбрали верный шаг. Для вывода о пользе, включая ускорение, evidence недостаточно.
-- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.md).
-- technical value delivered: Подтверждено в разрешённом объёме B2.
-- product value delivered: Наблюдаемый результат для решения владельца.
+- what was done: Проведены четыре сопоставимые пары Codex на синтетических задачах. В каждой ветке подтверждены 4 из 4 первых проверок и выводов.
+- files touched / work locations: [Парная оценка PMETH-24](../superpowers/specs/paos-pmeth-24-paired-evidence.md).
+- technical value delivered: Предварительно зафиксированные сценарии, пороги, время и токены. Локальный проверяющий выполнил выбранные Codex проверки.
+- product value delivered: Для backend bug одна пара превысила порог ускорения, итог `insufficient_evidence`. Для двух docs-only сценариев итог `no_benefit`.
 - actual implementation date and time: 19-11-2026 11:10
-- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.md).
-- residual risks: Поставка на hold. Для новых профилей и понимания человеком нужны отдельные доказательства.
-- follow-up: PAOS-PMETH-25.
+- verification evidence: [Квитанции обеих серий](../superpowers/specs/paos-pmeth-24-paired-receipts.json) · [Исторический пилот B2](../superpowers/specs/paos-pmeth-b2-evidence.md#usefulness-pilot).
+- residual risks: Широкая польза `insufficient_evidence`. Самостоятельная работа с инструментами, денежная стоимость и реальные проекты вне измерения. Поставка на `hold`.
+- follow-up: PAOS-PMETH-25, решение владельца о поставке.
 
 ### Task `PAOS-PMETH-25`
 

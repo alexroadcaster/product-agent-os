@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-PMETH-24 — парное измерение пользы
+
+Первый `python -B .tmp/pmeth24-paired/paired_eval.py run <digest>` завершил 8 сессий с нулём вызовов MCP. Локальный probe подтвердил пустой список инструментов в запросе модели. `python -B .tmp/pmeth24-paired/paired_inline.py prepare` подтвердил четыре эталона и негативные проверки целей. Повторный `python -B .tmp/pmeth24-paired/paired_inline.py run <amended-digest>` дал 8/8 зачётных прогонов, два RED и две сверки документации в каждой ветке. [Точные команды, квитанции и охват](docs/superpowers/specs/paos-pmeth-24-paired-evidence.md)
+
 ## PAOS-PMETH-23 — закрытие восстановления create {#pmeth-23-create-closure}
 
 `node --test --test-concurrency=1 tests/web/recipe-recovery.test.mts tests/web/execution-recipes.test.mts tests/web/app-agent-gateway.test.mts tests/web/file-preflight.test.mts` — 56/56. Сценарии `m3-recovery-acceptance.mts` с `--synthetic-browser` и `--synthetic-browser-modify` прошли по 68/68. Вариант `create` проверяет эксклюзивную запись `wx`, продолжение с checkpoint и чтение без повтора создания. Отдельно проверена подмена с теми же байтами на трёх этапах допуска.

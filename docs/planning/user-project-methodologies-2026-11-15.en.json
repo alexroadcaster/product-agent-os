@@ -1519,7 +1519,15 @@
       "implementation_at": "19-11-2026 11:10",
       "execution_authority": "owner_authorized_b2_local_slice",
       "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md",
-      "usefulness": "insufficient_evidence"
+      "usefulness": "insufficient_evidence",
+      "paired_evaluation": {
+        "scope": "synthetic_first_check_selection_with_local_verification",
+        "eligible_pairs": 4,
+        "backend_bug": "insufficient_evidence",
+        "docs_only": "no_benefit",
+        "autonomous_tool_use": "not_measured",
+        "evidence": "docs/superpowers/specs/paos-pmeth-24-paired-receipts.json"
+      }
     },
     {
       "id": "PAOS-PMETH-25",
