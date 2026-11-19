@@ -32,6 +32,8 @@ F30/F31/F32 закрыты в разрешённом isolated synthetic PoC scop
 
 В B1/B2 совет виден в штатном CLI и в сводке задачи Web. Для локальной ошибки логики Python указывается именованный unittest, для документации — источник утверждения. Web привязывает совет к текущей задаче и стадии анализа, показывает частичное покрытие и останавливается при устаревшей ревизии. Материалы квалификации ограничены read-only профилем. [Контракт CLI](docs/superpowers/specs/paos-pmeth-b1-evidence.md#b1-cli-and-contract) · [Маршрут Web](docs/superpowers/specs/paos-pmeth-b2-evidence.md#route-and-ui)
 
+B3 выдаёт план UI-сценария с явными состояниями, источниками данных, проверками клавиатуры и границей человеческой приёмки. Архитектурная оценка использует наблюдаемые импорты F14 и объявленных владельцев. При достаточном покрытии она может предложить перенос одной страницы с baseline, совместимостью и откатом. Неполный анализ оставляет явный пробел. Запись в проект и применение переноса относятся к отдельно разрешаемому маршруту PMETH-16. [Контракты B3](docs/superpowers/specs/paos-pmeth-b3-evidence.md)
+
 ## FUNC-G01 — выполненный scope, 15.11.2026
 
 Предыдущий запрос разрешил полное выполнение F01/F03/F04/F05/F06/F07/F08, необходимые локальные synthetic native/browser checks, обновление source-owned статусов и документации по каждой задаче. Все семь AC закрыты локальным техническим evidence; другие27 FUNC и3 M5 references сохранены. Scope: runtime qualification, task/workflow drafts, dashboard и независимые contracts. Provider/model/real credentials, production/publication/Git и human acceptance не входили. [Результаты и границы](docs/planning/functional-remediation-2026-11-15.md#func-g01-results).

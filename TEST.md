@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-PMETH-B3 — дизайн и границы F14
+
+`node --test tests/web/graph-imports.test.mts tests/web/project-methodology-b3.test.mts tests/web/code-index.test.mts` — 26/26. `node --test --test-concurrency=1 tests/web/*.test.mts` с изолированными `TEMP`/`TMP` и нативным runtime — 724/724 до правки CSS. После правки 37/37 проверок пакета, Task Manager и его контрактов. `npm run check:web-m1` и `npm run build:web` прошли. `tests/web/single-window/methodology-advice-browser-acceptance.mts --synthetic-browser --playwright-core <path> --chromium <path> --evidence <path>` — 48/48. Повторяйте candidate и штатный нативный допуск при изменении закреплённых runtime-файлов. [Проверки и хеши](docs/superpowers/specs/paos-pmeth-b3-evidence.md#local-verification)
+
 ## PAOS-PMETH-B2 — Web, CLI и квалификация
 
 `node --test tests/web/project-task-advice.test.mts tests/web/project-analysis-api.test.mts tests/web/project-analysis.test.mts tests/web/runtime-manifest.test.mts` — 17/17. `node --test --test-concurrency=1 tests/web/*.test.mts` в нативном Windows-прогоне с отдельными `TEMP`/`TMP` — 718/718. `npm run check:web-m1` и `npm run build:web` прошли. `tests/web/single-window/methodology-advice-browser-acceptance.mts --synthetic-browser --playwright-core <path> --chromium <path> --evidence <path>` — 35/35. При изменении pinned runtime повторять candidate и штатный нативный допуск. [Проверки и хеши](docs/superpowers/specs/paos-pmeth-b2-evidence.md#synthetic-qualification)

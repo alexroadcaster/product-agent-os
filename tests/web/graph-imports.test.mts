@@ -64,3 +64,32 @@ test('TypeScript constructor parameter properties shadow ambient require',async(
  const result=await parseFiles([{relativePath:'entry.ts',language:'ts',text:"class Loader { constructor(public require:(s:string)=>unknown) { require('./dep'); } }"},{relativePath:'dep.ts',language:'ts',text:'export const value=1;'}]);
  assert.equal(result.results.flatMap((r:any)=>r.edges??[]).filter((e:any)=>e.type==='import').length,0);
 });
+
+test('F14 observes TypeScript import-type, re-export and literal dynamic edges',async()=>{
+ const result=await parseFiles([
+  {relativePath:'page.tsx',language:'tsx',text:"export type T=import('./dep').T;\nexport {value} from './dep';\nconst load=()=>import('./dep');"},
+  {relativePath:'dep.ts',language:'ts',text:"export type T=string;export const value=1;"},
+ ]);
+ const edges=result.results.find((row:any)=>row.relativePath==='page.tsx').edges;
+ assert.deepEqual(edges.filter((edge:any)=>edge.type==='import'&&edge.resolution==='lexical').map((edge:any)=>edge.anchor.line),[1,2,3]);
+});
+
+test('local JSON inheritance resolves aliases relative to their defining config and invalidates on drift',async t=>{
+ const f=await m2Fixture(t);
+ for(const [file,text] of Object.entries({
+  'tsconfig.json':'{"extends":"./config/base.json"}',
+  'config/base.json':'{"compilerOptions":{"paths":{"@domain/*":["domain/*"]}}}',
+  'config/domain/model.ts':'export type Model=number;',
+  'page.tsx':"export type View=import('@domain/model').Model;",
+ })){await mkdir(dirname(join(f.root,file)),{recursive:true});await writeFile(join(f.root,file),text);}
+ const index=createCodeIndex(f.store);
+ const observed=await index.rebuild('p');
+ const evidence=await index.architectureEvidence('p',observed.revision!);
+ assert.ok(evidence.imports.some(edge=>edge.from==='page.tsx'&&edge.to==='config/domain/model.ts'));
+ await writeFile(join(f.root,'config/base.json'),'{"extends":"./base.json"}');
+ await assert.rejects(index.architectureEvidence('p',observed.revision!),{code:'GRAPH_SOURCE_STALE'});
+ const bad=await index.rebuild('p');
+ const partial=await index.architectureEvidence('p',bad.revision!);
+ assert.ok(partial.limitations.includes('resolver_config_unavailable_or_unsupported'));
+ assert.ok(partial.imports.some(edge=>edge.from==='page.tsx'&&edge.to===null));
+});

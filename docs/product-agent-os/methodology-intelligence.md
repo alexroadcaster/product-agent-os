@@ -23,6 +23,29 @@ Methodology intelligence является read-only layer который turns w
 
 Маршрут выполняет `POST /api/v1/projects/{projectId}/analysis/task-advice` с локальной сессией и CSRF. Тело ограничено 4096 байтами. Сохранённую задачу и текущую стадию анализа определяет сервер. Проекция может быть уже локального CLI. Решения при равных исходниках и вводе сопоставимы. Если нужный источник или проверка не наблюдались, вывод содержит частичный результат и причину. Override, apply, Design-DD и FSD для пользовательских проектов проходят отдельные ветки плана. [Проверка и границы B2](../superpowers/specs/paos-pmeth-b2-evidence.md)
 
+## Планирование UI и оценка FSD {#frontend-methodology}
+
+`node tools/project-methodology.mts design <workspace> <context.json>` строит JSON-план сценария. Укажите цель, состояния, источник данных, существующие дизайн-референсы, доступные проверки и владельцев. Пример формы входа есть в `tests/fixtures/product_agent_os/pmeth-b3-design.json`. Команда связывает план с ревизией workspace. Если переданная ревизия устарела, вывод сообщает, что нужно освежить исходники. Маркировка источника данных во входе является декларацией, а фактический запуск проверяется отдельно.
+
+`node tools/project-methodology.mts architecture <workspace> <context.json>` читает наблюдаемые импорты существующего F14. Для локального TypeScript-фронтенда минимальный контекст может выглядеть так:
+
+```json
+{
+  "surface": "frontend",
+  "pages": [{"path": "src/pages/orders.tsx", "owner": "orders"}],
+  "boundaries": [
+    {"root": "src/pages", "layer": "pages", "owner": "orders"},
+    {"root": "src/features/checkout", "layer": "features", "owner": "checkout",
+     "publicApi": "src/features/checkout/index.ts"}
+  ],
+  "changeFrequency": "frequent",
+  "migrationCost": "medium",
+  "exceptions": []
+}
+```
+
+Границы и владельцы задаются явно. Для связи сущностей объявите в границе сущности, предоставляющей API, поле `crossApi` с `consumer` и `entry` внутри `@x/`. Неизвестный alias, недоступный F14 или неполный анализ выдаёт `partial`, путь проверки и причины. Флаг `--without-f14` показывает этот режим без построения графа. Для поэтапного переноса команда выдаёт предложение по одной странице, baseline и откат. Дальнейшие изменения требуют решения владельца и PMETH-16. [Контракты и проверенные сценарии B3](../superpowers/specs/paos-pmeth-b3-evidence.md)
+
 ## Что решает этот подход
 
 Product-agent work часто ломается двумя способами: либо coding начинается до ясного project contract, либо heavy methodology навязывается simple work. Methodology intelligence дает Product-Agent OS средний путь:

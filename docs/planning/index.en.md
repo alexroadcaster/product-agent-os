@@ -10,7 +10,7 @@ The Russian catalog lists all 42 relocated files and the new 16-task documentati
 ## Current methodology directions
 
 - [A — Product-Agent OS internal quality](methodology-improvement-2026-11-15.en.md). All 17 executable tasks are implemented in the selected scope. Five previous exceptions retain their separate hold. Legacy METH-16 remains a reference. [JSON v2](methodology-improvement-2026-11-15.en.json)
-- [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md). B1 and B2 are complete, with 13 of 26 tasks closed. The owner approved a release hold. [JSON](user-project-methodologies-2026-11-15.json) · [Russian](user-project-methodologies-2026-11-15.md)
+- [B — methodologies for user projects](user-project-methodologies-2026-11-15.en.md). B1–B3 are complete, with 18 of 26 tasks closed. B4 comes next. The owner-approved release `hold` remains in force. [JSON](user-project-methodologies-2026-11-15.json) · [Russian](user-project-methodologies-2026-11-15.md)
 
 ## Working plans translated in DG01
 

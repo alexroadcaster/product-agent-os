@@ -9,11 +9,12 @@ import type {GraphNode,GraphEdge,GraphCoverage,GraphStatus,GraphEdgeType} from '
 import {assertSourceProject,scanCheckedSources,readCheckedSource,inventoryForProject,digest,graphFail,type SourceProject} from './sources.mts';
 import {relatedGraphTasks} from '../impact/service.mts';
 import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
-import {sanitizeModuleResolverConfig,type ModuleResolverConfig} from './module-resolver.mts';
+import type {ModuleResolverConfig} from './module-resolver.mts';
+import {readResolverConfig} from './resolver-config.mts';
 const languages:Record<string,string>={'.ts':'ts','.mts':'ts','.cts':'ts','.tsx':'tsx','.js':'js','.mjs':'js','.cjs':'js','.jsx':'jsx'};
 const extensions=new Set([...Object.keys(languages),'.py','.go','.rs','.java','.cs','.c','.cpp','.rb','.vue','.svelte']);
 const limits={files:1000,bytes:8*1024*1024,fileBytes:512*1024,nodes:25000,edges:50000,workerMs:10000,snapshots:8,depth:3,page:100};
-const limitations=['lexical_subset_only','no_type_or_runtime_resolution','closed_inventory_module_resolution_only','no_package_exports_or_config_inheritance','import_bindings_do_not_resolve_cross_file_calls','unsupported_languages_not_indexed','jsx_and_class_semantics_partial','task_matches_bounded_first_1000','memory_only_rebuild_after_restart'];
+const limitations=['lexical_subset_only','no_type_or_runtime_resolution','closed_inventory_module_resolution_only','no_package_exports_or_package_config_inheritance','import_bindings_do_not_resolve_cross_file_calls','unsupported_languages_not_indexed','jsx_and_class_semantics_partial','task_matches_bounded_first_1000','memory_only_rebuild_after_restart'];
 type Manifest={files:{relativePath:string;hash:string;byteSize:number}[];excluded:string[];skipped:{relativePath:string;reason:string}[];inventoryRevision:string;policyVersion:string;parser:string;resolverConfig?:ModuleResolverConfig;configReasons:string[];moduleConfigHash:string|null;config:{limits:typeof limits;languages:typeof languages;extensions:string[]}};
 type Snapshot={parserMetrics?:{maxRssKiB:number};projectId:string;revision:string;generation:string;manifest:Manifest;nodes:GraphNode[];edges:GraphEdge[];coverage:GraphCoverage[];inventory:NonNullable<GraphStatus['inventory']>};
 function bounded(params:URLSearchParams,key:string,fallback:number,max:number){const text=params.get(key);if(text===null)return fallback;if(!/^\d+$/.test(text))graphFail('GRAPH_QUERY_INVALID');const n=Number(text);if(n<0||n>max)graphFail('GRAPH_QUERY_INVALID');return n;}
@@ -49,11 +50,11 @@ export function createCodeIndex(store:LocalStore){
   const failed=workers.find((result):result is PromiseRejectedResult=>result.status==='rejected');if(failed)throw failed.reason;
   const files=loaded.filter((file):file is NonNullable<typeof file>=>Boolean(file));skipped.sort((a,b)=>a.relativePath.localeCompare(b.relativePath));
   const require=createRequire(new URL('../../../web/package.json',import.meta.url));
-  const implementation=await Promise.all([readFile(new URL('./lexical.mts',import.meta.url)),readFile(new URL('./parser-worker.mts',import.meta.url)),readFile(new URL('./module-resolver.mts',import.meta.url)),readFile(new URL('./parser-runner.mts',import.meta.url)),readFile(new URL('../process/child-watchdog.mts',import.meta.url)),readFile(require.resolve('rolldown/utils')),readFile(require.resolve('rolldown/package.json'))]);
-  let resolverConfig:ModuleResolverConfig|undefined,configReasons:string[]=[],moduleConfigHash:string|null=null;
+  const implementation=await Promise.all([readFile(new URL('./lexical.mts',import.meta.url)),readFile(new URL('./parser-worker.mts',import.meta.url)),readFile(new URL('./module-resolver.mts',import.meta.url)),readFile(new URL('./resolver-config.mts',import.meta.url)),readFile(new URL('./parser-runner.mts',import.meta.url)),readFile(new URL('../process/child-watchdog.mts',import.meta.url)),readFile(require.resolve('rolldown/utils')),readFile(require.resolve('rolldown/package.json'))]);
   const configEntry=scan.inventory.entries.find(e=>e.relativePath==='tsconfig.json');
-  if(configEntry)try{if(!configEntry.access.readable)throw Error('unavailable');const source=await readCheckedSource(p,'tsconfig.json',32768);moduleConfigHash=source.hash;const parsed=JSON.parse(source.text);if(!parsed||typeof parsed!=='object'||Array.isArray(parsed)||parsed.extends!==undefined||parsed.references!==undefined)throw Error('unsupported');const options=parsed.compilerOptions===undefined?{}:parsed.compilerOptions;if(!options||typeof options!=='object'||Array.isArray(options))throw Error('unsupported');const selected=sanitizeModuleResolverConfig({...(options.baseUrl===undefined?{}:{baseUrl:options.baseUrl}),...(options.paths===undefined?{}:{paths:options.paths})});resolverConfig=selected.resolverConfig;configReasons=selected.configReasons;}catch{configReasons=['resolver_config_unavailable_or_unsupported'];}
-  return {files,excluded:scan.excluded,exclusions:scan.exclusions,inventory:scan.inventory,inventoryRevision:scan.inventoryRevision,skipped,parser:digest(Buffer.concat(implementation)),resolverConfig,configReasons,moduleConfigHash};
+  const config=configEntry?await readResolverConfig(path=>readCheckedSource(p,path,32768))
+   :{resolverConfig:undefined,configReasons:[],moduleConfigHash:null};
+  return {files,excluded:scan.excluded,exclusions:scan.exclusions,inventory:scan.inventory,inventoryRevision:scan.inventoryRevision,skipped,parser:digest(Buffer.concat(implementation)),...config};
  }
  const manifest=(data:Awaited<ReturnType<typeof inventory>>):Manifest=>({files:data.files.map(({relativePath,hash,byteSize})=>({relativePath,hash,byteSize})),excluded:data.excluded,skipped:data.skipped,inventoryRevision:data.inventoryRevision,policyVersion:data.inventory.policyVersion,parser:'rolldown-public-utils:'+data.parser,resolverConfig:data.resolverConfig,configReasons:data.configReasons,moduleConfigHash:data.moduleConfigHash,config:{limits,languages,extensions:[...extensions]}});
  const revision=(m:Manifest)=>digest(JSON.stringify(m));
@@ -65,6 +66,19 @@ export function createCodeIndex(store:LocalStore){
   const selected=items.slice(offset,offset+limit);let nextCursor:null|string=null;if(offset+limit<items.length){const payload=Buffer.from(JSON.stringify({binding,offset:offset+limit})).toString('base64url');nextCursor=payload+'.'+createHmac('sha256',secret).update(payload).digest('base64url');}return {items:selected,nextCursor,total:items.length};
  }
  return {
+  async architectureEvidence(id:string,revision:string){
+   const observed=snapshot(id,new URLSearchParams({revision}));
+   if(await state(await project(id),observed)!=='fresh')graphFail('GRAPH_SOURCE_STALE');
+   const byId=new Map(observed.nodes.map(node=>[node.id,node]));
+   const imports=observed.edges.filter(edge=>edge.type==='import').map(edge=>{
+    const origin=byId.get(edge.anchor.fileId)!,target=byId.get(edge.to);
+    return {from:origin.relativePath,to:target?.kind==='file'?target.relativePath:null,line:edge.anchor.line,
+     resolution:edge.resolution,reason:target?.reason??null};
+   });
+   return {revision:observed.revision,inventoryRevision:observed.inventory.revision,
+    inventoryCoverage:observed.inventory.coverage,coverage:structuredClone(observed.coverage),imports,
+    limitations:[...limitations,...observed.manifest.configReasons]};
+  },
   async status(id:string):Promise<GraphStatus>{const p=await project(id),s=snapshots.get(id);if(!s){await assertSourceProject(p);return {state:'unavailable',limitations};}touch(id,s);return {state:await state(p,s),revision:s.revision,coverage:s.coverage,counts:{files:s.manifest.files.length,nodes:s.nodes.length,edges:s.edges.length},limitations:[...limitations,...s.manifest.configReasons],inventory:s.inventory,...(s.parserMetrics?{observation:{parserMaxRssKiB:s.parserMetrics.maxRssKiB}}:{})};},
   async rebuild(id:string,options:RebuildOptions={}){activeBuild(options);if(busy.has(id))graphFail('GRAPH_BUILD_BUSY');busy.add(id);try{const p=await project(id),data=await inventory(p,options),m=manifest(data),rev=revision(m);activeBuild(options);if(options.expectedInventoryRevision&&options.expectedInventoryRevision!==data.inventoryRevision)graphFail('GRAPH_SOURCE_DRIFT');
    const parsed:any=await runGraphParser({files:data.files.filter(f=>languages[extname(f.relativePath)]).map(f=>({...f,language:languages[extname(f.relativePath)]})),resolverConfig:data.resolverConfig,configReasons:data.configReasons},{signal:options.signal,milliseconds:limits.workerMs});

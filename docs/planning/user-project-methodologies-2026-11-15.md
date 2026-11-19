@@ -1,7 +1,7 @@
 # Product-Agent OS — направление B: методологии для проектов пользователей
 
-Source status: repository_source / owner_requested_plan / B1_B2_locally_verified; release_hold; remaining_slices_planned.
-Дата создания: 15.11.2026. Редакция: 18.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
+Source status: repository_source / owner_requested_plan / B1_B2_B3_locally_verified; release_hold; remaining_slices_planned.
+Дата создания: 15.11.2026. Редакция: 19.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Назначение и два независимых направления
 
@@ -84,6 +84,8 @@ P1 — обязательные основы и защита корректно�
 **Статус B1.** Выполнены и локально проверены 7 из 7 задач. CLI предлагает именованный тест для backend-ошибки и проверку источника для документации в одном синтетическом проекте. Следующая задача по зависимости — PMETH-19. [Проверки и передача](../superpowers/specs/paos-pmeth-b1-evidence.md).
 
 **Статус B2.** Выполнены 6 из 6 задач. Read-only CLI/Web профиль локально проверен, пилот из четырёх прогонов дал недостаточно данных для вывода о пользе, владелец утвердил `hold` для поставки. [Проверки и решение](../superpowers/specs/paos-pmeth-b2-evidence.md).
+
+**Статус B3.** Выполнены 5 из 5 задач. Дизайн-сценарии и выводы F14 проверены локально. При неполном анализе предложение о переносе не выдаётся. По зависимостям доступны входы B4 PAOS-PMETH-06 и PAOS-PMETH-13. [Доказательства B3](../superpowers/specs/paos-pmeth-b3-evidence.md).
 
 **Первый принимаемый результат — read-only CLI+Web.** Жёсткие зависимости: PMETH 01 → 02 → 22 → 03 → 04 → 05 → 07 → 19 → 20 → 26. В одном disposable проекте backend bug и docs-only дают одинаковые выводы CLI/Web при равных данных и покрытии, с основанием и следующим проверяемым шагом. PMETH-26 закрепляет проверенные RU/EN примеры. Для приёмки нужны наблюдаемые CLI/HTTP/browser проверки и отрицательные случаи, результат проверки понимания или явный gap. PMETH-06, PMETH-08–18 и PMETH-21/23–25 за пределами prerequisites этапа.
 
@@ -561,16 +563,16 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 - Task: PAOS-PMETH-08
 - Task name: Встроить Design-Driven сценарии и матрицу состояний
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-05
 - Blocks: PAOS-PMETH-09
 - External references: UI-12
@@ -578,7 +580,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Short description: Проектировать пользовательский сценарий и состояния до реализации изменённого journey.
 - Technical value: Journey/state matrix, design references и acceptance boundaries.
 - Product value: Проверять удобство сценария до дорогой реализации.
-- Scope: `plugins/product-agent-os/assets/templates/artifact-templates/`; `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/skills/requirements-author/SKILL.md`. Будущие work locations; перед исполнением PMETH-01 уточняет exact owned files. Модули и проверки для переиспользования: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`.
+- Scope: `tools/project-methodology.mts`; `tools/project-methodology/design.mts`; `tests/fixtures/product_agent_os/pmeth-b3-design.json`.
 - Non-goals: Дублировать existing engine/owners, реализовать internal A или чужие FUNC/M5; текущая запись не разрешает код, target/provider/Git/publication.
 - Expected result: Journey/state matrix, design references и acceptance boundaries.
 - Acceptance criteria: Четыре наблюдаемых критерия ниже; отсутствие evidence не считается pass.
@@ -588,41 +590,41 @@ Stop при неподтверждённом source/authority, stale approval, o
   - **PAOS-PMETH-08-AC03**: Прототип различает synthetic/current/unavailable data и реальные API ограничения; невозможные состояния не обещаны как доступная функция.
   - **PAOS-PMETH-08-AC04**: Design artifacts, implementation и human acceptance имеют отдельные owners/evidence; небольшая UI правка не требует redesign всего проекта.
 
-- Verification gates: PV-ENGINE; профиль выше + актуальный affected-contract route TEST; ожидаемые проверки не выполнялись в этом планировании.
+- Verification gates: PV-ENGINE. [Выполненные проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
 - Risks / approval gates: Применяются общие authority/data/stop условия плана; production/real-project/provider/installation/activation требуют своей authority. Для durable prompt/routing changes нужен baseline/candidate eval до promotion.
 - Complexity: M
 - Estimated execution time: Уточнить после PMETH-01 и bounded slice discovery; оценка/календарное обязательство сейчас не выдумываются.
 - Agents: product-manager + plugin-runtime-builder; proposed ownership; текущая delegation=0, дальнейшая concurrency по фактическим границам.
 - Skills: Переиспользовать canonical project skills, перечисленные в Scope; для будущего Python: python-design-patterns/python-code-style; UI: frontend-testing-debugging. Наличие skill не доказывает invocation.
 - Output artifacts: Journey/state matrix, design references и acceptance boundaries.
-- Next step: Проверить depends_on, source/permission freshness и выбрать отдельно разрешённый bounded slice этой задачи.
+- Next step: 09 проверяет связанный UI-сценарий.
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Цель, шаги, данные, матрица состояний и доступность привязаны к ревизии.
+- files touched / work locations: [Пути реализации и фикстуры](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
+- technical value delivered: Результат привязан к ревизии и имеет явные доказательства.
+- product value delivered: Видны существующие активы, предложенные состояния и пробелы.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Фактические проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
+- residual risks: Наблюдение с представительным пользователем требуется для выбранного реального сценария.
+- follow-up: 09 проверяет связанный UI-сценарий.
 
 ### Task `PAOS-PMETH-09`
 
 - Task: PAOS-PMETH-09
 - Task name: Проверять пользовательский интерфейс по принятому design-контракту
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-08
 - Blocks: Нет.
 - External references: PAOS-FUNC-19, UI-12
@@ -630,7 +632,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Short description: Сопоставлять работающий интерфейс с принятым design-контрактом.
 - Technical value: Current-build visual/interaction evidence либо явный unavailable gap.
 - Product value: Видеть расхождения между дизайном и работающим интерфейсом.
-- Scope: `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`; `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Будущие work locations; перед исполнением PMETH-01 уточняет exact owned files.
+- Scope: `tools/project-methodology/design.mts`; `apps/web/src/design/parity.css`; `tests/web/single-window/methodology-advice-browser-acceptance.mts`; `tests/fixtures/product_agent_os/pmeth-b3-composition.json`.
 - Non-goals: Дублировать existing engine/owners, реализовать internal A или чужие FUNC/M5; текущая запись не разрешает код, target/provider/Git/publication.
 - Expected result: Current-build visual/interaction evidence либо явный unavailable gap.
 - Acceptance criteria: Четыре наблюдаемых критерия ниже; отсутствие evidence не считается pass.
@@ -640,41 +642,41 @@ Stop при неподтверждённом source/authority, stale approval, o
   - **PAOS-PMETH-09-AC03**: Screenshot/prototype pass не объявляется human usability acceptance, WCAG certification или доказательством API side effect.
   - **PAOS-PMETH-09-AC04**: Если runtime/browser не разрешён или недоступен, возвращается gap с безопасным next action без обхода ограничений и подмены старым screenshot.
 
-- Verification gates: PV-DESIGN; профиль выше + актуальный affected-contract route TEST; ожидаемые проверки не выполнялись в этом планировании.
+- Verification gates: PV-DESIGN. [Выполненные проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
 - Risks / approval gates: Применяются общие authority/data/stop условия плана; production/real-project/provider/installation/activation требуют своей authority. Для durable prompt/routing changes нужен baseline/candidate eval до promotion.
 - Complexity: M
 - Estimated execution time: Уточнить после PMETH-01 и bounded slice discovery; оценка/календарное обязательство сейчас не выдумываются.
 - Agents: tester + plugin-runtime-builder; proposed ownership; текущая delegation=0, дальнейшая concurrency по фактическим границам.
 - Skills: Переиспользовать canonical project skills, перечисленные в Scope; для будущего Python: python-design-patterns/python-code-style; UI: frontend-testing-debugging. Наличие skill не доказывает invocation.
 - Output artifacts: Current-build visual/interaction evidence либо явный unavailable gap.
-- Next step: Проверить depends_on, source/permission freshness и выбрать отдельно разрешённый bounded slice этой задачи.
+- Next step: При расширении профиля повторить PMETH-23.
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Состояния, доступность и композиция сопоставлены с версией design-контракта.
+- files touched / work locations: [Пути реализации и фикстуры](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
+- technical value delivered: Результат привязан к ревизии и имеет явные доказательства.
+- product value delivered: Две локализации проверены в браузере. При недоступности браузера виден пробел.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Фактические проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#design-verification).
+- residual risks: Технические проверки ограничены синтетическим сценарием.
+- follow-up: При расширении профиля повторить PMETH-23.
 
 ### Task `PAOS-PMETH-10`
 
 - Task: PAOS-PMETH-10
 - Task name: Определять применимость FSD и предлагать архитектурный выбор
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-04
 - Blocks: PAOS-PMETH-11
 - External references: PAOS-FUNC-30
@@ -682,7 +684,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Short description: Предлагать FSD только при доказанной полезности для frontend проекта пользователя.
 - Technical value: FSD applicability decision и architecture proposal с альтернативами.
 - Product value: Выбирать архитектуру по пользе, а не моде или названию папок.
-- Scope: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/assets/methodology/methodology-catalog.json`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Будущие work locations; перед исполнением PMETH-01 уточняет exact owned files.
+- Scope: `tools/project-methodology.mts`; `tools/project-methodology/architecture.mts`; `tests/web/project-methodology-b3.test.mts`.
 - Non-goals: Дублировать existing engine/owners, реализовать internal A или чужие FUNC/M5; текущая запись не разрешает код, target/provider/Git/publication.
 - Expected result: FSD applicability decision и architecture proposal с альтернативами.
 - Acceptance criteria: Четыре наблюдаемых критерия ниже; отсутствие evidence не считается pass.
@@ -692,41 +694,41 @@ Stop при неподтверждённом source/authority, stale approval, o
   - **PAOS-PMETH-10-AC03**: Предложение начинается со страниц и подтверждённого coupling. Public APIs и нижние layers/slices появляются при подтверждённой потребности. Backend/Python и native получают применимую архитектурную политику.
   - **PAOS-PMETH-10-AC04**: Архитектурный proposal требует соответствующего решения владельца перед migration; отсутствие FSD не является дефектом само по себе.
 
-- Verification gates: PV-ENGINE; профиль выше + актуальный affected-contract route TEST; ожидаемые проверки не выполнялись в этом планировании.
+- Verification gates: PV-ENGINE. [Выполненные проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
 - Risks / approval gates: Применяются общие authority/data/stop условия плана; production/real-project/provider/installation/activation требуют своей authority. Для durable prompt/routing changes нужен baseline/candidate eval до promotion.
 - Complexity: M
 - Estimated execution time: Уточнить после PMETH-01 и bounded slice discovery; оценка/календарное обязательство сейчас не выдумываются.
 - Agents: architect + plugin-runtime-builder; proposed ownership; текущая delegation=0, дальнейшая concurrency по фактическим границам.
 - Skills: Переиспользовать canonical project skills, перечисленные в Scope; для будущего Python: python-design-patterns/python-code-style; UI: frontend-testing-debugging. Наличие skill не доказывает invocation.
 - Output artifacts: FSD applicability decision и architecture proposal с альтернативами.
-- Next step: Проверить depends_on, source/permission freshness и выбрать отдельно разрешённый bounded slice этой задачи.
+- Next step: 11 проверяет публичные границы и владельцев.
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Оценка применимости основана на наблюдаемых импортах и стеке.
+- files touched / work locations: [Пути реализации и фикстуры](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
+- technical value delivered: Результат привязан к ревизии и имеет явные доказательства.
+- product value delivered: Решения различают статический, модульный, связанный frontend и другие стеки.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Фактические проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
+- residual risks: Неполное покрытие обозначено как partial с причиной.
+- follow-up: 11 проверяет публичные границы и владельцев.
 
 ### Task `PAOS-PMETH-11`
 
 - Task: PAOS-PMETH-11
 - Task name: Проверять frontend-зависимости по исходникам
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-10
 - Blocks: PAOS-PMETH-12
 - External references: PAOS-FUNC-14, PAOS-FUNC-30
@@ -734,7 +736,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Short description: Различать folder signals и проверенные границы кода на поддерживаемом языке.
 - Technical value: Source-bound findings, coverage/unknown report и boundary regression cases.
 - Product value: Получать проверяемые архитектурные findings вместо догадок.
-- Scope: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py`; `tests/product_agent_os/test_methodology_audit.py`. Будущие work locations; перед исполнением PMETH-01 уточняет exact owned files. Модули и проверки для переиспользования: `apps/local-service/src/code-index/service.mts`, `apps/local-service/src/code-index/lexical.mts`, `tests/web/graph-imports.test.mts`.
+- Scope: `apps/local-service/src/code-index/lexical.mts`; `apps/local-service/src/code-index/resolver-config.mts`; `apps/local-service/src/code-index/service.mts`; `tools/project-methodology/architecture.mts`; `tests/web/graph-imports.test.mts`.
 - Non-goals: Дублировать existing engine/owners, реализовать internal A или чужие FUNC/M5; текущая запись не разрешает код, target/provider/Git/publication.
 - Expected result: Source-bound findings, coverage/unknown report и boundary regression cases.
 - Acceptance criteria: Четыре наблюдаемых критерия ниже; отсутствие evidence не считается pass.
@@ -744,41 +746,41 @@ Stop при неподтверждённом source/authority, stale approval, o
   - **PAOS-PMETH-11-AC03**: Нарушения имеют путь/строку/rule/owner и отделены от допустимого entity public API и legacy exceptions.
   - **PAOS-PMETH-11-AC04**: Переиспользованы F14 code-index, parser/resolver и fixtures. F30 остаётся import-only reference. Проверены meaningful parser cases, циклы и no-source-mutation hashes без обязательной установки.
 
-- Verification gates: PV-FSD; профиль выше + актуальный affected-contract route TEST; ожидаемые проверки не выполнялись в этом планировании.
+- Verification gates: PV-FSD. [Выполненные проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
 - Risks / approval gates: Применяются общие authority/data/stop условия плана; production/real-project/provider/installation/activation требуют своей authority. Для durable prompt/routing changes нужен baseline/candidate eval до promotion.
 - Complexity: M
 - Estimated execution time: Уточнить после PMETH-01 и bounded slice discovery; оценка/календарное обязательство сейчас не выдумываются.
 - Agents: plugin-runtime-builder + tester; proposed ownership; текущая delegation=0, дальнейшая concurrency по фактическим границам.
 - Skills: Переиспользовать canonical project skills, перечисленные в Scope; для будущего Python: python-design-patterns/python-code-style; UI: frontend-testing-debugging. Наличие skill не доказывает invocation.
 - Output artifacts: Source-bound findings, coverage/unknown report и boundary regression cases.
-- Next step: Проверить depends_on, source/permission freshness и выбрать отдельно разрешённый bounded slice этой задачи.
+- Next step: 12 использует наблюдаемые находки в предложении.
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Проверены слои, публичные API, циклы, @x и точные legacy-исключения.
+- files touched / work locations: [Пути реализации и фикстуры](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
+- technical value delivered: Результат привязан к ревизии и имеет явные доказательства.
+- product value delivered: Отчёт показывает импорт, якорь, правило и владельца.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Фактические проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#architecture-evidence).
+- residual risks: Неподдерживаемые импорты явно ограничивают покрытие.
+- follow-up: 12 использует наблюдаемые находки в предложении.
 
 ### Task `PAOS-PMETH-12`
 
 - Task: PAOS-PMETH-12
 - Task name: Создавать поэтапный FSD migration proposal для проекта пользователя
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-11
 - Blocks: Нет.
 - External references: Нет; internal A не является prerequisite.
@@ -786,7 +788,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Short description: Планировать минимальную обратимую migration по принятым boundaries.
 - Technical value: Поэтапный migration plan с pilot/public APIs/rollback и staged diff.
 - Product value: Улучшать frontend постепенно с сохранением рабочего поведения.
-- Scope: `plugins/product-agent-os/skills/implementation-planner/SKILL.md`; `plugins/product-agent-os/scripts/product_agent_os/infrastructure.py`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Будущие work locations; перед исполнением PMETH-01 уточняет exact owned files. Модули и проверки для переиспользования: `plugins/product-agent-os/scripts/product_agent_os/project_formation.py`.
+- Scope: `tools/project-methodology/architecture.mts`; `tests/web/project-methodology-b3.test.mts`.
 - Non-goals: Дублировать existing engine/owners, реализовать internal A или чужие FUNC/M5; текущая запись не разрешает код, target/provider/Git/publication.
 - Expected result: Read-only migration proposal с reversible page pilot, public APIs, import ratchet и критериями следующего checkpoint.
 - Acceptance criteria: Четыре наблюдаемых критерия ниже; отсутствие evidence не считается pass.
@@ -796,26 +798,26 @@ Stop при неподтверждённом source/authority, stale approval, o
   - **PAOS-PMETH-12-AC03**: Proposal описывает ожидаемое сохранение user files, dirty changes и business/API semantics и показывает, как проверить границы legacy imports. На этой стадии исходники сохраняются; фактический перенос проверяется в PMETH-23, если вошёл в scope пилота.
   - **PAOS-PMETH-12-AC04**: Готовый read-only proposal доступен в памяти. Staged diff и apply по отдельно выбранному FSD пути используют PMETH-16 writer и проверяются в PMETH-23. Target write и hook activation требуют отдельной authority.
 
-- Verification gates: PV-STAGE; профиль выше + актуальный affected-contract route TEST; ожидаемые проверки не выполнялись в этом планировании.
+- Verification gates: PV-STAGE. [Выполненные проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#migration-proposal).
 - Risks / approval gates: Применяются общие authority/data/stop условия плана; production/real-project/provider/installation/activation требуют своей authority. Для durable prompt/routing changes нужен baseline/candidate eval до promotion.
 - Complexity: M
 - Estimated execution time: Уточнить после PMETH-01 и bounded slice discovery; оценка/календарное обязательство сейчас не выдумываются.
 - Agents: architect + plugin-runtime-builder; proposed ownership; текущая delegation=0, дальнейшая concurrency по фактическим границам.
 - Skills: Переиспользовать canonical project skills, перечисленные в Scope; для будущего Python: python-design-patterns/python-code-style; UI: frontend-testing-debugging. Наличие skill не доказывает invocation.
 - Output artifacts: Read-only migration proposal с reversible page pilot, public APIs, import ratchet и критериями следующего checkpoint.
-- Next step: Проверить depends_on, source/permission freshness и выбрать отдельно разрешённый bounded slice этой задачи.
+- Next step: Запись требует отдельно разрешённой области.
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Подготовлено предложение для одной страницы с baseline, re-export, import ratchet и откатом.
+- files touched / work locations: [Пути реализации и фикстуры](../superpowers/specs/paos-pmeth-b3-evidence.md#migration-proposal).
+- technical value delivered: Результат привязан к ревизии и имеет явные доказательства.
+- product value delivered: После первой страницы можно остановиться и проверить зафиксированные импорты.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Фактические проверки](../superpowers/specs/paos-pmeth-b3-evidence.md#migration-proposal).
+- residual risks: Перенос зависит от PMETH-16 и приёмки выбранного профиля PMETH-23.
+- follow-up: Запись требует отдельно разрешённой области.
 
 ### Task `PAOS-PMETH-13`
 

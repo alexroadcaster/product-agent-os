@@ -7,7 +7,7 @@
   "source_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
   "english_plan": "docs/planning/user-project-methodologies-2026-11-15.en.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_bounded_b1_b2_local_implementation_and_synthetic_pilot",
+  "execution_authority": "owner_authorized_bounded_b1_b2_local_implementation_and_synthetic_pilot_and_b3_local_read_only_verification",
   "internal_plan_reference": "docs/planning/methodology-improvement-2026-11-15.json",
   "internal_plan_reference_semantics": "independent_direction_no_hard_dependency",
   "source_snapshot": {
@@ -521,7 +521,7 @@
       "id": "PAOS-PMETH-08",
       "title": "Встроить Design-Driven сценарии и матрицу состояний",
       "title_en": "Integrate Design-Driven journeys and state matrices",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B3",
@@ -541,9 +541,9 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "product-manager + plugin-runtime-builder",
       "work_locations": [
-        "plugins/product-agent-os/assets/templates/artifact-templates/",
-        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
-        "plugins/product-agent-os/skills/requirements-author/SKILL.md"
+        "tools/project-methodology.mts",
+        "tools/project-methodology/design.mts",
+        "tests/fixtures/product_agent_os/pmeth-b3-design.json"
       ],
       "acceptance_criteria": [
         {
@@ -568,14 +568,15 @@
         }
       ],
       "verification_profile": "PV-ENGINE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:37",
+      "execution_authority": "owner_authorized_b3_local_read_only_and_synthetic_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b3-evidence.md"
     },
     {
       "id": "PAOS-PMETH-09",
       "title": "Проверять пользовательский интерфейс по принятому design-контракту",
       "title_en": "Verify UI against the accepted design contract",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B3",
@@ -594,9 +595,10 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "tester + plugin-runtime-builder",
       "work_locations": [
-        "plugins/product-agent-os/skills/test-eval-designer/SKILL.md",
-        "plugins/product-agent-os/skills/risk-reviewer/SKILL.md",
-        "plugins/product-agent-os/assets/templates/artifact-templates/"
+        "tools/project-methodology/design.mts",
+        "apps/web/src/design/parity.css",
+        "tests/web/single-window/methodology-advice-browser-acceptance.mts",
+        "tests/fixtures/product_agent_os/pmeth-b3-composition.json"
       ],
       "acceptance_criteria": [
         {
@@ -621,14 +623,15 @@
         }
       ],
       "verification_profile": "PV-DESIGN",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:37",
+      "execution_authority": "owner_authorized_b3_local_read_only_and_synthetic_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b3-evidence.md"
     },
     {
       "id": "PAOS-PMETH-10",
       "title": "Определять применимость FSD и предлагать архитектурный выбор",
       "title_en": "Determine FSD applicability and propose architecture choices",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B3",
@@ -648,9 +651,9 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + plugin-runtime-builder",
       "work_locations": [
-        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
-        "plugins/product-agent-os/assets/methodology/methodology-catalog.json",
-        "plugins/product-agent-os/assets/templates/artifact-templates/"
+        "tools/project-methodology.mts",
+        "tools/project-methodology/architecture.mts",
+        "tests/web/project-methodology-b3.test.mts"
       ],
       "acceptance_criteria": [
         {
@@ -675,14 +678,15 @@
         }
       ],
       "verification_profile": "PV-ENGINE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:37",
+      "execution_authority": "owner_authorized_b3_local_read_only_and_synthetic_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b3-evidence.md"
     },
     {
       "id": "PAOS-PMETH-11",
       "title": "Проверять frontend-зависимости по исходникам",
       "title_en": "Verify frontend dependencies from source",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B3",
@@ -703,11 +707,10 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "plugin-runtime-builder + tester",
       "work_locations": [
-        "plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py",
-        "plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py",
-        "tests/product_agent_os/test_methodology_audit.py",
-        "apps/local-service/src/code-index/service.mts",
         "apps/local-service/src/code-index/lexical.mts",
+        "apps/local-service/src/code-index/resolver-config.mts",
+        "apps/local-service/src/code-index/service.mts",
+        "tools/project-methodology/architecture.mts",
         "tests/web/graph-imports.test.mts"
       ],
       "acceptance_criteria": [
@@ -733,14 +736,15 @@
         }
       ],
       "verification_profile": "PV-FSD",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:37",
+      "execution_authority": "owner_authorized_b3_local_read_only_and_synthetic_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b3-evidence.md"
     },
     {
       "id": "PAOS-PMETH-12",
       "title": "Создавать поэтапный FSD migration proposal для проекта пользователя",
       "title_en": "Create incremental FSD migration proposals for user projects",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B3",
@@ -756,10 +760,8 @@
       "external_refs_semantics": "reference_only_not_dependency_or_status_owner",
       "proposed_owner": "architect + plugin-runtime-builder",
       "work_locations": [
-        "plugins/product-agent-os/skills/implementation-planner/SKILL.md",
-        "plugins/product-agent-os/scripts/product_agent_os/infrastructure.py",
-        "plugins/product-agent-os/assets/templates/artifact-templates/",
-        "plugins/product-agent-os/scripts/product_agent_os/project_formation.py"
+        "tools/project-methodology/architecture.mts",
+        "tests/web/project-methodology-b3.test.mts"
       ],
       "acceptance_criteria": [
         {
@@ -784,8 +786,9 @@
         }
       ],
       "verification_profile": "PV-STAGE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:37",
+      "execution_authority": "owner_authorized_b3_local_read_only_and_synthetic_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b3-evidence.md"
     },
     {
       "id": "PAOS-PMETH-13",

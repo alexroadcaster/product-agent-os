@@ -1,7 +1,7 @@
 # Product-Agent OS — direction B: methodologies for user projects
 
-Source status: repository_source / owner_requested_plan / B1_B2_locally_verified; release_hold; remaining_slices_planned.
-Created: 2026-11-15. Revised: 2026-11-18. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
+Source status: repository_source / owner_requested_plan / B1_B2_B3_locally_verified; release_hold; remaining_slices_planned.
+Created: 2026-11-15. Revised: 2026-11-19. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Purpose and two independent directions
 
@@ -84,6 +84,8 @@ Groups organize tasks by outcome. Each task can start when its own `depends_on` 
 **B1 status.** Seven of seven tasks implemented and locally verified. The CLI returns a named test for the backend defect and a source check for the documentation task in the same disposable project. Next dependency is PMETH-19. [Local checks and handoff](../superpowers/specs/paos-pmeth-b1-evidence.en.md).
 
 **B2 status.** Six of six tasks complete. The read-only CLI/Web profile is locally qualified, the four-run pilot returned insufficient evidence of benefit, and the owner approved a release `hold`. [Evidence and disposition](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+
+**B3 status.** All five tasks complete. Design journeys and F14 findings were verified locally. A migration proposal requires complete relevant coverage. B4 entry points PAOS-PMETH-06 and PAOS-PMETH-13 meet their dependencies. [B3 evidence](../superpowers/specs/paos-pmeth-b3-evidence.en.md).
 
 **First accepted outcome: read-only CLI+Web.** Hard prerequisites: PMETH 01 → 02 → 22 → 03 → 04 → 05 → 07 → 19 → 20 → 26. In one disposable project, backend bug and docs-only give matching CLI/Web decisions with the same data and coverage, as well as reasons and the next verifiable step. PMETH-26 captures verified RU/EN examples. Acceptance requires observed CLI/HTTP/browser checks and negatives, plus a comprehension observation or explicit gap. PMETH-06, PMETH-08–18 and PMETH-21/23–25 are outside this milestone’s prerequisites.
 
@@ -561,16 +563,16 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-08
 - Task name: Integrate Design-Driven journeys and state matrices
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-05
 - Blocks: PAOS-PMETH-09
 - External references: UI-12
@@ -578,7 +580,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Short description: Design journeys and states before implementing changed user interactions.
 - Technical value: Journey/state matrices, design references and acceptance boundaries.
 - Product value: Check usability before expensive implementation.
-- Scope: `plugins/product-agent-os/assets/templates/artifact-templates/`; `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/skills/requirements-author/SKILL.md`. Future work locations; PMETH-01 refines exact owned files before execution. Modules and checks to reuse: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`.
+- Scope: `tools/project-methodology.mts`; `tools/project-methodology/design.mts`; `tests/fixtures/product_agent_os/pmeth-b3-design.json`.
 - Non-goals: Duplicate existing engines/owners, implement internal A or unrelated FUNC/M5; current authoring authorizes no code, target/provider/Git/publication.
 - Expected result: Journey/state matrices, design references and acceptance boundaries.
 - Acceptance criteria: Four observable criteria below; missing evidence is not a pass.
@@ -588,41 +590,41 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
   - **PAOS-PMETH-08-AC03**: Distinguish synthetic/current/unavailable data and real API constraints; do not promise unsupported states as available functions.
   - **PAOS-PMETH-08-AC04**: Separate design, implementation and human-acceptance ownership/evidence; small UI changes do not require full-project redesign.
 
-- Verification gates: PV-ENGINE; profile above plus current TEST affected-contract routing; future checks were not executed during planning.
+- Verification gates: PV-ENGINE. [Executed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
 - Risks / approval gates: Apply common authority/data/stop boundaries; production/real-project/provider/install/activation need applicable authority. Durable prompt/routing changes require baseline/candidate evals before promotion.
 - Complexity: M
 - Estimated execution time: Estimate after PMETH-01 and bounded-slice discovery; no invented estimate/calendar commitment.
 - Agents: product-manager + plugin-runtime-builder; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Journey/state matrices, design references and acceptance boundaries.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: 09 verifies the associated UI journey.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Goal, steps, data, state matrix and accessibility are bound to a revision.
+- files touched / work locations: [Implementation paths and fixtures](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
+- technical value delivered: Revision-bound output with explicit evidence.
+- product value delivered: Existing assets, proposed states and gaps remain visible.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Observed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
+- residual risks: Representative user observation is needed for a selected real journey.
+- follow-up: 09 verifies the associated UI journey.
 
 ### Task `PAOS-PMETH-09`
 
 - Task: PAOS-PMETH-09
 - Task name: Verify UI against the accepted design contract
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: Design-DD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-08
 - Blocks: None.
 - External references: PAOS-FUNC-19, UI-12
@@ -630,7 +632,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Short description: Compare the running interface against accepted design contracts.
 - Technical value: Current-build visual/interaction evidence or explicit unavailable gaps.
 - Product value: See design-versus-runtime differences.
-- Scope: `plugins/product-agent-os/skills/test-eval-designer/SKILL.md`; `plugins/product-agent-os/skills/risk-reviewer/SKILL.md`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Future work locations; PMETH-01 refines exact owned files before execution.
+- Scope: `tools/project-methodology/design.mts`; `apps/web/src/design/parity.css`; `tests/web/single-window/methodology-advice-browser-acceptance.mts`; `tests/fixtures/product_agent_os/pmeth-b3-composition.json`.
 - Non-goals: Duplicate existing engines/owners, implement internal A or unrelated FUNC/M5; current authoring authorizes no code, target/provider/Git/publication.
 - Expected result: Current-build visual/interaction evidence or explicit unavailable gaps.
 - Acceptance criteria: Four observable criteria below; missing evidence is not a pass.
@@ -640,41 +642,41 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
   - **PAOS-PMETH-09-AC03**: Screenshot/prototype passes are not human-usability acceptance, WCAG certification or API-side-effect proof.
   - **PAOS-PMETH-09-AC04**: If runtime/browser is unavailable or unauthorized, return a gap and safe next action without bypassing limits or substituting old screenshots.
 
-- Verification gates: PV-DESIGN; profile above plus current TEST affected-contract routing; future checks were not executed during planning.
+- Verification gates: PV-DESIGN. [Executed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
 - Risks / approval gates: Apply common authority/data/stop boundaries; production/real-project/provider/install/activation need applicable authority. Durable prompt/routing changes require baseline/candidate evals before promotion.
 - Complexity: M
 - Estimated execution time: Estimate after PMETH-01 and bounded-slice discovery; no invented estimate/calendar commitment.
 - Agents: tester + plugin-runtime-builder; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Current-build visual/interaction evidence or explicit unavailable gaps.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: Repeat PMETH-23 when expanding the profile.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: States, accessibility and composition were compared with the versioned design contract.
+- files touched / work locations: [Implementation paths and fixtures](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
+- technical value delivered: Revision-bound output with explicit evidence.
+- product value delivered: The browser exercised both locales. Unavailable browser evidence leaves a gap.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Observed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#design-verification).
+- residual risks: Technical checks cover the synthetic journey.
+- follow-up: Repeat PMETH-23 when expanding the profile.
 
 ### Task `PAOS-PMETH-10`
 
 - Task: PAOS-PMETH-10
 - Task name: Determine FSD applicability and propose architecture choices
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-04
 - Blocks: PAOS-PMETH-11
 - External references: PAOS-FUNC-30
@@ -682,7 +684,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Short description: Recommend FSD only with evidence of usefulness for the user frontend.
 - Technical value: FSD applicability decisions and architecture proposals with alternatives.
 - Product value: Choose architecture based on usefulness rather than fashion.
-- Scope: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/assets/methodology/methodology-catalog.json`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Future work locations; PMETH-01 refines exact owned files before execution.
+- Scope: `tools/project-methodology.mts`; `tools/project-methodology/architecture.mts`; `tests/web/project-methodology-b3.test.mts`.
 - Non-goals: Duplicate existing engines/owners, implement internal A or unrelated FUNC/M5; current authoring authorizes no code, target/provider/Git/publication.
 - Expected result: FSD applicability decisions and architecture proposals with alternatives.
 - Acceptance criteria: Four observable criteria below; missing evidence is not a pass.
@@ -692,41 +694,41 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
   - **PAOS-PMETH-10-AC03**: Start with pages and demonstrated coupling. Introduce public APIs and lower layers/slices where a need is demonstrated. Apply the relevant architecture policy to backend, Python and native targets.
   - **PAOS-PMETH-10-AC04**: An architecture proposal requires an applicable owner decision before migration; absence of FSD is not itself a defect.
 
-- Verification gates: PV-ENGINE; profile above plus current TEST affected-contract routing; future checks were not executed during planning.
+- Verification gates: PV-ENGINE. [Executed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
 - Risks / approval gates: Apply common authority/data/stop boundaries; production/real-project/provider/install/activation need applicable authority. Durable prompt/routing changes require baseline/candidate evals before promotion.
 - Complexity: M
 - Estimated execution time: Estimate after PMETH-01 and bounded-slice discovery; no invented estimate/calendar commitment.
 - Agents: architect + plugin-runtime-builder; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: FSD applicability decisions and architecture proposals with alternatives.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: 11 verifies public boundaries and owners.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Applicability uses observed imports and the current stack.
+- files touched / work locations: [Implementation paths and fixtures](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
+- technical value delivered: Revision-bound output with explicit evidence.
+- product value delivered: Recommendations distinguish static, modular and coupled frontends and other stacks.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Observed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
+- residual risks: Incomplete coverage yields partial with the reason.
+- follow-up: 11 verifies public boundaries and owners.
 
 ### Task `PAOS-PMETH-11`
 
 - Task: PAOS-PMETH-11
 - Task name: Verify frontend dependencies from source
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, TDD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-10
 - Blocks: PAOS-PMETH-12
 - External references: PAOS-FUNC-14, PAOS-FUNC-30
@@ -734,7 +736,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Short description: Separate folder signals from verified code boundaries for supported languages.
 - Technical value: Source-bound findings, coverage/unknown reports and boundary regression cases.
 - Product value: Receive verifiable architecture findings.
-- Scope: `plugins/product-agent-os/scripts/product_agent_os/methodology_audit.py`; `plugins/product-agent-os/scripts/product_agent_os/project_code_graph.py`; `tests/product_agent_os/test_methodology_audit.py`. Future work locations; PMETH-01 refines exact owned files before execution. Modules and checks to reuse: `apps/local-service/src/code-index/service.mts`, `apps/local-service/src/code-index/lexical.mts`, `tests/web/graph-imports.test.mts`.
+- Scope: `apps/local-service/src/code-index/lexical.mts`; `apps/local-service/src/code-index/resolver-config.mts`; `apps/local-service/src/code-index/service.mts`; `tools/project-methodology/architecture.mts`; `tests/web/graph-imports.test.mts`.
 - Non-goals: Duplicate existing engines/owners, implement internal A or unrelated FUNC/M5; current authoring authorizes no code, target/provider/Git/publication.
 - Expected result: Source-bound findings, coverage/unknown reports and boundary regression cases.
 - Acceptance criteria: Four observable criteria below; missing evidence is not a pass.
@@ -744,41 +746,41 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
   - **PAOS-PMETH-11-AC03**: Report path/line/rule/owner for violations and distinguish valid entity public APIs and legacy exceptions.
   - **PAOS-PMETH-11-AC04**: Reuse F14 code-index, its parser/resolver and fixtures. Keep F30 as an import-only reference. Verify meaningful parser cases, cycles and no-source-mutation hashes without requiring installation.
 
-- Verification gates: PV-FSD; profile above plus current TEST affected-contract routing; future checks were not executed during planning.
+- Verification gates: PV-FSD. [Executed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
 - Risks / approval gates: Apply common authority/data/stop boundaries; production/real-project/provider/install/activation need applicable authority. Durable prompt/routing changes require baseline/candidate evals before promotion.
 - Complexity: M
 - Estimated execution time: Estimate after PMETH-01 and bounded-slice discovery; no invented estimate/calendar commitment.
 - Agents: plugin-runtime-builder + tester; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Source-bound findings, coverage/unknown reports and boundary regression cases.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: 12 consumes observations in its proposal.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Verified layers, public APIs, cycles, @x and narrow legacy exceptions.
+- files touched / work locations: [Implementation paths and fixtures](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
+- technical value delivered: Revision-bound output with explicit evidence.
+- product value delivered: The report gives the import, anchor, rule and owner.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Observed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#architecture-evidence).
+- residual risks: Unsupported import forms explicitly limit coverage.
+- follow-up: 12 consumes observations in its proposal.
 
 ### Task `PAOS-PMETH-12`
 
 - Task: PAOS-PMETH-12
 - Task name: Create incremental FSD migration proposals for user projects
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B3
 - Methodologies: FSD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B3 local read-only implementation and synthetic verification.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:37
 - Depends on: PAOS-PMETH-11
 - Blocks: None.
 - External references: None; internal A is not a prerequisite.
@@ -786,7 +788,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Short description: Plan minimal reversible migration under accepted boundaries.
 - Technical value: Incremental migration plans with pilots/public APIs/rollback and staged diffs.
 - Product value: Improve frontend structure incrementally without behavior loss.
-- Scope: `plugins/product-agent-os/skills/implementation-planner/SKILL.md`; `plugins/product-agent-os/scripts/product_agent_os/infrastructure.py`; `plugins/product-agent-os/assets/templates/artifact-templates/`. Future work locations; PMETH-01 refines exact owned files before execution. Modules and checks to reuse: `plugins/product-agent-os/scripts/product_agent_os/project_formation.py`.
+- Scope: `tools/project-methodology/architecture.mts`; `tests/web/project-methodology-b3.test.mts`.
 - Non-goals: Duplicate existing engines/owners, implement internal A or unrelated FUNC/M5; current authoring authorizes no code, target/provider/Git/publication.
 - Expected result: Read-only migration proposal with a reversible page pilot, public APIs, import ratchet and criteria for the next checkpoint.
 - Acceptance criteria: Four observable criteria below; missing evidence is not a pass.
@@ -796,26 +798,26 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
   - **PAOS-PMETH-12-AC03**: Describe how the proposal preserves user files, dirty changes and business/API semantics, and how to check legacy import boundaries. Preserve target files in this task. PMETH-23 verifies actual code moves when included in the pilot scope.
   - **PAOS-PMETH-12-AC04**: Deliver the read-only proposal in memory. The separately selected FSD path uses the PMETH-16 writer for staged diff and apply, verified in PMETH-23. Target writes and hook activation require separate authority.
 
-- Verification gates: PV-STAGE; profile above plus current TEST affected-contract routing; future checks were not executed during planning.
+- Verification gates: PV-STAGE. [Executed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#migration-proposal).
 - Risks / approval gates: Apply common authority/data/stop boundaries; production/real-project/provider/install/activation need applicable authority. Durable prompt/routing changes require baseline/candidate evals before promotion.
 - Complexity: M
 - Estimated execution time: Estimate after PMETH-01 and bounded-slice discovery; no invented estimate/calendar commitment.
 - Agents: architect + plugin-runtime-builder; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Read-only migration proposal with a reversible page pilot, public APIs, import ratchet and criteria for the next checkpoint.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: Target writes require separately authorized scope.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Produced a one-page proposal with baseline, re-export, import ratchet and rollback.
+- files touched / work locations: [Implementation paths and fixtures](../superpowers/specs/paos-pmeth-b3-evidence.en.md#migration-proposal).
+- technical value delivered: Revision-bound output with explicit evidence.
+- product value delivered: The owner can stop after the first page and verify observed imports.
+- actual implementation date and time: 19-11-2026 11:37
+- verification evidence: [Observed checks](../superpowers/specs/paos-pmeth-b3-evidence.en.md#migration-proposal).
+- residual risks: Execution depends on PMETH-16 and profile-specific PMETH-23.
+- follow-up: Target writes require separately authorized scope.
 
 ### Task `PAOS-PMETH-13`
 

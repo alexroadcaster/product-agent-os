@@ -11,6 +11,7 @@ import {openLocalStore} from '../../../apps/local-service/src/storage/local-stor
 import {newM2Task} from '../../../packages/contracts/issues/task-profile.ts';
 import {appLabel} from '../../../apps/web/src/locales/app.ts';
 import {uiLabel} from '../../../apps/web/src/locales/messages.ts';
+import {compositionFindings} from '../../../tools/project-methodology/design.mts';
 
 const args=process.argv.slice(2);
 assert.equal(args[0],'--synthetic-browser');
@@ -20,8 +21,9 @@ for(const key of ['--playwright-core','--chromium','--evidence'])assert.ok(isAbs
 const temp=await realpath(tmpdir()),root=await mkdtemp(join(temp,'paos-b2-browser-'));
 const workspace=join(root,'workspace'),profile=join(root,'profile'),home=join(root,'browser');
 await Promise.all([workspace,profile,home].map(dir=>mkdir(dir)));
-const dist=resolve('apps/web/dist'), out=await mkdtemp(join(await realpath(provided['--evidence']),'pmeth-b2-'));
+const dist=resolve('apps/web/dist'), out=await mkdtemp(join(await realpath(provided['--evidence']),'pmeth-b3-'));
 const fixture=JSON.parse(await readFile(new URL('../../fixtures/product_agent_os/pmeth-b1-synthetic.json',import.meta.url),'utf8'));
+const composition=JSON.parse(await readFile(new URL('../../fixtures/product_agent_os/pmeth-b3-composition.json',import.meta.url),'utf8'));
 for(const [name,data] of Object.entries<string>(fixture.files))await writeFile(join(workspace,name),data);
 await writeFile(join(workspace,'.env'),'B2_SYNTHETIC_CANARY=do_not_project');
 const sha=(input:Buffer)=>createHash('sha256').update(input).digest('hex');
@@ -29,7 +31,7 @@ const hashes=async()=>Object.fromEntries(await Promise.all((await readdir(worksp
 const original=await hashes();
 const report={passed:false,checks:[] as string[],screenshots:[] as string[],errors:[] as string[],externalRequests:[] as string[],
  targetPreserved:false,cleanup:false,buildHashes:{} as Record<string,string>,sourceHashes:{} as Record<string,string>,
- adapterSourceRevision:null as string|null};
+ adapterSourceRevision:null as string|null,browserVersion:null as string|null};
 let store:Awaited<ReturnType<typeof openLocalStore>>|undefined;
 let app:Awaited<ReturnType<typeof createLocalApplication>>|undefined;
 let context:any;
@@ -62,6 +64,9 @@ try{
  });
  const page=context.pages()[0]??await context.newPage();
  page.setDefaultTimeout(12_000);
+ const cdp=await context.newCDPSession(page);
+ report.browserVersion=(await cdp.send('Browser.getVersion')).product;
+ await cdp.detach();
  page.on('pageerror',(error:Error)=>report.errors.push(error.message));
  page.on('console',(message:any)=>{
   if(message.type()!=='error')return;
@@ -122,6 +127,8 @@ try{
   }
  }
  const endpoint='**/analysis/task-advice';
+ let adviceRequests=0;
+ page.on('request',(request:any)=>{if(request.url().endsWith('/analysis/task-advice'))adviceRequests++;});
  await page.reload();
  let panel=await openTask('ru','docs_only');
  await prepare(panel,'docs_only');await press(panel);
@@ -147,15 +154,38 @@ try{
   checked('read-only rendering '+locale,(await panel.innerText()).includes(locale==='ru'?'Режим просмотра':'Read-only'));
   checked('no framework overlay '+locale,await page.locator('vite-error-overlay').count()===0);
   checked('isolated layout '+locale,await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1));
+  const regions=await panel.evaluate((element:HTMLElement,selectors:Record<string,string>)=>
+   Object.entries(selectors).flatMap(([name,selector])=>{
+    const region=element.querySelector(selector)?.getBoundingClientRect();
+    return region?[{name,top:region.top,bottom:region.bottom,left:region.left,right:region.right}]:[];
+   }).sort((a,b)=>a.top-b.top),composition.selectors);
+  checked('reviewed region order and geometry '+locale+' '+theme,compositionFindings(composition.expected,regions,1360).length===0);
+  checked('wrong order fails despite same dimensions '+locale+' '+theme,
+   compositionFindings(composition.intentionalMismatch,regions,1360).includes('REGION_ORDER_MISMATCH'));
   await panel.locator(':scope > summary').scrollIntoViewIfNeeded();
   const screenshot=join(out,locale+'-'+theme+'.png');await page.screenshot({path:screenshot});report.screenshots.push(screenshot);
  }
  await page.setViewportSize({width:400,height:900});
+ await panel.getByText('Scope and sources',{exact:true}).click();
  await panel.locator(':scope > summary').scrollIntoViewIfNeeded();
  checked('narrow layout',await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1));
+ const narrowBody=await panel.evaluate((el:HTMLElement)=>{
+  const advice=el.getBoundingClientRect();
+  const sidebar=el.closest('.task-detail-body')!.querySelector('.task-context')!.getBoundingClientRect();
+  return {width:advice.width,stacked:advice.bottom<=sidebar.top,leftAligned:sidebar.left<=advice.left};
+ });
+ checked(`narrow recommendation uses the task body width (${narrowBody.width}px)`,narrowBody.width>=280);
+ checked('narrow expanded task stacks its context below the recommendation',narrowBody.stacked&&narrowBody.leftAligned);
+ checked('long source revision visible and contained',await panel.locator('details code').first().count()>0
+  && await panel.evaluate((el:HTMLElement)=>el.scrollWidth<=el.clientWidth+1));
  const narrow=join(out,'en-dark-narrow.png');await page.screenshot({path:narrow});report.screenshots.push(narrow);
  await page.setViewportSize({width:1360,height:1000});
- await panel.locator('[name=advice-source]').fill('.env');await press(panel);
+ checked('wide expanded task keeps its context to the right',await panel.evaluate((el:HTMLElement)=>
+  el.getBoundingClientRect().right<=el.closest('.task-detail-body')!.querySelector('.task-context')!.getBoundingClientRect().left));
+ const was=adviceRequests;
+ await panel.locator('[name=advice-source]').fill('.env');
+ checked('unsubmitted inputs clear obsolete advice without sending',adviceRequests===was&&await panel.getByTestId('task-advice-result').count()===0);
+ await press(panel);
  await panel.locator('[data-state=partial]').waitFor();
  checked('sensitive source is not projected',!(await page.content()).includes('do_not_project'));
  let release!:()=>void;
@@ -191,8 +221,9 @@ try{
  for(const file of ['apps/local-service/src/http/application.mts','apps/local-service/src/project-analysis/bridge.py',
   'apps/local-service/src/project-analysis/service.mts','apps/local-service/src/project-analysis/task-advice.mts',
   'apps/local-service/src/project-scans/service.mts','apps/web/src/api/client.ts','apps/web/src/features/tasks/TaskAdvicePanel.tsx',
-  'apps/web/src/features/tasks/TaskManager.tsx','apps/web/src/features/tasks/task-detail.css','packages/contracts/project-analysis.ts',
-  'tests/web/single-window/methodology-advice-browser-acceptance.mts']){
+  'apps/web/src/features/tasks/TaskManager.tsx','apps/web/src/features/tasks/task-detail.css','apps/web/src/design/parity.css','packages/contracts/project-analysis.ts',
+  'tests/web/single-window/methodology-advice-browser-acceptance.mts','tools/project-methodology/design.mts',
+  'tests/fixtures/product_agent_os/pmeth-b3-composition.json']){
   report.sourceHashes[file]=sha(await readFile(file));
  }
  report.passed=true;

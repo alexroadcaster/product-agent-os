@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "paos_joined_task_advice_composition_v1",
+  "owner": "task interface owner",
+  "expected": ["disclosure", "controls", "result"],
+  "selectors": {
+    "disclosure": ":scope > summary",
+    "controls": ":scope > form",
+    "result": ":scope > [data-testid='task-advice-result']"
+  },
+  "intentionalMismatch": ["disclosure", "result", "controls"],
+  "baselineChange": "Review the amended composition and interaction evidence with the UI owner before changing expected order."
+}

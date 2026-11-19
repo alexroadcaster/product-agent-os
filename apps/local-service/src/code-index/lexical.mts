@@ -12,7 +12,8 @@ export function buildLexicalGraph(file:{relativePath:string;text:string;language
  const anchor=(n:Ast):GraphAnchor=>{const before=file.text.slice(0,n.start),line=before.split('\n').length;return {fileId,start:n.start,end:n.end,line,column:n.start-(before.lastIndexOf('\n')+1)+1};};
  const base={relativePath:file.relativePath,fileId,language:file.language};
  nodes.push({id:fileId,kind:'file',name:file.relativePath,...base,scope:root.id,namespace:'module'});
- const children=(n:Ast)=>Object.entries(n).filter(([k])=>!['parent','typeAnnotation','returnType','typeParameters','superTypeParameters','implements','decorators'].includes(k)).flatMap(([key,value])=>Array.isArray(value)?value.filter(v=>v&&typeof v.type==='string').map(v=>({key,node:v})):value&&typeof value==='object'&&typeof (value as Ast).type==='string'?[{key,node:value}]:[]);
+ const syntaxChildren=(n:Ast)=>Object.entries(n).filter(([key])=>key!=='parent').flatMap(([key,value])=>Array.isArray(value)?value.filter(v=>v&&typeof v.type==='string').map(v=>({key,node:v})):value&&typeof value==='object'&&typeof (value as Ast).type==='string'?[{key,node:value}]:[]);
+ const children=(n:Ast)=>syntaxChildren(n).filter(({key})=>!['typeAnnotation','returnType','typeParameters','superTypeParameters','implements','decorators'].includes(key));
  const declare=(n:Ast,s:Scope)=>{if(!n)return;if(n.type==='Identifier'){definitions.add(n);let symbol=s.bindings.get(n.name);if(!symbol){symbol={id:hash(`${fileId}|${file.language}|${s.id}|${n.start}|value|${n.name}`),kind:'symbol',name:n.name,...base,scope:s.id,namespace:'value',anchor:anchor(n)};s.bindings.set(n.name,symbol);nodes.push(symbol);}edges.push({id:hash(`define|${symbol.id}|${n.start}`),type:'define',from:fileId,to:symbol.id,anchor:anchor(n),resolution:'lexical'});return;}
   if(n.type==='TSParameterProperty')declare(n.parameter,s);else if(n.type==='AssignmentPattern')declare(n.left,s);else if(n.type==='RestElement')declare(n.argument,s);else if(n.type==='ObjectPattern')for(const p of n.properties)declare(p.type==='RestElement'?p.argument:p.value,s);else if(n.type==='ArrayPattern')for(const e of n.elements)declare(e,s);
  };
@@ -66,6 +67,24 @@ export function buildLexicalGraph(file:{relativePath:string;text:string;language
   for(const c of children(n))second(c.node,n,c.key,mode);
  }
  second(program);
+ // Type syntax does not enter the value-scope passes. Collect only module
+ // references here, so a qualifier or a type name never becomes a value edge.
+ if(file.language==='ts'||file.language==='tsx'){
+  let typeVisited=0;
+  function typeImports(n:Ast,depth=0){
+   if(++typeVisited>150000||depth>200)throw Error('limit');
+   if(n.type==='TSImportType'){
+    if(['Literal','StringLiteral'].includes(n.source?.type)&&typeof n.source.value==='string')
+     imports.push({specifier:n.source.value,anchor:anchor(n)});
+    else edge(n,root,'import','unsupported_type_import');
+   }
+   if(n.type==='TSImportEqualsDeclaration'&&n.moduleReference?.type==='TSExternalModuleReference')
+    edge(n,root,'import','unsupported_import_equals');
+   for(const {node} of syntaxChildren(n))typeImports(node,depth+1);
+  }
+  typeImports(program);
+  imports.sort((a,b)=>a.anchor.start-b.anchor.start);
+ }
  if(nodes.length>25000||edges.length>50000)throw Error('limit');
  return {nodes,edges,imports};
 }

@@ -1,0 +1,23 @@
+{
+  "surface": "frontend",
+  "taskId": "recommendation-journey",
+  "goal": "Open a saved task and identify the next read-only verification step",
+  "extent": "localized",
+  "apiEvidence": "synthetic",
+  "designRefs": ["apps/web/src/features/tasks/task-detail.css"],
+  "dataSource": "Disposable snapshot of the existing Project Analysis and Task Manager endpoints",
+  "steps": [
+    {"action": "Open the selected task with Enter", "expected": "The selected task summary opens", "role": "button", "accessibleName": "Selected task"},
+    {"action": "Expand the recommendation", "expected": "The existing form and read-only explanation are exposed", "role": "button", "accessibleName": "Task recommendation"},
+    {"action": "Submit the verification inputs", "expected": "The next step and reason appear after the form", "role": "button", "accessibleName": "Show recommendation"}
+  ],
+  "stateMatrix": {
+    "loading": {"expected": "Announce the request before a result exists", "source": "synthetic"},
+    "empty": {"expected": "Explain that the analysis stage is required", "source": "synthetic"},
+    "error": {"expected": "Expose an access or stale scope reason", "source": "synthetic"},
+    "dirty": {"expected": "Keep unsubmitted inputs local and clear the previous result on edit", "source": "synthetic"}
+  },
+  "accessibility": {"entryFocus": "Task card", "exitFocus": "Preserve established task dialog focus restoration", "keyboard": "Enter to select, disclose and submit; status and errors are announced"},
+  "owners": {"design": "task interface owner", "implementation": "web owner", "acceptance": "project owner"},
+  "available": {"browser": true, "component": true, "visual": true, "keyboard": true, "browserAuthorized": true}
+}

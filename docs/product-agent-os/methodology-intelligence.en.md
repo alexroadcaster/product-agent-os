@@ -23,6 +23,29 @@ The recommendation shows applicability and depth, scope, source revision and obs
 
 The route uses `POST /api/v1/projects/{projectId}/analysis/task-advice` with the local session and CSRF. Requests are limited to 4,096 bytes. The service resolves the saved task and current analysis observation. The projection may cover fewer files than the CLI. Equivalent evidence and inputs give matching decisions. Unobserved required sources or checks yield a partial result with a reason. Override, apply, Design-DD and FSD follow separate plan paths. [B2 qualification and limits](../superpowers/specs/paos-pmeth-b2-evidence.en.md)
 
+## UI planning and FSD assessment {#frontend-methodology}
+
+`node tools/project-methodology.mts design <workspace> <context.json>` produces a JSON journey and verification plan. Supply the outcome, states, data source, existing design references, available checks and owners. See `tests/fixtures/product_agent_os/pmeth-b3-design.json` for the input form. The result binds to the workspace revision and requests refreshed sources if a supplied revision is stale. Data source labels are declarations. Running evidence is verified separately.
+
+`node tools/project-methodology.mts architecture <workspace> <context.json>` consumes observed F14 import edges. A minimal TypeScript frontend context can look like this:
+
+```json
+{
+  "surface": "frontend",
+  "pages": [{"path": "src/pages/orders.tsx", "owner": "orders"}],
+  "boundaries": [
+    {"root": "src/pages", "layer": "pages", "owner": "orders"},
+    {"root": "src/features/checkout", "layer": "features", "owner": "checkout",
+     "publicApi": "src/features/checkout/index.ts"}
+  ],
+  "changeFrequency": "frequent",
+  "migrationCost": "medium",
+  "exceptions": []
+}
+```
+
+Boundaries and owners are explicit. An entity that admits a peer dependency declares the `crossApi` consumer and exact `entry` under `@x/`. Unresolved aliases, unavailable F14 or incomplete source coverage yield a `partial` report with reasons. `--without-f14` exercises this mode without building a graph. An eligible migration yields a one-page proposal, a baseline and rollback instructions. Implementation requires an owner decision and PMETH-16. [B3 contracts and evidence](../superpowers/specs/paos-pmeth-b3-evidence.en.md)
+
 ## What It Solves
 
 Product-agent work often fails in two opposite ways: it starts coding before the project contract is clear, or it forces heavy methodology onto simple work. Methodology intelligence gives Product-Agent OS a middle path:
