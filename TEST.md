@@ -1,5 +1,11 @@
 # TEST.md
 
+## Project Scan — гонка в проверке запоздалого результата {#project-scan-regression}
+
+Объявление стадии `code` предшествует проверке снимка и входу в анализатор. Запись во время проверки снимка воспроизвела `INVENTORY_SOURCE_DRIFT` до запуска анализатора. Тест теперь ждёт `onProgress` от анализатора и проверяет `PROJECT_SCAN_SOURCE_STALE`, отмену стадии, отсутствие опубликованных счётчиков и `lastSuccessful`, а также отказ при подмене корня. Повтор с увеличенным инвентарём — 20/20.
+
+На Windows с отдельными `TEMP` и `TMP` `node --test --test-concurrency=1 tests/web/project-s*.test.mts` — 21/21, `node --test --test-concurrency=1 tests/web/*.test.mts` — 729/729, без пропусков. `npm run check:web-m1` прошёл. Отчёты `inventory-recheck-confirmed.log`, `analyzer-handshake-probe.log`, `focused-native.log` и `web-final.log` сохранены в `.tmp/project-scan-regression/`.
+
 ## Codex 0.170.0 — нативная квалификация {#codex-0170}
 
 `node tests/web/single-window/sandbox-broker-acceptance.mts --run-once --binary <absolute-path>` прошёл на изолированной копии с манифестом кандидата и повторно в рабочей копии через штатный загрузчик. `node --test tests/web/sandbox-broker.test.mts tests/web/runtime-manifest.test.mts tests/web/runtime-adapter-native.test.mts` — 17/17. Проверены отказ для прежней версии до запуска и отказ при несовпадении SHA-256 установленного бинарника с прежним манифестом. `npm run check:web-m1` и `npm run build:web` прошли. [Ревизия и отчёты](docs/backend/lifecycle.md#codex-0170-qualification)

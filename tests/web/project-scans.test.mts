@@ -5,7 +5,8 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {openLocalStore} from '../../apps/local-service/src/storage/local-store.mts';
 import {bindProject} from '../../apps/local-service/src/adapters/project-sources.ts';
-import {createProjectScans} from '../../apps/local-service/src/project-scans/service.mts';
+import {createProjectScans,type ScanAnalyzerContext} from '../../apps/local-service/src/project-scans/service.mts';
+import type {ProjectScanView} from '../../packages/contracts/project-scan.ts';
 
 async function fixture(t:any){
  const root=await mkdtemp(join(tmpdir(),'paos-scans-')),workspace=join(root,'workspace');await mkdir(workspace);await writeFile(join(workspace,'main.ts'),'export const ordinary=1;');
@@ -56,9 +57,30 @@ test('a foreign project cannot cancel a known scan ID',async t=>{
 });
 
 test('source or root drift rejects late stages without claiming successful publication',async t=>{
- const f=await fixture(t),pending=deferred();const service=f.service({code:async()=>pending.promise});await service.start('p');await until(service,v=>v.latest.stage==='code');
- await writeFile(join(f.workspace,'main.ts'),'export const changed=2;');pending.resolve({state:'completed'});const result=await until(service,v=>v.latest.state==='interrupted');assert.ok(result.latest.reasons.includes('PROJECT_SCAN_SOURCE_STALE'));assert.equal(result.lastSuccessful,null);
- await rename(f.workspace,join(f.root,'old'));await mkdir(f.workspace);await assert.rejects(service.start('p'),{code:'PROJECT_ROOT_UNAVAILABLE'});
+ const f=await fixture(t),pending=deferred();
+ const service=f.service({
+  code:async({onProgress}:ScanAnalyzerContext)=>{
+   await onProgress(0,1);
+   return pending.promise;
+  },
+ });
+ await service.start('p');
+ // The scan records the code stage before its inventory check admits the analyzer.
+ await until(service,(view:ProjectScanView)=>view.latest?.stages.find(stage=>stage.kind==='code')?.progress?.total===1);
+
+ await writeFile(join(f.workspace,'main.ts'),'export const changed=2;');
+ pending.resolve({state:'completed',counts:{files:1}});
+ const {latest,lastSuccessful}=await until(service,(view:ProjectScanView)=>view.latest?.state==='interrupted');
+ assert.ok(latest);
+ assert.ok(latest.reasons.includes('PROJECT_SCAN_SOURCE_STALE'),JSON.stringify(latest.reasons));
+ const codeStage=latest.stages.find(stage=>stage.kind==='code');
+ assert.equal(codeStage?.state,'cancelled');
+ assert.equal(codeStage?.counts,undefined);
+ assert.equal(lastSuccessful,null);
+
+ await rename(f.workspace,join(f.root,'old'));
+ await mkdir(f.workspace);
+ await assert.rejects(service.start('p'),{code:'PROJECT_ROOT_UNAVAILABLE'});
 });
 
 test('timeout is explicit and an unknown persisted schema does not prevent service initialization',async t=>{
