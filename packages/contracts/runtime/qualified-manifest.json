@@ -13,7 +13,7 @@
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "ab195406a2f961c55d90d3a1848d4bcd98b644f10c66da7085cde94d0f584f51",
+  "adapterRevision": "7a41dce01fdff0220427f66bed70d986361ca8559c6511298774d3ce48c7c448",
   "packageLockSha256": "f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -59,6 +59,7 @@
     "funcG03NativeCandidateFinal": "94643d3bee58f959281c18f9f099896959ab92a64ea6e4fc4d5c2ab05c52b450",
     "funcG04NativeCandidateReceiptSha256": "b092d6a78799968561613c55b624c0df3a7b61e85ce9618b48e055e6ae1cab62",
     "funcG05NativeCandidateReceiptSha256": "01ccff13f508a4cb6ac030da8edef3d61daf98340dbdc62e0357989ed066e8e1",
-    "funcG06NativeCandidateReceiptSha256": "c9edae03dd738071ce613c4aa01c879955de5c5195c8764a32c3ae46afdf2037"
+    "funcG06NativeCandidateReceiptSha256": "c9edae03dd738071ce613c4aa01c879955de5c5195c8764a32c3ae46afdf2037",
+    "pmethB2NativeCandidateReceiptSha256": "0e3a4f63375048bd069441695a18bf8b53a0e988bdebd05141a41f448a87a1d5"
   }
 }

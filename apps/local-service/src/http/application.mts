@@ -1,7 +1,7 @@
 import { createHmac, createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { lstat, mkdir, readFile, realpath } from 'node:fs/promises';
 import { basename, join, relative, resolve } from 'node:path';
-import { restoreLocalBackup, pruneManagedBackups, type LocalStore } from '../storage/local-store.mts';
+import { restoreLocalBackup, pruneManagedBackups, type LocalStore, type Project } from '../storage/local-store.mts';
 import type { EntityInput, EntityKind, StoreWrite } from '../../../../packages/contracts/storage/local-store.ts';
 import { bindProject, inspectProjectSources, readProjectSource } from '../adapters/project-sources.ts';
 import { createSessionGate } from './session-gate.mts';
@@ -22,6 +22,8 @@ import {createDatabaseMap} from '../database-map/service.mts';
 import {createCodeDatabase} from '../code-database/service.mts';
 import {createProjectFiles} from '../project-files/service.mts';
 import {createProjectAnalysis,unavailableProjectAnalysis} from '../project-analysis/service.mts';
+import {createTaskAdvice} from '../project-analysis/task-advice.mts';
+import type {ProjectAnalysisView} from '../../../../packages/contracts/project-analysis.ts';
 import {taskFilePreflight} from '../runtime/task-file-preflight.mts';
 import {sameSourceRevision} from '../../../../packages/contracts/project-freshness.ts';
 import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
@@ -50,6 +52,7 @@ export type ApplicationOptions = {
   /** Trusted anonymous source transport for synthetic checks; never selected by browser payloads. */
   externalSkillFetch?:typeof fetch;
   scanAnalyzers?:Partial<Record<ProjectScanStageKind,ScanAnalyzer>>;
+  projectAnalysisRuntime?:Parameters<typeof createProjectAnalysis>[0]['runtime'];
   executionRecipes?:ReturnType<typeof createRecipeService>;
   scheduler?:ReturnType<typeof createScheduler>;
 };
@@ -99,7 +102,7 @@ export async function createLocalApplication(options: ApplicationOptions) {
   const databaseMap=createDatabaseMap({store,profileDatabasePath:join(profileDirectory,'state.sqlite')});
   const codeDatabase=createCodeDatabase({store,codeIndex,databaseMap});
   const projectFiles=createProjectFiles(store);
-  const projectAnalysis=createProjectAnalysis({store});
+  const projectAnalysis=createProjectAnalysis({store,runtime:options.projectAnalysisRuntime});
   const scans=createProjectScans({store,analyzers:{
     documents:async({project})=>{
       const binding=await bindProject(project.id,project.canonicalRoot);if(binding.directoryIdentity!==project.rootIdentity)fail('PROJECT_ROOT_UNAVAILABLE');
@@ -142,6 +145,26 @@ export async function createLocalApplication(options: ApplicationOptions) {
           entity: { id: 'ui-preferences', kind: 'settings', data: record(preferences) } }] });
     },
   };
+
+  async function observeProjectAnalysis(source:Project,signal:AbortSignal){
+    const observed=await scans.latestAnalysis(source.id),scanId=observed?.scanId??null;
+    const analysis=observed?.stage.data?.analysis as ProjectAnalysisView|undefined;
+    let inventory;
+    try{inventory=await inventoryForProject(source).snapshot(source,{signal});}catch{
+      return {scanId,view:{...unavailableProjectAnalysis(source,{revision:'unavailable',policyVersion:'unavailable'},'ANALYSIS_ROOT_UNAVAILABLE'),stale:true}};
+    }
+    if(!analysis||analysis.schemaVersion!=='paos_project_analysis_v1'||analysis.projectId!==source.id){
+      const reason=observed?.stage.state==='failed'?'ANALYSIS_FAILED':'ANALYSIS_NOT_OBSERVED';
+      return {scanId,inventory,view:unavailableProjectAnalysis(source,inventory,reason)};
+    }
+    let adapterCurrent=false;try{adapterCurrent=analysis.adapterSourceRevision===await projectAnalysis.currentRevision();}catch{}
+    let scopeCurrent=true;try{await assertCurrentSourceProject(store,source);}catch{scopeCurrent=false;}
+    const stale=!scopeCurrent||!adapterCurrent||!sameSourceRevision(analysis,{
+      projectId:source.id,rootIdentity:source.rootIdentity,policyVersion:inventory.policyVersion,inventoryRevision:inventory.revision,
+    });
+    return {scanId,inventory,view:{...analysis,stale:analysis.stale||stale,limitations:[...new Set([...analysis.limitations,...(stale?['ANALYSIS_SOURCE_STALE']:[])])]}};
+  }
+  const taskAdvice=createTaskAdvice({store,observe:observeProjectAnalysis,runTaskBridge:projectAnalysis.runTaskBridge});
 
   async function metadata(projectId: string) {
     if (projectId === profileProject) fail('PROJECT_NOT_FOUND');
@@ -288,16 +311,11 @@ export async function createLocalApplication(options: ApplicationOptions) {
         return json(await taskFilePreflight(store,projectId,input.taskId,Number(input.expectedRevision)));
       }
       if(route[2]==='analysis'&&request.method==='GET'){
-        const saved=(await scans.status(projectId)),analysis=(saved.latest?.stages.find(stage=>stage.kind==='analysis')?.data as any)?.analysis;
         const source=await store.project(projectId);if(!source)fail('PROJECT_NOT_FOUND');
-        let inventory;try{inventory=await inventoryForProject(source).snapshot(source);}catch{
-          return json({...unavailableProjectAnalysis(source,{revision:'unavailable',policyVersion:'unavailable'},'ANALYSIS_ROOT_UNAVAILABLE'),stale:true});
-        }
-        if(!analysis||analysis.schemaVersion!=='paos_project_analysis_v1'||analysis.projectId!==projectId)return json(unavailableProjectAnalysis(source,inventory,'ANALYSIS_NOT_OBSERVED'));
-        let adapterCurrent=false;try{adapterCurrent=analysis.adapterSourceRevision===await projectAnalysis.currentRevision();}catch{}
-        let scopeCurrent=true;try{await assertCurrentSourceProject(store,source);}catch{scopeCurrent=false;}
-        const stale=!scopeCurrent||!adapterCurrent||!sameSourceRevision(analysis,{projectId,rootIdentity:source.rootIdentity,policyVersion:inventory.policyVersion,inventoryRevision:inventory.revision});
-        return json({...analysis,stale:analysis.stale||stale,limitations:[...new Set([...analysis.limitations,...(stale?['ANALYSIS_SOURCE_STALE']:[])])]});
+        return json((await observeProjectAnalysis(source,request.signal)).view);
+      }
+      if(route[2]==='analysis/task-advice'&&request.method==='POST'){
+        return json(await taskAdvice(projectId,await body(request,4096),request.signal));
       }
       if(route[2]==='scans'){
         if(request.method==='GET')return json(await scans.status(projectId));

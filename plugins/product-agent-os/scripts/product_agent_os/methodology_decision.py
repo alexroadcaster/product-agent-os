@@ -17,10 +17,12 @@ from product_agent_os.task_routing import fingerprint
 
 def build_methodology_decision(
     workspace: str | Path, audit: dict[str, Any], task: dict[str, Any], route: dict[str, Any],
-    revision_sources: dict[str, str],
+    revision_sources: dict[str, str], *, host_scope: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Bind advice to the requested project, observable source, and normalized task."""
-    scope = {
+    if host_scope is not None and host_scope.get("task_id") != task["task_id"]:
+        raise ValueError("methodology_decision:host_task_mismatch")
+    scope = host_scope if host_scope is not None else {
         "project_id": fingerprint(os.path.normcase(str(Path(workspace).resolve()))),
         "task_id": task["task_id"],
         "source_revision": fingerprint({

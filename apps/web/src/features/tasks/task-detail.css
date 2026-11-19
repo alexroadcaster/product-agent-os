@@ -48,3 +48,12 @@
 @media(min-width:1101px) { .m2-manager .m2-task-layout { grid-template-columns: minmax(260px,.85fr) minmax(0,1.35fr); } }
 @media(max-width:700px) { .m2-manager .task-detail-overlay { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); } .task-detail-heading { flex-wrap: wrap; } }
 @media(prefers-reduced-motion:no-preference) { .task-detail-overlay[open] { animation: task-detail-enter 180ms cubic-bezier(.2,.7,.2,1); } @keyframes task-detail-enter { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: translateY(0) scale(1); } } }
+.task-advice { margin-block: 12px; overflow-wrap: anywhere; }
+.task-advice > summary { cursor: pointer; font-weight: 600; }
+.task-advice-form { display: grid; gap: 8px; max-width: 40rem; }
+.task-advice-form label { display: grid; gap: 4px; min-width: 0; }
+.task-advice-form button { justify-self: start; }
+@media (min-width: 800px) {
+  .task-advice-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .task-advice-form button { align-self: end; }
+}

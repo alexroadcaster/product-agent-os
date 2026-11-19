@@ -1,5 +1,9 @@
 # TEST.md
 
+## PAOS-PMETH-B2 — Web, CLI и квалификация
+
+`node --test tests/web/project-task-advice.test.mts tests/web/project-analysis-api.test.mts tests/web/project-analysis.test.mts tests/web/runtime-manifest.test.mts` — 17/17. `node --test --test-concurrency=1 tests/web/*.test.mts` в нативном Windows-прогоне с отдельными `TEMP`/`TMP` — 718/718. `npm run check:web-m1` и `npm run build:web` прошли. `tests/web/single-window/methodology-advice-browser-acceptance.mts --synthetic-browser --playwright-core <path> --chromium <path> --evidence <path>` — 35/35. При изменении pinned runtime повторять candidate и штатный нативный допуск. [Проверки и хеши](docs/superpowers/specs/paos-pmeth-b2-evidence.md#synthetic-qualification)
+
 ## PAOS-PMETH-B1 — CLI, контракт и совместимость
 
 `python -B -m unittest tests.product_agent_os.test_pmeth_b1 -v` проверяет оба сценария, их baseline, недостающую и устаревшую проверку, целевые хеши и RED/GREEN с отдельной ошибкой импорта. `node --test tests/web/methodology-decision.test.mts tests/web/project-analysis-api.test.mts` проверяет чтение реального wire output и прежний Project Analysis. `npm run check:web-m1` проверяет типы контракта. Для изменений Python runner применяются также общий Python discovery, fixture/transcript eval и проверка совместимости. Для широких прогонов используйте process-local `TEMP` и `TMP` в отдельных подкаталогах `.tmp/`. [Сценарии и доказательства](docs/superpowers/specs/paos-pmeth-b1-evidence.md)

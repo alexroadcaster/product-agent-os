@@ -8,6 +8,21 @@ Methodology intelligence is the read-only layer that turns workspace evidence in
 
 Those packets are recommendation and routing evidence. They do not mutate target projects, enable hooks, activate automations, call providers or approve external writes.
 
+## First task recommendation in the CLI and Web {#task-advice}
+
+In Web, open **Overview → Sources** and wait for the scan's **Analysis** stage. In **Tasks**, open a saved task with files and acceptance criteria, expand **Task recommendation**, and choose the change type.
+
+| Scenario | Saved task and request | Expected next step |
+| --- | --- | --- |
+| Scoped Python logic defect | The task changes `counter.py` and requires `increment(3) returns 4`. Enter `test_counter.py` and the `TEST.md` command `python -B -m unittest test_counter.CounterTest.test_increment_by_one`. | Reproduce the behavior with the named test. The synthetic intended RED is `AssertionError: 5 != 4`. An import error indicates setup failure. |
+| Documentation edit | The task changes `guide.md` and its criterion concerns current behavior. Enter `counter.py` as the source. | Compare the claim with `counter.py`. |
+
+In the CLI, pass equivalent v1 task JSON using `python -B plugins/product-agent-os/scripts/run_codex_runtime_runner.py <workspace> --contract --task-context <path>`. The JSON path is relative to the workspace. Read `route_packet.methodology_decision`. The B1 evidence contains the task JSON and the CLI contract. [CLI examples and RED/GREEN evidence](../superpowers/specs/paos-pmeth-b1-evidence.en.md)
+
+The recommendation shows applicability and depth, scope, source revision and observed files. If coverage is partial, resolve the reported gaps and request advice again. For a stale analysis, run the **Analysis** stage again. The recommendation opens in read-only mode.
+
+The route uses `POST /api/v1/projects/{projectId}/analysis/task-advice` with the local session and CSRF. Requests are limited to 4,096 bytes. The service resolves the saved task and current analysis observation. The projection may cover fewer files than the CLI. Equivalent evidence and inputs give matching decisions. Unobserved required sources or checks yield a partial result with a reason. Override, apply, Design-DD and FSD follow separate plan paths. [B2 qualification and limits](../superpowers/specs/paos-pmeth-b2-evidence.en.md)
+
 ## What It Solves
 
 Product-agent work often fails in two opposite ways: it starts coding before the project contract is clear, or it forces heavy methodology onto simple work. Methodology intelligence gives Product-Agent OS a middle path:

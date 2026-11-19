@@ -12,3 +12,18 @@ export type ProjectAnalysisView={
  limitations:string[];database:{available:false;reason:'DATABASE_CONNECTION_NOT_CONFIGURED'};
  projection:{files:number;bytes:number;omitted:number;coverage:'partial'};
 };
+import type {MethodologyDecision} from './methodology-decision.ts';
+
+
+export type TaskAdviceRequest = {
+ taskId: string; taskRevision: number; mode: 'defect_fix' | 'docs_only';
+ sourcePath?: string; testPath?: string; testCommand?: string;
+};
+
+export type TaskAdviceView = {
+ schemaVersion: 'paos_project_task_advice_v1'; projectId: string; taskId: string; taskRevision: number;
+ sourceRevision: string | null; analysisScanId: string | null; adapterSourceRevision: string | null;
+ selector: 'project_analysis_task_bridge'; status: 'ready' | 'partial' | 'unavailable' | 'stale';
+ coverage: {content: string[]; metadataCount: number; omittedCount: number};
+ warnings: string[]; decision: MethodologyDecision | null;
+};

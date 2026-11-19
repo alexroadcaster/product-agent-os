@@ -17,7 +17,7 @@ export async function g03Fixture(t:{after(callback:()=>Promise<void>):void},extr
  await pair();
  t.after(async()=>{await (app as any).close?.();await store.close();assert.equal(dirname(resolve(root)),scratch);assert.ok(basename(root).startsWith('paos-g03-'));await rm(root,{recursive:true,force:true});});
  return {root,workspace,profile,store,get app(){return app;},
-  async request(path:string,input?:unknown,headers:Record<string,string>={}){return app.handleRequest(new Request(origin+'/api/v1'+path,{method:input===undefined?'GET':'POST',headers:{host:new URL(origin).host,origin,cookie,'x-paos-csrf':csrf,'content-type':'application/json',...headers},...(input===undefined?{}:{body:JSON.stringify(input)})}));},
+  async request(path:string,input?:unknown,headers:Record<string,string>={},signal?:AbortSignal){return app.handleRequest(new Request(origin+'/api/v1'+path,{method:input===undefined?'GET':'POST',headers:{host:new URL(origin).host,origin,cookie,'x-paos-csrf':csrf,'content-type':'application/json',...headers},signal,...(input===undefined?{}:{body:JSON.stringify(input)})}));},
   async restart(){await (app as any).close?.();app=await createLocalApplication(options);await pair();}
  };
 }

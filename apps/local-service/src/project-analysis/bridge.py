@@ -1,7 +1,7 @@
 """Fixed stdlib-only bridge. Input paths are supplied solely by the trusted host.
 
-Only discovery over an owned projection is allowed here. First-run orchestration
-also executes a script matrix and is deliberately outside this boundary.
+Discovery and task advice consume an owned projection. The task request comes
+from the trusted local-service host on stdin and cannot select an executable.
 """
 
 import json
@@ -15,9 +15,15 @@ def main() -> None:
     sys.stderr.reconfigure(encoding="utf-8")
     if sys.version_info < (3, 11):
         raise RuntimeError("unsupported Python version")
-    scripts, projection = (Path(value).resolve() for value in sys.argv[1:])
+    scripts, projection = (Path(value).resolve() for value in sys.argv[1:3])
     sys.path.insert(0, str(scripts))
     from product_agent_os.discovery import analyze_workspace
+
+    if sys.argv[3:] == ["--task-advice"]:
+        emit_task_advice(projection)
+        return
+    if sys.argv[3:]:
+        raise ValueError("unsupported mode")
 
     result = analyze_workspace(projection)
     paths = frozenset(result["detected_files"])
@@ -38,6 +44,25 @@ def main() -> None:
         "components": components,
     }
     print(json.dumps(output, ensure_ascii=False))
+
+
+def emit_task_advice(projection: Path) -> None:
+    from product_agent_os.discovery import analyze_workspace
+    from product_agent_os.methodology_decision import build_methodology_decision
+    from product_agent_os.task_routing import build_task_routing, normalize_task_intent
+
+    text = sys.stdin.buffer.read(16 * 1024 + 1)
+    if len(text) > 16 * 1024:
+        raise ValueError("request too large")
+    request = json.loads(text)
+    if set(request) != {"task", "scope"} or request["task"] is None:
+        raise ValueError("invalid request")
+    task, intent = normalize_task_intent(projection, request["task"])
+    audit = analyze_workspace(projection, intent_hint=intent)
+    route = build_task_routing(projection, audit, task, include_revision_sources=True)
+    sources = route.pop("revision_sources")
+    decision = build_methodology_decision(projection, audit, task, route, sources, host_scope=request["scope"])
+    print(json.dumps({"schemaVersion": "paos_task_advice_bridge_v1", "decision": decision}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

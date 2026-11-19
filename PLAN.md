@@ -30,7 +30,7 @@ F30/F31/F32 implemented / poc_research_locally_verified,3/3; [решения и 
 
 Выполнены все 17 исполняемых задач A в выбранном объёме. METH-15 закрыла четыре границы Sessions, Artifacts, Graph и App. Workflows, Skills, кандидат handoff и пять прежних исключений сохраняют отдельные решения `hold`. METH-16 ссылается на B. [Результаты A4](docs/planning/methodology-improvement-2026-11-15.md#a4-results) · [Решения A4](docs/architecture/decisions/adr-dashboard-task-boundary.md#a2-rollout) · [JSON A](docs/planning/methodology-improvement-2026-11-15.json)
 
-В B выполнены 7 из 7 задач B1. CLI предлагает тест для backend-ошибки и проверку источника для правки документа в одном проекте. Следующая задача B2 — PAOS-PMETH-19, подключение существующего API к контракту совета. Сохранение решения, запись в проект, FSD и расширенная приёмка имеют отдельные условия входа. [26 задач плана B](docs/planning/user-project-methodologies-2026-11-15.md) · [JSON B](docs/planning/user-project-methodologies-2026-11-15.json)
+В плане B выполнено 13 из 26 задач. B1 и B2 закрыты в локальном read-only объёме CLI/Web. Владелец утвердил hold для поставки. В B3 доступны по зависимостям две независимые ветки с PAOS-PMETH-08 и PAOS-PMETH-10. [План B](docs/planning/user-project-methodologies-2026-11-15.md) · [Решение о поставке](docs/superpowers/specs/paos-pmeth-b2-evidence.md#rollout-decision)
 
 ## FUNC-G01 — закрыта, 15.11.2026
 

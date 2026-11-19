@@ -202,6 +202,7 @@ export interface M1Api {
   projectInventoryPolicy(projectId:string):Promise<{version:number;policy:import('../../../../packages/contracts/project-inventory.ts').InventoryPolicy;policyVersion:string}>;
   projectScans(projectId:string,signal?:AbortSignal):Promise<ProjectScan>;
   projectAnalysis(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-analysis.ts').ProjectAnalysisView>;
+  taskAdvice(projectId:string,input:import('../../../../packages/contracts/project-analysis.ts').TaskAdviceRequest,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-analysis.ts').TaskAdviceView>;
   startProjectScan(projectId:string,input?:{requestId?:string;revision?:string}):Promise<ProjectScan>;
   cancelProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
   retryProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
@@ -518,6 +519,7 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     projectInventoryPolicy:id=>request(`${projectPath(id)}/files/policy`),
     projectScans:(id,signal)=>request(`${projectPath(id)}/scans`,undefined,'GET',signal),
     projectAnalysis:(id,signal)=>request(`${projectPath(id)}/analysis`,undefined,'GET',signal),
+    taskAdvice:(id,input,signal)=>request(`${projectPath(id)}/analysis/task-advice`,input,'POST',signal),
     startProjectScan:(id,input={})=>request(`${projectPath(id)}/scans`,input),
     cancelProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/cancel`,{}),
     retryProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/retry`,{}),

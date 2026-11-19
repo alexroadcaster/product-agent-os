@@ -1,6 +1,6 @@
 # Product-Agent OS — direction B: methodologies for user projects
 
-Source status: repository_source / owner_requested_plan / B1_locally_verified; remaining_slices_planned.
+Source status: repository_source / owner_requested_plan / B1_B2_locally_verified; release_hold; remaining_slices_planned.
 Created: 2026-11-15. Revised: 2026-11-18. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Purpose and two independent directions
@@ -82,6 +82,8 @@ Groups organize tasks by outcome. Each task can start when its own `depends_on` 
 | **B4. Execution, evidence and recovery** | 06, 13, 14, 15, 16, 17, 18, 21 | Task 06 tracks specification changes. Tasks 13–15 define ownership, skills and the execution plan. Task 16 covers preview and writes, 17 covers criterion-level evidence, 18 persists decisions, and 21 handles stopping and recovery. Each capability follows its own task dependencies. |
 
 **B1 status.** Seven of seven tasks implemented and locally verified. The CLI returns a named test for the backend defect and a source check for the documentation task in the same disposable project. Next dependency is PMETH-19. [Local checks and handoff](../superpowers/specs/paos-pmeth-b1-evidence.en.md).
+
+**B2 status.** Six of six tasks complete. The read-only CLI/Web profile is locally qualified, the four-run pilot returned insufficient evidence of benefit, and the owner approved a release `hold`. [Evidence and disposition](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
 
 **First accepted outcome: read-only CLI+Web.** Hard prerequisites: PMETH 01 → 02 → 22 → 03 → 04 → 05 → 07 → 19 → 20 → 26. In one disposable project, backend bug and docs-only give matching CLI/Web decisions with the same data and coverage, as well as reasons and the next verifiable step. PMETH-26 captures verified RU/EN examples. Acceptance requires observed CLI/HTTP/browser checks and negatives, plus a comprehension observation or explicit gap. PMETH-06, PMETH-08–18 and PMETH-21/23–25 are outside this milestone’s prerequisites.
 
@@ -1131,16 +1133,16 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-19
 - Task name: Connect the Python methodology engine to application API/runtime
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-07
 - Blocks: PAOS-PMETH-18, PAOS-PMETH-20
 - External references: PAOS-FUNC-01, PAOS-FUNC-08, PAOS-FUNC-27
@@ -1165,34 +1167,34 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: builder — local-service + plugin-runtime-builder; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Read-only task advice through the existing Project Analysis API, CLI parity, partial/last relevant stage and negative receipts.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: PAOS-PMETH-20
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Connected guarded HTTP to the isolated Python bridge. Verified CLI/Web parity, scope, failures and cancellation.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: An observable recommendation for a saved task.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: PAOS-PMETH-20.
 
 ### Task `PAOS-PMETH-20`
 
 - Task: PAOS-PMETH-20
 - Task name: Expose methodology choices, plans and evidence in the UI
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: Design-DD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-19
 - Blocks: PAOS-PMETH-21, PAOS-PMETH-26
 - External references: PAOS-FUNC-23, PAOS-FUNC-24, PAOS-FUNC-27, UI-12
@@ -1217,19 +1219,19 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: product-manager + builder — web; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Read-only bug/docs flow in Sources and Teams & Tasks, synthetic browser evidence and a comprehension observation or explicit gap.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: PAOS-PMETH-26
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The existing task summary shows advice. Verified both locales and themes, keyboard and result states. Human comprehension remains an evidence gap.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: An observable recommendation for a saved task.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: PAOS-PMETH-26.
 
 ### Task `PAOS-PMETH-21`
 
@@ -1339,16 +1341,16 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-23
 - Task name: Run end-to-end synthetic acceptance of the methodology path
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: Spec-DD, Design-DD, TDD, ADD, FSD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-26
 - Blocks: PAOS-PMETH-24
 - External references: PAOS-FUNC-19, PAOS-FUNC-21, PAOS-FUNC-22
@@ -1373,34 +1375,34 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: tester + reviewer; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: End-to-end receipt matrices for supported scenarios and findings dispositions.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: PAOS-PMETH-24
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The base profile passed synthetic end-to-end acceptance, 35 browser checks and exact local revision qualification.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: An observable recommendation for a saved task.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: PAOS-PMETH-24.
 
 ### Task `PAOS-PMETH-24`
 
 - Task: PAOS-PMETH-24
 - Task name: Evaluate usefulness with comparable actual-agent pilots
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-23
 - Blocks: PAOS-PMETH-25
 - External references: PAOS-FUNC-11, PAOS-FUNC-23
@@ -1425,34 +1427,34 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: product-manager + tester; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Comparable outcome assessments with provenance and honest benefit verdicts.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: PAOS-PMETH-25
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Ran four owner-authorized Codex trials. All found the correct first step. Evidence is insufficient to establish usefulness or speedup.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: A recorded outcome for the owner’s rollout decision.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: PAOS-PMETH-25.
 
 ### Task `PAOS-PMETH-25`
 
 - Task: PAOS-PMETH-25
 - Task name: Make a bounded delivery and rollout decision
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: ADD, Spec-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-24
 - Blocks: None.
 - External references: PAOS-FUNC-17
@@ -1477,34 +1479,34 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: release-operator + product-manager; owner decision; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Reviewable rollout/hold/rollback decisions without external actions.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: Retain the approved release hold until new evidence is reviewed.
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The owner approved a release hold for the qualified local revision. The disposition records scope, rollback and reevaluation gates.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: A recorded outcome for the owner’s rollout decision.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: Apply the owner’s release hold.
 
 ### Task `PAOS-PMETH-26`
 
 - Task: PAOS-PMETH-26
 - Task name: Prepare user guidance and operator documentation
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B2
 - Methodologies: Spec-DD, Design-DD
 - Schema version: task_matrix_plan_v1
 - Timezone: Europe/Moscow
-- Plan trigger: Owner-requested user-project methodology capability plan; planning only.
+- Plan trigger: Owner-authorized B2 local implementation, synthetic acceptance and rollout disposition.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 11:10
 - Depends on: PAOS-PMETH-20
 - Blocks: PAOS-PMETH-23
 - External references: PAOS-FUNC-25
@@ -1529,16 +1531,16 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Agents: docs-maintainer + product-manager; proposed ownership; delegation=0 now, future concurrency follows actual boundaries.
 - Skills: Reuse canonical project skills listed in Scope; future Python uses python-design-patterns/python-code-style and UI uses frontend-testing-debugging. Skill presence does not prove invocation.
 - Output artifacts: Verified RU/EN examples of the early CLI+Web path in existing guidance.
-- Next step: Check dependencies and source/authority freshness, then select a separately authorized bounded slice.
+- Next step: PAOS-PMETH-23
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The canonical RU/EN guide contains checked CLI/Web examples, partial coverage and the safe next step.
+- files touched / work locations: [B2 evidence and canonical route](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- technical value delivered: Verified in the approved B2 scope.
+- product value delivered: An observable recommendation for a saved task.
+- actual implementation date and time: 19-11-2026 11:10
+- verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
+- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- follow-up: PAOS-PMETH-23.

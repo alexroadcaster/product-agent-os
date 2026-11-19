@@ -9,7 +9,8 @@ export type ScanAnalyzerResult={state?:'completed'|'partial'|'unavailable';count
 export type ScanAnalyzerContext={project:Project;inventory:InventorySnapshot;signal:AbortSignal;publicationGuard:()=>Promise<void>;canPublish:()=>boolean;onProgress:(completed:number,total:number)=>Promise<void>};
 export type ScanAnalyzer=(context:ScanAnalyzerContext)=>Promise<ScanAnalyzerResult>;
 export type ScanLimits={concurrency:number;milliseconds:number;stageMilliseconds:number;resultBytes:number;queued:number};
-type RecordState={schemaVersion:'paos_project_scan_record_v1';latest:ProjectScan|null;lastSuccessful:ProjectScan|null;requests:{id:string;digest:string;scanId:string}[]};
+type AnalysisObservation={scanId:string;stage:ProjectScanStage};
+type RecordState={schemaVersion:'paos_project_scan_record_v1';latest:ProjectScan|null;lastSuccessful:ProjectScan|null;lastAnalysis?:AnalysisObservation;requests:{id:string;digest:string;scanId:string}[]};
 type Saved={version:number;value:RecordState};
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
 const code=(error:unknown)=>typeof(error as any)?.code==='string'?(error as any).code:'PROJECT_SCAN_FAILED';
@@ -18,6 +19,10 @@ const live=(scan:ProjectScan|null)=>scan&&['queued','running'].includes(scan.sta
 const defaults:ScanLimits={concurrency:1,milliseconds:60000,stageMilliseconds:30000,resultBytes:256*1024,queued:20};
 const stageKinds:ProjectScanStageKind[]=['inventory','documents','code','analysis'];
 const blank=():RecordState=>({schemaVersion:'paos_project_scan_record_v1',latest:null,lastSuccessful:null,requests:[]});
+function analysisObservation(scan:ProjectScan|null):AnalysisObservation|undefined{
+ const stage=scan?.stages.find(item=>item.kind==='analysis'&&['completed','partial','failed','unavailable'].includes(item.state));
+ return scan&&stage?{scanId:scan.scanId,stage}:undefined;
+}
 /** Persisted JSON is evidence only after its version, scope and state shape validate. */
 function validScan(scan:unknown,projectId:string):boolean{
  if(scan===null)return true;
@@ -48,6 +53,8 @@ export function createProjectScans(options:{store:LocalStore;analyzers?:Partial<
   if(value.schemaVersion!=='paos_project_scan_record_v1'||!Array.isArray(value.requests)||value.requests.length>32
    ||!value.requests.every(item=>item&&typeof item.id==='string'&&item.id.length<=160&&typeof item.digest==='string'&&/^[a-f0-9]{64}$/.test(item.digest)&&typeof item.scanId==='string')
    ||!validScan(value.latest,projectId)||!validScan(value.lastSuccessful,projectId)
+   ||value.lastAnalysis!==undefined&&(!value.lastAnalysis||!/^[a-f0-9-]{36}$/.test(value.lastAnalysis.scanId)
+      ||value.lastAnalysis.stage?.kind!=='analysis'||!['completed','partial','failed','unavailable'].includes(value.lastAnalysis.stage.state))
    ||value.lastSuccessful&&!['completed','partial'].includes(value.lastSuccessful.state))fail('PROJECT_SCAN_STATE_UNAVAILABLE');
   return {version:saved.version,value};
  }
@@ -130,6 +137,11 @@ export function createProjectScans(options:{store:LocalStore;analyzers?:Partial<
  }
  function pump(){if(pumping||closed)return;pumping=true;setImmediate(()=>{pumping=false;while(!closed&&work.size<limits.concurrency&&queue.length){const next=queue.shift()!;const pending=run(next.projectId,next.scanId);work.add(pending);void pending.finally(()=>{work.delete(pending);pump();}).catch(()=>{});}});}
  async function status(projectId:string){await ready;const saved=await read(projectId);return view(projectId,saved);}
+ async function latestAnalysis(projectId:string){
+  await ready;
+  const {value}=await read(projectId);
+  return analysisObservation(value.latest)??value.lastAnalysis??analysisObservation(value.lastSuccessful);
+ }
  async function start(projectId:string,input:{requestId?:string;revision?:string;stages?:ProjectScanStageKind[]}={}){
   await ready;if(closed)fail('PROJECT_SCAN_CLOSED');if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(key=>!['requestId','revision','stages'].includes(key))||input.requestId!==undefined&&(typeof input.requestId!=='string'||!/^[-A-Za-z0-9_:]{1,160}$/.test(input.requestId))||input.revision!==undefined&&(typeof input.revision!=='string'||!/^[a-f0-9]{64}$/.test(input.revision))||input.stages!==undefined&&(!Array.isArray(input.stages)||!input.stages.length||input.stages.length>stages.length||input.stages.some(kind=>!stages.includes(kind))||new Set(input.stages).size!==input.stages.length))fail('PROJECT_SCAN_INPUT_INVALID');
   const selected=input.stages?stages.filter(kind=>kind==='inventory'||input.stages!.includes(kind)):stages;
@@ -143,6 +155,8 @@ export function createProjectScans(options:{store:LocalStore;analyzers?:Partial<
    }
    if(queue.length+work.size>=limits.queued)fail('PROJECT_SCAN_BUSY');
    const now=stamp(),scan:ProjectScan={schemaVersion:'paos_project_scan_v1',scanId:randomUUID(),projectId,attempt:(latest?.attempt??0)+1,rootIdentity:p.rootIdentity,policyVersion,requestedRevision:input.revision??null,inventoryRevision:null,state:'queued',stage:null,startedAt:now,updatedAt:now,counts:null,reasons:[],stages:selected.map(kind=>({kind,state:'pending',updatedAt:now,reasons:[]}))};
+   const analysis=analysisObservation(latest)??saved.value.lastAnalysis??analysisObservation(saved.value.lastSuccessful);
+   if(analysis)saved.value.lastAnalysis=analysis;
    saved.value.latest=scan;saved.value.requests.push({id:requestId,digest,scanId:scan.scanId});saved.value.requests=saved.value.requests.slice(-32);
    const persisted=await save(projectId,saved);ownedIds.add(scan.scanId);queue.push({projectId,scanId:scan.scanId});pump();return view(projectId,persisted);
   });
@@ -154,7 +168,7 @@ export function createProjectScans(options:{store:LocalStore;analyzers?:Partial<
    controllers.get(scanId)?.abort();for(let i=queue.length-1;i>=0;i--)if(queue[i].projectId===projectId&&queue[i].scanId===scanId)queue.splice(i,1);ownedIds.delete(scanId);
    scan.state='cancelled';scan.stage=null;scan.updatedAt=stamp();scan.finishedAt=stamp();scan.reasons=[...new Set([...scan.reasons,'OWNER_CANCELLED'])];for(const stage of scan.stages)if(stage.state==='pending'||stage.state==='running'){stage.state='cancelled';stage.updatedAt=stamp();stage.reasons=['OWNER_CANCELLED'];}return view(projectId,await save(projectId,saved));});
  }
- return {initialized:async()=>{await ready;},status,start,cancel,
+ return {initialized:async()=>{await ready;},status,start,cancel,latestAnalysis,
   async retry(projectId:string,scanId:string){await ready;const saved=await read(projectId);if(saved.value.latest?.scanId!==scanId&&!saved.value.requests.some(item=>item.id==='retry:'+scanId))fail('PROJECT_SCAN_NOT_FOUND');if(live(saved.value.latest)&&saved.value.latest!.scanId===scanId)fail('PROJECT_SCAN_BUSY');return start(projectId,{requestId:'retry:'+scanId,...(saved.value.latest?.scanId===scanId?{stages:saved.value.latest.stages.map(stage=>stage.kind)}:{})});},
   async close(){if(closed)return;closed=true;for(const controller of controllers.values())controller.abort();await ready;for(const p of await store.projects()){let saved:Saved;try{saved=await read(p.id);}catch{continue;}if(live(saved.value.latest)&&ownedIds.has(saved.value.latest!.scanId)){const scan=saved.value.latest!;scan.state='interrupted';scan.stage=null;scan.updatedAt=stamp();scan.finishedAt=stamp();scan.reasons=[...new Set([...scan.reasons,'SERVICE_SHUTDOWN_NO_REPLAY'])];try{await save(p.id,saved);}catch{}}}queue.length=0;await Promise.allSettled([...work]);}
  };

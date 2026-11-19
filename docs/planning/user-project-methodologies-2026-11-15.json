@@ -7,7 +7,7 @@
   "source_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
   "english_plan": "docs/planning/user-project-methodologies-2026-11-15.en.md",
   "status": "in_progress",
-  "execution_authority": "owner_authorized_bounded_b1_local_implementation",
+  "execution_authority": "owner_authorized_bounded_b1_b2_local_implementation_and_synthetic_pilot",
   "internal_plan_reference": "docs/planning/methodology-improvement-2026-11-15.json",
   "internal_plan_reference_semantics": "independent_direction_no_hard_dependency",
   "source_snapshot": {
@@ -1142,7 +1142,7 @@
       "id": "PAOS-PMETH-19",
       "title": "Связать Python methodology engine с API и runtime приложения",
       "title_en": "Connect the Python methodology engine to application API/runtime",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1198,14 +1198,15 @@
         }
       ],
       "verification_profile": "PV-BRIDGE",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md"
     },
     {
       "id": "PAOS-PMETH-20",
       "title": "Показать пользователю выбор, план и доказательства в интерфейсе",
       "title_en": "Expose methodology choices, plans and evidence in the UI",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1260,8 +1261,9 @@
         }
       ],
       "verification_profile": "PV-UI",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md"
     },
     {
       "id": "PAOS-PMETH-21",
@@ -1383,7 +1385,7 @@
       "id": "PAOS-PMETH-23",
       "title": "Провести сквозную synthetic приёмку методологического пути",
       "title_en": "Run end-to-end synthetic acceptance of the methodology path",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1436,14 +1438,15 @@
         }
       ],
       "verification_profile": "PV-E2E",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md"
     },
     {
       "id": "PAOS-PMETH-24",
       "title": "Оценить полезность маршрута на сопоставимых actual-agent пилотах",
       "title_en": "Evaluate usefulness with comparable actual-agent pilots",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1491,14 +1494,16 @@
         }
       ],
       "verification_profile": "PV-ACTUAL",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md",
+      "usefulness": "insufficient_evidence"
     },
     {
       "id": "PAOS-PMETH-25",
       "title": "Принять ограниченное решение о поставке и rollout",
       "title_en": "Make a bounded delivery and rollout decision",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1544,14 +1549,18 @@
         }
       ],
       "verification_profile": "PV-DECISION",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md",
+      "rollout_disposition": "hold",
+      "owner_reviewed": true,
+      "reviewed_adapter_revision": "7a41dce01fdff0220427f66bed70d986361ca8559c6511298774d3ce48c7c448"
     },
     {
       "id": "PAOS-PMETH-26",
       "title": "Подготовить пользовательское объяснение и operator документацию",
       "title_en": "Prepare user guidance and operator documentation",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B2",
@@ -1600,8 +1609,9 @@
         }
       ],
       "verification_profile": "PV-DOCS",
-      "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "implementation_at": "19-11-2026 11:10",
+      "execution_authority": "owner_authorized_b2_local_slice",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md"
     }
   ],
   "planning_revision": {

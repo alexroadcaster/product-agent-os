@@ -16,10 +16,12 @@ type Runtime={pythonExecutable?:string;coreScripts?:string;bridgePath?:string};
 const defaults:Limits={files:200,bytes:2*1024*1024,fileBytes:64*1024,milliseconds:15000,outputBytes:128*1024};
 const coreScripts=fileURLToPath(new URL('../../../../plugins/product-agent-os/scripts/',import.meta.url));
 const bridgePath=fileURLToPath(new URL('./bridge.py',import.meta.url));
-const coreFiles=['__init__.py','discovery.py','contracts.py','plugin_components.py','methodology_audit.py','methodology_catalog.py','methodology_synthesis.py','question_protocol.py','templates.py'];
+const coreFiles=['__init__.py','discovery.py','contracts.py','plugin_components.py','methodology_audit.py','methodology_catalog.py','methodology_synthesis.py','question_protocol.py','templates.py',
+ 'task_routing.py','code_quality_selector.py','test_strategy_selector.py','methodology_contract.py','methodology_decision.py','methodology_policy.py','methodology_profile.py','methodology_requirements.py','methodology_check.py'];
 async function adapterRevision(runtime:Runtime){
  const scripts=runtime.coreScripts??coreScripts;
- const paths=[fileURLToPath(import.meta.url),runtime.bridgePath??bridgePath,...coreFiles.map(name=>join(scripts,'product_agent_os',name)),join(scripts,'..','assets','methodology','methodology-catalog.json')];
+ const paths=[fileURLToPath(import.meta.url),fileURLToPath(new URL('./task-advice.mts',import.meta.url)),runtime.bridgePath??bridgePath,
+  ...coreFiles.map(name=>join(scripts,'product_agent_os',name)),join(scripts,'..','assets','methodology','methodology-catalog.json')];
  const digest=createHash('sha256');for(const path of paths){const bytes=await readFile(path);if(bytes.length>2*1024*1024)fail('ANALYSIS_CORE_SOURCE_LIMIT');digest.update(String(bytes.length)+':');digest.update(bytes);}return digest.digest('hex');
 }
 const control=['AGENTS.md','REQUIREMENTS.md','PLAN.md','TEST.md','EVALS.md','RUNLOG.md'];
@@ -37,13 +39,13 @@ export function unavailableProjectAnalysis(project:Pick<Project,'id'|'rootIdenti
 }
 
 /** Only a fixed trusted Python entry point sees an owned projection; target code is never imported. */
-function runBridge(runtime:Runtime,projection:string,owned:string,limits:Limits,signal:AbortSignal):Promise<unknown>{
+function runBridge(runtime:Runtime,projection:string,owned:string,limits:Limits,signal:AbortSignal,taskRequest?:string):Promise<unknown>{
  return new Promise((accept,reject)=>{
   if(signal.aborted){reject(Object.assign(Error('ANALYSIS_CANCELLED'),{code:'ANALYSIS_CANCELLED'}));return;}
   const env:NodeJS.ProcessEnv={HOME:owned,USERPROFILE:owned,TEMP:owned,TMP:owned};
   for(const key of ['SystemRoot','WINDIR'])if(process.env[key])env[key]=process.env[key];
   const pathValue=process.env.Path??process.env.PATH;if(pathValue)env.PATH=pathValue;
-  const child=spawn(runtime.pythonExecutable??'python',['-I','-S','-B',runtime.bridgePath??bridgePath,runtime.coreScripts??coreScripts,projection],{cwd:owned,env,shell:false,windowsHide:true,stdio:['ignore','pipe','pipe']});
+  const child=spawn(runtime.pythonExecutable??'python',['-I','-S','-B',runtime.bridgePath??bridgePath,runtime.coreScripts??coreScripts,projection,...(taskRequest===undefined?[]:['--task-advice'])],{cwd:owned,env,shell:false,windowsHide:true,stdio:['pipe','pipe','pipe']});
   let bytes=0;const chunks:Buffer[]=[];let failure:string|undefined;
   const stop=(code:string)=>{failure??=code;child.kill();};
   const abort=()=>stop('ANALYSIS_CANCELLED');signal.addEventListener('abort',abort,{once:true});
@@ -53,6 +55,8 @@ function runBridge(runtime:Runtime,projection:string,owned:string,limits:Limits,
   const cleanup=()=>{clearTimeout(timer);signal.removeEventListener('abort',abort);};
   child.once('error',()=>{cleanup();reject(Object.assign(Error('ANALYSIS_PYTHON_UNAVAILABLE'),{code:'ANALYSIS_PYTHON_UNAVAILABLE'}));});
   child.once('close',exit=>{cleanup();if(failure||exit!==0){reject(Object.assign(Error(failure??'ANALYSIS_CORE_FAILED'),{code:failure??'ANALYSIS_CORE_FAILED'}));return;}try{accept(JSON.parse(Buffer.concat(chunks).toString('utf8')));}catch{reject(Object.assign(Error('ANALYSIS_OUTPUT_INVALID'),{code:'ANALYSIS_OUTPUT_INVALID'}));}});
+  child.stdin.on('error',()=>stop('ANALYSIS_CORE_FAILED'));
+  child.stdin.end(taskRequest);
  });
 }
 
@@ -116,5 +120,6 @@ export function createProjectAnalysis({store,limits:configured,runtime={}}:{stor
   }finally{if(owned)await rm(owned,{recursive:true,force:true});}
   return {state:view.availability==='available'?'partial':'unavailable',reasons:view.limitations,counts:{projected:view.projection.files,omitted:view.projection.omitted},data:{analysis:view}};
  }
- return {analyze,currentRevision:()=>adapterRevision(runtime)};
+ return {analyze,currentRevision:()=>adapterRevision(runtime),
+  runTaskBridge:(projection:string,owned:string,payload:string,signal:AbortSignal)=>runBridge(runtime,projection,owned,limits,signal,payload)};
 }

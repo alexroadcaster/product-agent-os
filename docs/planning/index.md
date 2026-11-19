@@ -9,7 +9,7 @@ DG01 завершила исправление ссылок и восемь по
 ## Текущие владельцы
 
 - [A — качество самого Product-Agent OS](methodology-improvement-2026-11-15.md). Выполнены все 17 исполняемых задач в выбранном объёме. Пять прежних исключений сохраняют отдельный `hold`. Прежняя METH-16 — справочная запись. [JSON v2](methodology-improvement-2026-11-15.json)
-- [B — методологии в проектах пользователей](user-project-methodologies-2026-11-15.md). B1 выполнена, 7 из 26 задач реализованы. Следующая задача — PAOS-PMETH-19. Полный EN доступен через переключатель языка. [JSON](user-project-methodologies-2026-11-15.json)
+- [B — методологии в проектах пользователей](user-project-methodologies-2026-11-15.md). B1 и B2 выполнены, 13 из 26 задач закрыты. Владелец утвердил hold для поставки. [JSON](user-project-methodologies-2026-11-15.json)
 
 Файлы `methodology-improvement-2026-11-15.en.json` и `user-project-methodologies-2026-11-15.en.json` — побайтовые зеркала соответствующих JSON без суффикса; источником статусов остаются исходные файлы. После изменения исходного JSON перед сборкой обновите зеркало командой `Copy-Item -LiteralPath docs/planning/<имя>.json -Destination docs/planning/<имя>.en.json` и сравните SHA-256 обоих файлов через `Get-FileHash`. Зеркало не переводится и не редактируется отдельно.
 
