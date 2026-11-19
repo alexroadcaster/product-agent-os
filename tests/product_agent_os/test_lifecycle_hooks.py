@@ -82,6 +82,18 @@ def write_marker(root: Path, marker: dict[str, object]) -> None:
     state.write_text(json.dumps(marker), encoding="utf-8")
 
 
+def marker_patch(path: str, candidate: str, previous: str | None = None) -> str:
+    if previous is None:
+        header = [f"*** Add File: {path}"]
+        removed = []
+    else:
+        header = [f"*** Update File: {path}", "@@"]
+        removed = ["-" + line for line in previous.splitlines()]
+    added = ["+" + line for line in candidate.splitlines()]
+    footer = ["*** End of File", "*** End Patch"] if previous is not None else ["*** End Patch"]
+    return "\n".join(["*** Begin Patch", *header, *removed, *added, *footer])
+
+
 def load_hook_module(script: Path):
     spec = importlib.util.spec_from_file_location(f"test_{script.stem}", script)
     if spec is None or spec.loader is None:
@@ -250,6 +262,43 @@ class LifecycleHooksTest(unittest.TestCase):
                      mock.patch('sys.stdout', output):
                     self.assertEqual(module.main([]), 0)
                 self.assertEqual(bool(output.getvalue()), denied, (command, output.getvalue()))
+
+    def test_status_and_hash_exact_reads_without_write_authority(self):
+        allowed = (
+            "git --no-optional-locks status",
+            "git --no-optional-locks status --short",
+            "Get-FileHash -LiteralPath 'research/example file.md'",
+            "Get-FileHash -LiteralPath .codex/artifact-templates/task-start-brief.md -Algorithm SHA256",
+            "Get-FileHash -Algorithm SHA256 -LiteralPath README.md",
+            "Get-FileHash -LiteralPath README.md -Algorithm SHA256 | Select-Object -ExpandProperty Hash",
+        )
+        denied = (
+            "git --no-optional-locks --git-dir elsewhere status",
+            "git --no-optional-locks reset --hard",
+            "git --no-optional-locks status --output=out.txt",
+            "git --no-optional-locks status --short; Set-Content out.txt x",
+            "Get-FileHash -Path README.md", "Get-FileHash -LiteralPath ../other.md",
+            r"Get-FileHash -LiteralPath C:\other.md", r"Get-FileHash -LiteralPath \\server\file",
+            "Get-FileHash -LiteralPath 'docs/*.md'", "Get-FileHash -LiteralPath README.md:stream",
+            "Get-FileHash -LiteralPath NUL.txt", "Get-FileHash -LiteralPath -Verbose",
+            "Get-FileHash -LiteralPath README.md -Algorithm MD5", "Get-FileHash -LiteralPath A.md,B.md",
+            "Get-FileHash -LiteralPath $(Set-Content out.txt x)",
+            "Get-FileHash -LiteralPath README.md > out.txt",
+            "Get-FileHash -LiteralPath README.md | Out-File out.txt",
+            "Get-FileHash -LiteralPath README.md | Select-Object -ExpandProperty Path",
+        )
+        for hooks in (HOOKS, LOCAL_HOOKS):
+            module = load_hook_module(hooks / "pre_tool_use_policy.py")
+            for command in (*allowed, *denied):
+                with self.subTest(hooks=hooks, command=command):
+                    payload = {"tool_name": "exec_command", "tool_input": {"cmd": command}}
+                    output = io.StringIO()
+                    with mock.patch.object(module, "_read_payload", return_value=(payload, "")), \
+                         mock.patch.object(module, "_workspace_root", return_value=ROOT), \
+                         mock.patch.object(module, "_lifecycle_marker_ok", return_value=(False, "terminal")), \
+                         mock.patch("sys.stdout", output):
+                        self.assertEqual(0, module.main([]))
+                    self.assertEqual(command in denied, bool(output.getvalue()), output.getvalue())
 
     def test_g7_literal_read_classifier_preserves_mutation_boundary(self):
         allowed = [
@@ -455,11 +504,12 @@ class LifecycleHooksTest(unittest.TestCase):
             root = Path(tmp)
             own = ".codex/product-agent-os/lifecycle-state." + hashlib.sha256(b"chat-a").hexdigest() + ".json"
             other = ".codex/product-agent-os/lifecycle-state." + hashlib.sha256(b"chat-b").hexdigest() + ".json"
+            candidate = json.dumps(valid_marker(session_id="chat-a"), indent=2)
             patches = [
-                (f"*** Begin Patch\n*** Add File: {own}\n+{{\"scope_note_shown\": true}}\n*** End Patch", True),
-                (f"*** Begin Patch\n*** Add File: {other}\n+{{\"scope_note_shown\": true}}\n*** End Patch", False),
+                (marker_patch(own, candidate), True),
+                (marker_patch(other, candidate), False),
                 (f"*** Begin Patch\n*** Add File: report.md\n+.codex/product-agent-os/lifecycle-state.json scope_note_shown\n*** End Patch", False),
-                (f"*** Begin Patch\n*** Add File: {own}\n+{{\"scope_note_shown\": true}}\n*** Add File: report.md\n+hello\n*** End Patch", False),
+                (marker_patch(own, candidate).replace("*** End Patch", "*** Add File: report.md\n+hello\n*** End Patch"), False),
             ]
             for patch, allowed in patches:
                 with self.subTest(allowed=allowed, patch=patch):
@@ -485,6 +535,82 @@ class LifecycleHooksTest(unittest.TestCase):
                     "tool_input": {"command": patches[1][0].replace(other, other.upper())}
                 }, root)
                 self.assertIn("only this session", result.stdout)
+
+    def test_marker_preflight_preserves_existing_bytes_on_rejection(self):
+        session = "chat-a"
+        relative = ".codex/product-agent-os/lifecycle-state." + hashlib.sha256(session.encode()).hexdigest() + ".json"
+        terminal = valid_marker(session_id=session, status="ready_for_completion_brief", completion_ready=True)
+        candidate = valid_marker(session_id=session, task_id="NEW-TASK")
+        previous = json.dumps(terminal, indent=2)
+        valid = json.dumps(candidate, indent=2)
+        for hooks in (HOOKS, LOCAL_HOOKS):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                path = root / relative
+                path.parent.mkdir(parents=True)
+                original = (previous + "\n").replace("\n", "\r\n").encode("utf-8")
+                path.write_bytes(original)
+
+                def decision(patch: str) -> str:
+                    result = run_hook(hooks / "pre_tool_use_policy.py", {
+                        "session_id": session, "tool_name": "apply_patch", "tool_input": {"command": patch},
+                    }, root)
+                    self.assertEqual(0, result.returncode, result.stderr)
+                    return result.stdout
+
+                for count in (63, 65, 66):
+                    invalid = json.dumps({**candidate, "brief_digest": "sha256:" + "a" * count}, indent=2)
+                    self.assertIn("brief_digest", decision(marker_patch(relative, invalid, previous)))
+                    self.assertEqual(original, path.read_bytes())
+                for changed, reason in (
+                    (valid.replace('"session_id": "chat-a"', '"session_id": "chat-b"'), "session_id"),
+                    (valid.replace("0" * 64, "A" * 64), "brief_digest"),
+                    (valid[:-1], "invalid lifecycle marker"),
+                    (valid.replace('"status":', '"status": "blocked", "status":'), "invalid lifecycle marker"),
+                    (valid.replace('"task_id":', '"extra": NaN, "task_id":'), "invalid lifecycle marker"),
+                    ('{"task_start_brief_shown": true}', "session_id"),
+                    (json.dumps({**candidate, "brief_schema_version": []}, indent=2), "brief_schema_version"),
+                    (json.dumps({**candidate, "status": "completed"}, indent=2), "status"),
+                    (json.dumps({**terminal, "completion_ready": False}, indent=2), "completion_ready"),
+                ):
+                    with self.subTest(hooks=hooks, reason=reason):
+                        self.assertIn(reason, decision(marker_patch(relative, changed, previous)))
+                        self.assertEqual(original, path.read_bytes())
+                self.assertIn("existing marker", decision(marker_patch(relative, valid)))
+                self.assertIn("current marker", decision(marker_patch(relative, valid, previous.replace('"local hook test"', '"stale"'))))
+                self.assertEqual(original, path.read_bytes())
+                self.assertEqual("", decision(marker_patch(relative, valid, previous)))
+                path.write_text(valid + "\n", encoding="utf-8")
+                self.assertEqual("", decision(marker_patch(relative, previous, valid)))
+
+    def test_literal_set_content_validates_the_marker_with_an_active_previous_scope(self):
+        relative = ".codex/product-agent-os/lifecycle-state.json"
+        for hooks in (HOOKS, LOCAL_HOOKS):
+            with tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                write_marker(root, valid_marker())
+                path = root / relative
+                original = path.read_bytes()
+                candidate = json.dumps(valid_marker(scope="operator's example")).replace("'", "''")
+                command = f"Set-Content -LiteralPath {relative} -Value '{candidate}' -Encoding utf8NoBOM"
+                for action, extra, reason in (
+                    (command, {}, ""),
+                    (command.replace("0" * 64, "0" * 66), {}, "brief_digest"),
+                    (command + "; Set-Content output.md changed", {}, "literal Set-Content"),
+                    (command, {"shell": "custom-shell"}, "literal Set-Content"),
+                    (command, {"workdir": str(root / "other")}, "working directory"),
+                    (command.replace("utf8NoBOM", "utf8"), {}, "literal Set-Content"),
+                ):
+                    with self.subTest(hooks=hooks, reason=reason):
+                        result = run_hook(hooks / "pre_tool_use_policy.py", {
+                            "tool_name": "exec_command", "tool_input": {"cmd": action, **extra},
+                        }, root)
+                        self.assertEqual(0, result.returncode, result.stderr)
+                        if reason:
+                            self.assertIn(reason, result.stdout)
+                        else:
+                            self.assertEqual("", result.stdout)
+                        self.assertEqual(original, path.read_bytes())
 
     def test_read_only_report_requires_pinned_authority_and_exact_patch(self):
         module = load_hook_module(HOOKS / "pre_tool_use_policy.py")
@@ -974,7 +1100,7 @@ class LifecycleHooksTest(unittest.TestCase):
                 {
                     "tool_name": "shell_command",
                     "tool_input": {
-                        "command": "Set-Content .codex/product-agent-os/lifecycle-state.json '{\"task_start_brief_shown\": true}'"
+                        "command": f"Set-Content -LiteralPath .codex/product-agent-os/lifecycle-state.json -Value '{json.dumps(valid_marker())}' -Encoding utf8NoBOM"
                     },
                 },
                 Path(tmp),
@@ -986,9 +1112,16 @@ class LifecycleHooksTest(unittest.TestCase):
     def test_concise_marker_bootstrap_and_terminal_flag(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            marker = valid_marker(
+                brief_schema_version="task_scope_note_v1", brief_format="concise",
+                brief_fields_present=["Scope", "Evidence", "Limits"], scope_note_shown=True,
+                lifecycle_scope={"work_type": "fix", "size": "bounded", "risk": "low",
+                                 "financially_material": False, "release_or_readiness": False,
+                                 "explicit_packet_request": False, "reason": "fixture"},
+            )
             bootstrap = run_hook(HOOKS / "pre_tool_use_policy.py", {
                 "tool_name": "shell_command", "tool_input": {
-                    "command": 'Set-Content .codex/product-agent-os/lifecycle-state.json \'{"scope_note_shown": true}\''
+                    "command": f"Set-Content -LiteralPath .codex/product-agent-os/lifecycle-state.json -Value '{json.dumps(marker)}' -Encoding utf8NoBOM"
                 }}, root)
             self.assertEqual("", bootstrap.stdout)
             write_marker(root, valid_marker(completion_ready=True))

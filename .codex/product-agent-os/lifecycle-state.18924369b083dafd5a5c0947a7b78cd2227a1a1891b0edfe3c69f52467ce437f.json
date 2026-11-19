@@ -1,13 +1,13 @@
 {
-  "task_id": "PAOS-PMETH-B3",
+  "task_id": "PAOS-PRETOOLUSE-MARKER-PREFLIGHT",
   "session_id": "01a1ef05-e165-77d1-81ab-1d3eb70db443",
   "plan_path": "docs/planning/user-project-methodologies-2026-11-15.md",
-  "scope": "B3 08→09 and 10→11→12; design checks, F14 architecture review and read-only pilot proposal",
-  "updated_at": "2026-11-19T11:46:39+03:00",
-  "approval_boundary": "Local source edits and bounded disposable synthetic verification",
+  "scope": "Validate marker candidates before writing and admit two exact read-only operations; B4 remains stopped",
+  "updated_at": "2026-11-19T12:27:08+03:00",
+  "approval_boundary": "User-authorized repair of project hook and staged mirror with synthetic verification; no trust, sandbox or B4 changes",
   "status": "ready_for_completion_ledger",
   "completion_ready": true,
-  "brief_digest": "sha256:2244de00813327d9aea545acb772348b8f2c2aca56991650595b5365c20c8f1e",
+  "brief_digest": "sha256:bf97d4c5711435625acfbf9761b4e12ce03ee3880a770c813a9bc1cbb786a08e",
   "brief_schema_version": "task_start_brief_v2",
   "brief_format": "bold_fields",
   "brief_fields_present": [
@@ -21,67 +21,82 @@
     "Risks / approvals",
     "Next step"
   ],
-  "control_plane_sync": "updated: PLAN, REQUIREMENTS, TEST, EVALS, RUNLOG, RU/EN cards, JSON mirrors and guide; B3 5/5; native Web 724, final focused 26, assets and contracts 37, browser 48, Python 40, strict docs; B4 starts with 06 and 13; owner release hold retained",
+  "control_plane_sync": "updated: active and packaged workflow, TEST and RUNLOG; 193 affected tests passed, both validators and mirror parity passed; B4 remains stopped",
+  "previous_task_id": "PAOS-PMETH-B4-PRETOOLUSE-REPORT",
+  "previous_attempt": {
+    "task_id": "PAOS-PMETH-B4",
+    "last_marker_status": "in_progress",
+    "updated_at": "2026-11-19T11:49:16+03:00",
+    "disposition": "stopped_by_user_after_hook_denial_and_approval_rejection",
+    "brief_digest_hex_length": 66
+  },
   "previous_closure": {
-    "task_id": "PAOS-PMETH-B2",
+    "task_id": "PAOS-PMETH-B3",
     "status": "ready_for_completion_ledger",
     "completion_ready": true,
-    "updated_at": "2026-11-19T11:15:43+03:00",
-    "control_plane_sync": "updated: PLAN, REQUIREMENTS, TEST, EVALS, RUNLOG, RU/EN plan and canonical guide; B2 6/6; native Web 718, browser 35, Python 40; four approved agent runs; owner approved release hold for adapter 7a41dce01fdf",
+    "updated_at": "2026-11-19T11:46:39+03:00",
+    "control_plane_sync": "updated: PLAN, REQUIREMENTS, TEST, EVALS, RUNLOG, RU/EN cards, JSON mirrors and guide; B3 5/5; native Web 724, final focused 26, assets and contracts 37, browser 48, Python 40, strict docs; B4 starts with 06 and 13; owner release hold retained",
     "previous_closure": {
-      "task_id": "PAOS-PMETH-B1",
+      "task_id": "PAOS-PMETH-B2",
       "status": "ready_for_completion_ledger",
       "completion_ready": true,
-      "updated_at": "2026-11-18T21:00:30+03:00",
-      "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md, RU/EN B1 task state and evidence; 7 tasks implemented; 1386 Python tests with 1 skip, 91 fixture evals, 26 transcript evals, CLI/TS and strict docs verified; next PAOS-PMETH-19",
+      "updated_at": "2026-11-19T11:15:43+03:00",
+      "control_plane_sync": "updated: PLAN, REQUIREMENTS, TEST, EVALS, RUNLOG, RU/EN plan and canonical guide; B2 6/6; native Web 718, browser 35, Python 40; four approved agent runs; owner approved release hold for adapter 7a41dce01fdf",
       "previous_closure": {
-        "task_id": "PAOS-METH-15",
+        "task_id": "PAOS-PMETH-B1",
         "status": "ready_for_completion_ledger",
         "completion_ready": true,
-        "updated_at": "2026-11-18T20:17:16+03:00",
-        "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-15 RU/EN task and direction A state, ADR and frontend owners; five legacy edges retain hold",
+        "updated_at": "2026-11-18T21:00:30+03:00",
+        "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md, RU/EN B1 task state and evidence; 7 tasks implemented; 1386 Python tests with 1 skip, 91 fixture evals, 26 transcript evals, CLI/TS and strict docs verified; next PAOS-PMETH-19",
         "previous_closure": {
-          "task_id": "PAOS-METH-14",
-          "status": "ready_for_completion_brief",
+          "task_id": "PAOS-METH-15",
+          "status": "ready_for_completion_ledger",
           "completion_ready": true,
-          "updated_at": "2026-11-18T20:02:16+03:00",
-          "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-14 RU/EN plan and ADR, and frontend owners; Skills and METH-15 retain hold",
+          "updated_at": "2026-11-18T20:17:16+03:00",
+          "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-15 RU/EN task and direction A state, ADR and frontend owners; five legacy edges retain hold",
           "previous_closure": {
-            "task_id": "PAOS-METH-13",
+            "task_id": "PAOS-METH-14",
             "status": "ready_for_completion_brief",
             "completion_ready": true,
-            "updated_at": "2026-11-18T19:39:47+03:00",
-            "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-13 RU/EN plan and ADR, and frontend owners; Workflows and METH-14/15 retain hold",
+            "updated_at": "2026-11-18T20:02:16+03:00",
+            "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-14 RU/EN plan and ADR, and frontend owners; Skills and METH-15 retain hold",
             "previous_closure": {
-              "task_id": "PAOS-METH-10",
+              "task_id": "PAOS-METH-13",
               "status": "ready_for_completion_brief",
               "completion_ready": true,
-              "updated_at": "2026-11-18T19:06:29+03:00",
-              "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, canonical RU/EN A4 task and ADR, and frontend owners; METH-13/14/15 remain on hold",
+              "updated_at": "2026-11-18T19:39:47+03:00",
+              "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, the METH-13 RU/EN plan and ADR, and frontend owners; Workflows and METH-14/15 retain hold",
               "previous_closure": {
-                "task_id": "PAOS-METH-11",
+                "task_id": "PAOS-METH-10",
                 "status": "ready_for_completion_brief",
                 "completion_ready": true,
-                "updated_at": "2026-11-18T18:34:34+03:00",
-                "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical METH-11 task, ADR and frontend owners",
+                "updated_at": "2026-11-18T19:06:29+03:00",
+                "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md, canonical RU/EN A4 task and ADR, and frontend owners; METH-13/14/15 remain on hold",
                 "previous_closure": {
-                  "task_id": "PAOS-METH-A3",
-                  "status": "ready_for_completion_ledger",
+                  "task_id": "PAOS-METH-11",
+                  "status": "ready_for_completion_brief",
                   "completion_ready": true,
-                  "updated_at": "2026-11-18T18:19:15+03:00",
-                  "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md and the A3 task, test map and deterministic comparison owners",
+                  "updated_at": "2026-11-18T18:34:34+03:00",
+                  "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical METH-11 task, ADR and frontend owners",
                   "previous_closure": {
-                    "task_id": "PAOS-METH-A2",
+                    "task_id": "PAOS-METH-A3",
                     "status": "ready_for_completion_ledger",
                     "completion_ready": true,
-                    "updated_at": "2026-11-18T18:01:33+03:00",
-                    "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical task, ADR, frontend and verification owners for A2",
+                    "updated_at": "2026-11-18T18:19:15+03:00",
+                    "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, EVALS.md, RUNLOG.md and the A3 task, test map and deterministic comparison owners",
                     "previous_closure": {
-                      "task_id": "PAOS-METH-A1",
+                      "task_id": "PAOS-METH-A2",
                       "status": "ready_for_completion_ledger",
                       "completion_ready": true,
-                      "updated_at": "2026-11-18T17:45:52+03:00",
-                      "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and owning A1 task, frontend, design and verification documentation"
+                      "updated_at": "2026-11-18T18:01:33+03:00",
+                      "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and canonical task, ADR, frontend and verification owners for A2",
+                      "previous_closure": {
+                        "task_id": "PAOS-METH-A1",
+                        "status": "ready_for_completion_ledger",
+                        "completion_ready": true,
+                        "updated_at": "2026-11-18T17:45:52+03:00",
+                        "control_plane_sync": "updated: REQUIREMENTS.md, PLAN.md, TEST.md, RUNLOG.md and owning A1 task, frontend, design and verification documentation"
+                      }
                     }
                   }
                 }
@@ -93,13 +108,18 @@
     }
   },
   "lifecycle_scope": {
-    "work_type": "implementation",
-    "size": "large",
-    "risk": "medium",
+    "work_type": "fix",
+    "size": "bounded",
+    "risk": "high",
     "financially_material": false,
     "release_or_readiness": false,
     "explicit_packet_request": false,
-    "reason": "Five related design and source-architecture tasks"
+    "reason": "PreToolUse command and marker authorization logic"
+  },
+  "previous_report_closure": {
+    "status": "ready_for_completion_brief",
+    "updated_at": "2026-11-19T11:58:09+03:00",
+    "report_output_path": "research/paos-pmeth-b4-pretooluse-incident-2026-11-19.md"
   },
   "task_start_brief_shown": true
 }

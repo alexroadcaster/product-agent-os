@@ -14,6 +14,7 @@ from typing import Any
 LIFECYCLE_STATE_REL = Path(".codex/product-agent-os/lifecycle-state.json")
 WORKSPACE_ROOT_ENV = "CODEX_HOOK_WORKSPACE_ROOT"
 TASK_BRIEF_SCHEMA_VERSION = "task_start_brief_v1"
+TERMINAL_STATUSES = {"ready_for_completion_brief", "ready_for_completion_ledger", "blocked", "stopped_repair_required"}
 MARKER_MAX_AGE = timedelta(hours=48)
 MARKER_FUTURE_SKEW = timedelta(minutes=5)
 TASK_BRIEF_REQUIRED_FIELDS = [
@@ -207,6 +208,8 @@ def _is_read_only(command: str) -> bool:
     if not lexemes:
         return False
     name = lexemes[0].lower()
+    if name == "get-filehash":
+        return _file_hash_read(lexemes)
     # Validate every pipeline segment; a later writer must never inherit read status.
     if "\0PIPE" in lexemes:
         if lexemes.count("\0PIPE") > 7:
@@ -240,6 +243,9 @@ def _is_read_only(command: str) -> bool:
 
 def _read_command_tokens(lexemes: list[str]) -> bool:
     """Keep executable names and switches exact; aliases and expansions are untrusted."""
+    if lexemes in (["git", "--no-optional-locks", "status"],
+                   ["git", "--no-optional-locks", "status", "--short"]):
+        return True
     if lexemes == ["git", "-c", "core.safecrlf=false", "diff", "--check"]:
         return True  # This exact config override affects whitespace diagnostics only.
     name = lexemes[0].lower()
@@ -261,6 +267,28 @@ def _read_command_tokens(lexemes: list[str]) -> bool:
     if name == "git" and (len(lexemes) < 2 or lexemes[1].lower() not in {"diff", "status", "show", "log"}):
         return False
     return all(not lexeme.startswith("-") or lexeme.lower() in flags[name] for lexeme in lexemes[1:])
+
+
+def _file_hash_read(lexemes: list[str]) -> bool:
+    """One literal relative path and, optionally, projection of the digest."""
+    args = [item.lower() for item in lexemes[1:]]
+    if args[-4:] == ["\0pipe", "select-object", "-expandproperty", "hash"]:
+        args = args[:-4]
+    if args[:2] == ["-algorithm", "sha256"]:
+        args = args[2:]
+        if len(args) != 2:
+            return False
+    if len(args) == 4 and args[-2:] == ["-algorithm", "sha256"]:
+        args = args[:2]
+    if len(args) != 2 or args[0] != "-literalpath":
+        return False
+    parts = args[1].replace("\\", "/").removeprefix("./").split("/")
+    return all(
+        re.fullmatch(r"[\w.][\w. -]*", part)
+        and part.rstrip(". ") == part
+        and not re.fullmatch(r"con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³]", part.split(".")[0].rstrip())
+        for part in parts
+    )
 
 
 def _local_validation_read(root: Path, payload: dict[str, Any], command: str) -> bool:
@@ -345,9 +373,10 @@ def _marker_write_targets(payload: dict[str, Any], command: str) -> tuple[list[s
                  and lines[-1] == "*** End Patch" and not any(
                      line.startswith(("*** Delete File:", "*** Move to:")) for line in lines))
         return targets, exact
-    match = re.fullmatch(
-        r"(?is)\s*Set-Content\s+(?:-LiteralPath\s+)?('([^']+)'|\"([^\"]+)\"|([^\s;|]+))"
-        r"\s+(?:-Value\s+)?'((?:[^']|'')*)'(?:\s+-Encoding\s+utf8)?\s*", command
+    # Identify the destination even when the rest of the shell command is unsafe.
+    match = re.match(
+        r"(?i)\s*Set-Content\s+(?:-LiteralPath\s+)?('([^']+)'|\"([^\"]+)\"|([^\s;|]+))(?=\s|$)",
+        command,
     )
     if match:
         return [next(value for value in match.group(2, 3, 4) if value is not None)], True
@@ -355,7 +384,7 @@ def _marker_write_targets(payload: dict[str, Any], command: str) -> tuple[list[s
 
 
 def _marker_write_policy(root: Path, payload: dict[str, Any], command: str) -> tuple[bool, str | None]:
-    """Bootstrap only this chat's marker; other targets need ordinary validation."""
+    """Check the complete replacement before exempting a marker write."""
     own = lifecycle_marker_path(root, payload)
     targets, exact = _marker_write_targets(payload, command)
     marker_targets = []
@@ -369,8 +398,54 @@ def _marker_write_policy(root: Path, payload: dict[str, Any], command: str) -> t
         return False, None
     if not exact or len(targets) != 1 or marker_targets != [own]:
         return False, "lifecycle writes must target only this session's marker"
-    shown = re.search(r"task_start_brief_shown|scope_note_shown", command)
-    return bool(shown), None
+    target = Path(targets[0])
+    if Path(os.path.abspath(root / target)) != own:
+        return False, "lifecycle marker write requires its canonical path"
+    call = _literal_call(payload)
+    options = call[1] if call and call[0] == "exec_command" and isinstance(call[1], dict) else {}
+    cwd = options.get("workdir") or payload.get("cwd")
+    if not target.is_absolute() and isinstance(cwd, str) and Path(cwd).resolve() != root:
+        return False, "relative lifecycle marker write requires the workspace root as working directory"
+    try:
+        if own.exists() and (not own.is_file() or own.stat().st_nlink != 1):
+            return False, "lifecycle marker write requires a regular unlinked file"
+        candidate = _marker_candidate(own, payload, command)
+    except (OSError, UnicodeError):
+        return False, "Lifecycle marker write rejected: cannot read current marker"
+    except ValueError as exc:
+        return False, "Lifecycle marker write rejected: " + str(exc)
+    ok, reason = _validate_marker_text(candidate, for_write=True, report_authorized=True,
+                                       expected_session_id=lifecycle_session_id(payload))
+    return (True, None) if ok else (False, "Lifecycle marker write rejected: " + reason)
+
+
+def _marker_candidate(path: Path, payload: dict[str, Any], command: str) -> str:
+    """Accept a whole-file create or replacement, without interpreting partial patches."""
+    call = _literal_call(payload)
+    if call and call[0] == "apply_patch" and isinstance(call[1], str):
+        lines = call[1].strip().replace("\r\n", "\n").split("\n")
+        if lines[1].startswith("*** Add File: "):
+            if path.exists():
+                raise ValueError("cannot add over an existing marker")
+            added = lines[2:-1]
+        else:
+            if not path.is_file() or lines[2] != "@@" or lines[-2] != "*** End of File":
+                raise ValueError("update must replace the entire current marker and include End of File")
+            previous = path.read_text(encoding="utf-8").removesuffix("\n").split("\n")
+            removed = ["-" + line for line in previous]
+            if lines[3:3 + len(removed)] != removed:
+                raise ValueError("removed lines must match the entire current marker")
+            added = lines[3 + len(removed):-2]
+        if not added or any(not line.startswith("+") for line in added):
+            raise ValueError("patch must contain the complete replacement JSON")
+        return "\n".join(line[1:] for line in added)
+
+    match = re.fullmatch(
+        r"(?i)[ \t]*Set-Content[ \t]+-LiteralPath[ \t]+(?:'[^'\r\n]+'|[\w./\\-]+)"
+        r"[ \t]+-Value[ \t]+'((?:[^']|'')*)'[ \t]+-Encoding[ \t]+utf8NoBOM[ \t]*", command)
+    if not match or (call and isinstance(call[1], dict) and call[1].get("shell")):
+        raise ValueError("use a complete patch or literal Set-Content with -LiteralPath, -Value and -Encoding utf8NoBOM")
+    return match[1].replace("''", "'")
 
 
 def _is_mutating(tool: str, command: str) -> bool:
@@ -437,8 +512,29 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_auth
     if not path.exists():
         return False, "missing lifecycle marker"
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+        content = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return False, "invalid lifecycle marker"
+    return _validate_marker_text(content, now=now, report_authorized=report_authorized,
+                                 expected_session_id=expected_session_id)
+
+
+def _marker_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    fields = dict(pairs)
+    if len(fields) != len(pairs):
+        raise ValueError("duplicate JSON field")
+    return fields
+
+
+def _reject_marker_constant(_value: str) -> Any:
+    raise ValueError("non-JSON constant")
+
+
+def _validate_marker_text(content: str, *, now: datetime | None = None, report_authorized: bool = False,
+                          expected_session_id: str | None = None, for_write: bool = False) -> tuple[bool, str]:
+    try:
+        payload = json.loads(content, object_pairs_hook=_marker_object, parse_constant=_reject_marker_constant)
+    except (ValueError, RecursionError):
         return False, "invalid lifecycle marker"
     if not isinstance(payload, dict):
         return False, "lifecycle marker must be a JSON object"
@@ -450,17 +546,26 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_auth
         return False, "scope_note_shown must be true"
     if not concise and payload.get("task_start_brief_shown") is not True:
         return False, "task_start_brief_shown must be true"
-    if payload.get("completion_brief_shown") is True:
+    status = payload.get("status")
+    if for_write:
+        if any(type(payload[key]) is not bool for key in ("completion_brief_shown", "completion_ready") if key in payload):
+            return False, "lifecycle completion flags must be boolean"
+        if isinstance(status, str) and status in TERMINAL_STATUSES:
+            if payload.get("completion_ready") is not True:
+                return False, "terminal lifecycle marker requires completion_ready"
+        elif status != "in_progress" or payload.get("completion_ready") or payload.get("completion_brief_shown"):
+            return False, "invalid lifecycle marker status or completion flags"
+    elif payload.get("completion_brief_shown") is True:
         return False, "lifecycle marker belongs to a completed task"
-    if payload.get("completion_ready") is True:
+    elif payload.get("completion_ready") is True:
         return False, "completion_ready marker cannot authorize further mutation"
-    if payload.get("status") != "in_progress":
+    elif status != "in_progress":
         return False, "lifecycle marker status must be in_progress"
     for key in ("task_id", "scope", "updated_at", "approval_boundary"):
         value = payload.get(key)
         if not isinstance(value, str) or not value.strip():
             return False, "missing lifecycle marker field: " + key
-    if schema not in {TASK_BRIEF_SCHEMA_VERSION, "task_start_brief_v2", "task_scope_note_v1"}:
+    if schema not in (TASK_BRIEF_SCHEMA_VERSION, "task_start_brief_v2", "task_scope_note_v1"):
         return False, "unsupported brief_schema_version"
     expected_format = "concise" if concise else "bold_fields" if schema == "task_start_brief_v2" else "field_list"
     if payload.get("brief_format") != expected_format:
@@ -469,7 +574,8 @@ def _lifecycle_marker_ok(path: Path, *, now: datetime | None = None, report_auth
         scope = payload.get("lifecycle_scope")
         if not isinstance(scope, dict):
             return False, "lifecycle_scope must classify packet applicability"
-        if scope.get("work_type") not in {"implementation", "fix", "review", "research", "planning", "report_authoring"} or scope.get("size") not in {"bounded", "large"} or scope.get("risk") not in {"low", "medium", "high"}:
+        if (scope.get("work_type") not in ("implementation", "fix", "review", "research", "planning", "report_authoring")
+                or scope.get("size") not in ("bounded", "large") or scope.get("risk") not in ("low", "medium", "high")):
             return False, "invalid lifecycle_scope classification"
         flags = ("financially_material", "release_or_readiness", "explicit_packet_request")
         if any(type(scope.get(key)) is not bool for key in flags) or not isinstance(scope.get("reason"), str) or not scope["reason"].strip():

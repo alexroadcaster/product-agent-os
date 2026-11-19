@@ -46,15 +46,14 @@ the applicable brief and new own marker, not permission from another chat.
 For a new user-authorized task in the same chat, preserve the prior closure and
 start the new scope; terminal state does not grant additional old-task writes.
 
-Bootstrap supports one exact Add/Update patch to the selected marker, or one
-literal Set-Content write to that path. A body mention, foreign marker, move/delete
-or mixed patch is not bootstrap. Dynamic shell/code writes are not an authorization
-interface. Existing sandbox/approvals and path/secret restrictions still apply.
-Reporting metadata is not a filesystem lock or proof of user approval; concurrent
-edits to the same source still need explicit ownership coordination.
-For bootstrap/transition patches include the existing `task_start_brief_shown`
-or `scope_note_shown` line in patch context; the current guard recognizes that
-literal field even when its value is unchanged. This is not a new approval request.
+Before a marker write, PreToolUse validates the complete candidate for this
+session. An invalid candidate leaves the previous marker unchanged. Use one
+`apply_patch` Add File for a new marker. For Update File use one `@@` hunk with
+all current lines removed, all replacement JSON lines added, then
+`*** End of File`. Partial or stale patches are rejected. For a literal
+PowerShell 7 write, use `Set-Content -LiteralPath <marker> -Value '<complete JSON>'
+-Encoding utf8NoBOM` as one command. Existing sandbox, approval, path and secret
+checks still apply. Coordinate concurrent writes separately.
 
 ## Lifecycle Marker Fields
 
@@ -111,6 +110,10 @@ prefix or quoted `--glob` instead. Shell expansion, executors, redirection and
 unknown commands still require scoped review; unknown syntax is not proof of a
 write. Tests and compilers have a separate verification scope, not blanket read
 permission. Pinned legacy report modes use the same ordinary read classifier.
+
+`git --no-optional-locks status` optionally accepts `--short`. The hash form is
+`Get-FileHash -LiteralPath <one local relative path>` with optional
+`-Algorithm SHA256` and optional `| Select-Object -ExpandProperty Hash`.
 
 ## Optional Pinned Report Authority
 

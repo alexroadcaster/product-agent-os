@@ -1,5 +1,9 @@
 # TEST.md
 
+## PreToolUse — проверка маркера до записи, 19.11.2026 {#pretooluse-marker-preflight}
+
+`python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_codex_runtime_runner_guards tests.product_agent_os.test_infrastructure_renderer tests.product_agent_os.test_infrastructure_templates -q` проверяет обе копии hook, сохранность прежнего маркера при отказе, штатные переходы, строгие формы чтения и сборку staging. Используйте отдельные process-local `TEMP` и `TMP`. Дополнительно запустите `validate_hooks.py` для обоих каталогов и проверьте побайтовое совпадение копий. [Формат записи маркера](.codex/workflows/task-plan-lifecycle.md#session-isolation)
+
 ## PAOS-PMETH-B3 — дизайн и границы F14
 
 `node --test tests/web/graph-imports.test.mts tests/web/project-methodology-b3.test.mts tests/web/code-index.test.mts` — 26/26. `node --test --test-concurrency=1 tests/web/*.test.mts` с изолированными `TEMP`/`TMP` и нативным runtime — 724/724 до правки CSS. После правки 37/37 проверок пакета, Task Manager и его контрактов. `npm run check:web-m1` и `npm run build:web` прошли. `tests/web/single-window/methodology-advice-browser-acceptance.mts --synthetic-browser --playwright-core <path> --chromium <path> --evidence <path>` — 48/48. Повторяйте candidate и штатный нативный допуск при изменении закреплённых runtime-файлов. [Проверки и хеши](docs/superpowers/specs/paos-pmeth-b3-evidence.md#local-verification)
