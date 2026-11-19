@@ -1182,7 +1182,8 @@ Stop при неподтверждённом source/authority, stale approval, o
 - product value delivered: Проверяемый совет по сохранённой задаче.
 - actual implementation date and time: 19-11-2026 11:10
 - verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.md).
-- residual risks: Поставка на hold. Для новых профилей и понимания человеком нужны отдельные доказательства.
+- expanded qualification: [PMETH-23, профили B3/B4](../superpowers/specs/paos-pmeth-23-expanded-evidence.md#create-recovery-closure). Результат `implemented_locally_verified`, восстановление `create` и `modify` прошли на ревизии адаптера `05fbd1d086c8411c1ad689bbdf02671e17db3da706a5691c467f30080846d5a9`.
+- residual risks: Поставка на hold. Активация skills реальной сессии, полезность и приёмка человеком требуют отдельных доказательств.
 - follow-up: PAOS-PMETH-20.
 
 ### Task `PAOS-PMETH-20`

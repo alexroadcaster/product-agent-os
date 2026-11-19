@@ -1,19 +1,19 @@
 {
   "session_id": "01a1f328-4111-7ae3-8471-529a465b0323",
-  "task_id": "Project Scan full Web regression",
-  "previous_task_id": "Codex 0.170.0 native runtime qualification",
-  "scope": "Reproduce and fix the Project Scan regression at its source, preserve strict publication checks, and verify the entire Windows Web suite.",
-  "approval_boundary": "Local scoped changes and disposable Windows test runs. Existing release hold applies.",
+  "task_id": "PAOS-PMETH-23 recipe create recovery closure",
+  "previous_task_id": "PAOS-PMETH-23 B3 B4 profile qualification",
+  "plan_path": "docs/planning/user-project-methodologies-2026-11-15.md",
+  "scope": "Fix verified recipe create continuation, preserve file identity and no replay, requalify the current runtime and update PMETH-23.",
+  "approval_boundary": "Local source and regression edits, disposable synthetic projects and natively qualified checks; release hold applies.",
   "lifecycle_scope": {
-    "work_type": "fix", "size": "bounded", "risk": "medium", "financially_material": false,
-    "release_or_readiness": false, "explicit_packet_request": false, "reason": "A bounded Project Scan regression with existing synthetic verification."
+    "work_type": "fix", "size": "large", "risk": "high", "financially_material": false, "release_or_readiness": true, "explicit_packet_request": false, "reason": "The fix changes native recipe file admission and recovery evidence."
   },
-  "status": "ready_for_completion_brief",
+  "status": "ready_for_completion_ledger",
   "completion_ready": true,
-  "updated_at": "2026-11-19T13:57:21+03:00",
-  "brief_digest": "sha256:51b6e400c2690f5215c3c052c2240520b9455a47c687e86a1469920d42dc22ff",
-  "brief_schema_version": "task_scope_note_v1",
-  "brief_format": "concise",
-  "brief_fields_present": ["Scope", "Evidence", "Limits"],
-  "scope_note_shown": true
+  "updated_at": "2026-11-19T14:55:54+03:00",
+  "brief_digest": "sha256:9c2a838be580cf60f5fc23ce2ae592b84a072e2d201ba6ddfcaddcad5270ba19",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true
 }

@@ -3,11 +3,124 @@ import assert from 'node:assert/strict';
 import {fixture,step} from './recipe-fixture.mts';
 import {createRecipeService} from '../../apps/local-service/src/execution-recipes/service.mts';
 import {createScheduler} from '../../apps/local-service/src/scheduler/service.mts';
-import {writeFile} from 'node:fs/promises';
+import {readFile,rename,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
+import {setTimeout as delay} from 'node:timers/promises';
 import {recipeCheckpoint} from '../../apps/local-service/src/recovery/recipe-checkpoint.mts';
 
 const control=async(f:Awaited<ReturnType<typeof fixture>>,id:string,action:string,key=action)=>f.service.command('p',id,action,{expectedRevision:(await f.service.get('p',id)).revision,expectedAuthorityEpoch:1,idempotencyKey:key,reason:'Reviewed checkpoint recovery'});
+
+async function createdArtifact(t:Parameters<typeof fixture>[0]) {
+ const file='proof.txt',calls:string[]=[];
+ const f=await fixture(t,[step('build',{outputArtifacts:[file],ownership:[file],checks:['["create"]']}),
+  step('review',{inputArtifacts:[file],checks:['["read"]']})],20,{allowedActions:['execution','command'],maxCommandsPerRun:2},{},
+ {files:[{relativePath:file,plannedOperation:'create'}],execute:async(root,[action])=>{
+  calls.push(action);
+  if(action==='create')await writeFile(join(root,file),'fixture output',{flag:'wx'});
+  else assert.equal(await readFile(join(root,file),'utf8'),'fixture output');
+ }});
+ const {execution}=await f.start(),id=execution.id!;
+ async function propose(action:string){
+  const {job}=await f.gateway.agent('claim',f.auth);
+  assert.ok(job);
+  const request={...f.auth,runId:job.runId,operationId:action};
+  const approval={projectId:'p',sessionId:'s',bindingId:job.bindingId,runId:job.runId,
+   requestId:action,generation:f.auth.generation,decision:'accept'};
+  assert.equal((await f.gateway.agent('command',{...request,argv:[action]})).state,'awaiting_approval');
+  return {job,request,approval};
+ }
+ async function complete(command:Awaited<ReturnType<typeof propose>>){
+  await f.gateway.runtime.dispatch('approve',command.approval);
+  for(let attempt=0;attempt<150;attempt++){
+   if((await f.gateway.agent('operation',command.request)).state==='completed')break;
+   await delay(10);
+  }
+  assert.equal((await f.gateway.agent('operation',command.request)).exitCode,0);
+  await f.gateway.agent('report',{...f.auth,runId:command.job.runId,seq:1,idempotencyKey:'report',
+   status:'completed',text:'Observed fixture command'});
+ }
+ await f.service.tick();
+ const first=await propose('create');
+ await complete(first);
+ await f.restart();
+ await control(f,id,'resume');
+ return {f,id,file,calls,first,propose,complete};
+}
+
+test('resumed recipe reads an observed create output without replaying the producer',async t=>{
+ const {f,id,calls,first,propose,complete}=await createdArtifact(t);
+ await f.service.tick();
+ await f.service.tick();
+ const resumed=await f.service.get('p',id);
+ assert.equal(resumed.state,'running',resumed.reason??undefined);
+ assert.equal(resumed.attempts[0].runId,first.job.runId);
+ const review=await propose('read');
+ assert.notEqual(review.job.runId,first.job.runId);
+ await complete(review);
+ await f.service.tick();
+ await f.service.tick();
+ assert.equal((await f.service.get('p',id)).state,'completed');
+ assert.deepEqual(calls,['create','read']);
+});
+
+test('resumed recipe rejects same-byte substitution after review command proposal',async t=>{
+ const {f,file,calls,propose,id}=await createdArtifact(t);
+ await f.service.tick();
+ await f.service.tick();
+ const resumed=await f.service.get('p',id);
+ assert.equal(resumed.state,'running',resumed.reason??undefined);
+ const review=await propose('read');
+ await rename(join(f.root,file),join(f.root,'former-output.txt'));
+ await writeFile(join(f.root,file),'fixture output',{flag:'wx'});
+ await assert.rejects(()=>f.gateway.runtime.dispatch('approve',review.approval),{code:'RECIPE_ARTIFACT_DRIFT'});
+ assert.deepEqual(calls,['create']);
+});
+
+test('resumed recipe cannot adopt a replacement while recording the producer checkpoint',async t=>{
+ const {f,id,file,calls,first}=await createdArtifact(t);
+ await rename(join(f.root,file),join(f.root,'former-output.txt'));
+ await writeFile(join(f.root,file),'fixture output',{flag:'wx'});
+ await f.service.tick();
+ await f.service.tick();
+ const view=await f.service.get('p',id);
+ assert.equal(view.state,'recovery_required');
+ assert.equal(view.attempts[0].runId,first.job.runId);
+ assert.equal(view.attempts[1].admissionRejected,true);
+ assert.equal((await f.store.list('p',{kind:'run'})).length,1);
+ assert.deepEqual(calls,['create']);
+});
+
+test('resumed recipe rechecks the artifact immediately before native review dispatch',async t=>{
+ const {f,file,calls,propose}=await createdArtifact(t);
+ await f.service.tick();
+ await f.service.tick();
+ const review=await propose('read');
+ const original=f.store.project;
+ let replaced=false;
+ f.store.project=async projectId=>{
+  const project=await original(projectId);
+  const row=await f.store.get('p',review.job.runId);
+  const operations=row?.data.appAgentRun as {operations?:{state:string}[]}|undefined;
+  if(!replaced&&operations?.operations?.some(operation=>operation.state==='dispatching')){
+   replaced=true;
+   await rename(join(f.root,file),join(f.root,'former-output.txt'));
+   await writeFile(join(f.root,file),'fixture output',{flag:'wx'});
+  }
+  return project;
+ };
+ try{
+  await f.gateway.runtime.dispatch('approve',review.approval);
+  for(let attempt=0;attempt<150;attempt++){
+   if((await f.gateway.agent('operation',review.request)).state==='cancelled')break;
+   await delay(10);
+  }
+  const outcome=await f.gateway.agent('operation',review.request);
+  assert.equal(replaced,true);
+  assert.equal(outcome.state,'cancelled');
+  assert.equal(outcome.exitCode,130);
+  assert.deepEqual(calls,['create']);
+ }finally{f.store.project=original;}
+});
 
 test('restart after terminal child resumes the same checkpoint, receipt survives restart and next step dispatches once',async t=>{
  const f=await fixture(t),{execution}=await f.start();await f.service.tick();const first=await f.report();await f.restart();

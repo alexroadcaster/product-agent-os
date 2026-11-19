@@ -8,7 +8,7 @@ import {decodeTaskProfile as decodeM1TaskProfile} from '../../../../packages/con
 import {taskScopeDigest} from './storage-ports.mts';
 import type {SandboxBroker} from './sandbox-broker.mts';
 import {captureTaskFiles,compareTaskFiles,type FileChange} from './app-agent-files.mts';
-import {taskFilePreflight,assertFilePreflight,fileScopeFingerprint} from './task-file-preflight.mts';
+import {taskFilePreflight,assertFilePreflight,fileScopeFingerprint,type RecipeCreatedInput} from './task-file-preflight.mts';
 import {projectTaskTime} from '../events/task-time.ts';
 import type {TaskTimeEvent} from '../../../../packages/contracts/time/task-time.ts';
 import {newM2Task} from '../../../../packages/contracts/issues/task-profile.ts';
@@ -20,17 +20,17 @@ import type {AssetPin} from '../../../../packages/contracts/team/assets.ts';
 import type {AssetRoot} from '../team/sources.mts';
 import type {WorkflowSnapshot} from '../../../../packages/contracts/workflows/workflow.ts';
 import {autonomyService} from '../autonomy-policy/service.mts';
-import {recipeScopeHash,recipeHash,type Execution} from '../execution-recipes/contract.mts';
+import {pathKey,recipeScopeHash,recipeHash,type Execution} from '../execution-recipes/contract.mts';
 import {methodologySourceRevision,pinMethodologyCheck,type MethodologyCheck} from '../project-analysis/methodology-evidence.mts';
 
 type Input=Record<string,unknown>;
 type State='queued'|'running'|'awaiting_approval'|'cancel_requested'|'recovery_required'|'completed'|'failed'|'interrupted';
 export type AppAgentBinding={id:string;projectId:string;sessionId:string;mode:'discussion'|'planning'|'execution';workspaceRoot:string;rootIdentity:string};
 type Binding=AppAgentBinding;
-type Operation={operationId:string;digest:string;argv:string[];timeoutMs:number;generation:string;expiresAt:number;decision?:string;state:'awaiting_approval'|'dispatching'|'completed'|'declined'|'cancelled'|'recovery_required';exitCode?:number;stdout?:string;stderr?:string;fileChanges?:FileChange[];criterionCheck?:MethodologyCheck};
+type Operation={operationId:string;digest:string;argv:string[];timeoutMs:number;generation:string;expiresAt:number;decision?:string;state:'awaiting_approval'|'dispatching'|'completed'|'declined'|'cancelled'|'recovery_required';exitCode?:number;stdout?:string;stderr?:string;fileChanges?:FileChange[];createdFiles?:RecipeCreatedInput[];criterionCheck?:MethodologyCheck};
 type Job={id:string;bindingId:string;projectId:string;sessionId:string;mode:Binding['mode'];clientMessageId:string;input:string;inputDigest:string;autonomy?:{budgetId:string};autonomyStopReason?:string;assetPins?:AssetPin[];observedStartedAt?:string;purpose?:'team_proposal';proposalContext?:Input;workflowSnapshot?:WorkflowSnapshot & {executionRecipe?:{id:string;version:string}};
  taskCreationInitiator?:string;recipeExecution?:string;state:State;seq:number;workerId?:string;generation?:string;lastReport?:{key:string;hash:string;receipt:Input};operations?:Operation[];taskContext?:Input;progress?:{seq:number;text:string;phase:'commentary'|'final_answer'};
- recoveryResolution?:{kind:'cancel_undispatched';reason:'dispatch_not_observed'}};
+ recipeCreatedInputs?:RecipeCreatedInput[];recoveryResolution?:{kind:'cancel_undispatched';reason:'dispatch_not_observed'}};
 type Worker={workerId:string;generation:string;leaseToken:string;expiresAt:number};
 const route='codex_app_agent';
 const terminal=new Set<State>(['completed','failed','interrupted']);
@@ -180,6 +180,45 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
   for(const active of [...activeJobs.values()])if(active.operations?.some(op=>op.state==='awaiting_approval'&&op.expiresAt<=now())){const changed={...active,operations:active.operations.map(op=>op.state==='awaiting_approval'&&op.expiresAt<=now()?{...op,state:'declined' as const,decision:'expired'}:op)};if(changed.state==='awaiting_approval')changed.state='running';await save(changed);}
  }
  function stopCommands(job:Job){const broker=brokers.get(job.bindingId);for(const op of job.operations??[])if(op.state==='dispatching'&&broker)void broker.interrupt(brokerOperationId(job,op)).catch(()=>{});}
+ async function recipeCreatedInputs(e:Execution,profile:ReturnType<typeof decodeM1TaskProfile>):Promise<RecipeCreatedInput[]> {
+  const step=e.recipe.steps.find(item=>item.id===e.attempts.at(-1)?.stepId);
+  if(!step)fail('RECIPE_ADMISSION_INVALID');
+  const writes=[...step.outputArtifacts,...step.ownership].map(pathKey);
+  const inputs:RecipeCreatedInput[]=[];
+  for(const file of profile.files){
+   const path=file.relativePath;
+   if(file.plannedOperation!=='create'||!step.inputArtifacts.includes(path))continue;
+   const key=pathKey(path);
+   if(writes.some(write=>write==='.'||key===write||key.startsWith(write+'/')))continue;
+   const producer=e.attempts.findLast(attempt=>attempt.state==='completed'
+    &&attempt.artifacts?.some(artifact=>artifact.path===path));
+   if(!producer)continue;
+   const artifact=producer.artifacts!.find(entry=>entry.path===path)!;
+   const row=producer.runId?await store.get(e.projectId,producer.runId):null;
+   const run=row?.data.appAgentRun as Job|undefined;
+   if(!run||row?.status!=='completed'||run.state!=='completed'||run.id!==producer.runId||run.recipeExecution!==e.id
+    ||run.projectId!==e.projectId||run.sessionId!==e.sessionId||run.bindingId!==e.bindingId
+    ||run.clientMessageId!==producer.clientMessageId||!e.recipe.steps.some(item=>item.id===producer.stepId&&item.outputArtifacts.includes(path)))
+    fail('RECIPE_ARTIFACT_DRIFT');
+   // The scheduler's completed artifact and the native create observation must agree.
+   // Older receipts lack a file identity and cannot grant this continuation.
+   const creation=run.operations?.findLast(op=>op.state==='completed'&&op.decision==='accept'&&op.exitCode===0
+    &&op.createdFiles?.some(output=>output.path===path))?.createdFiles?.find(output=>output.path===path);
+   if(!creation||creation.sha256!==artifact.sha256||!/^[a-f0-9]{64}$/.test(creation.fileRevision))fail('RECIPE_ARTIFACT_DRIFT');
+   inputs.push(creation);
+  }
+  return inputs;
+ }
+ async function assertCreatedInputs(job:Job){
+  const inputs=job.recipeCreatedInputs;
+  if(!inputs?.length)return;
+  const project=await store.project(job.projectId);
+  const binding=bindings.get(job.bindingId);
+  if(!project||!binding||project.rootIdentity!==binding.rootIdentity)fail('RECIPE_ARTIFACT_DRIFT');
+  const observed=await captureTaskFiles(project,inputs.map(input=>({relativePath:input.path})),redact);
+  if(inputs.some((input,index)=>observed[index]?.sha256!==input.sha256||observed[index]?.fileRevision!==input.fileRevision))
+   fail('RECIPE_ARTIFACT_DRIFT');
+ }
  async function assertTaskCommandBoundary(job:Job){
   if(job.recipeExecution){const row=await store.get(job.projectId,job.recipeExecution),e=row?.data as unknown as Execution,task=await store.get(job.projectId,String(job.taskContext?.taskId));
    if(!e||e.state!=='running'||e.attempts.at(-1)?.clientMessageId!==job.clientMessageId||now()>=e.attempts.at(-1)!.deadlineAt||!task||recipeScopeHash(task.data)!==e.scopeHash)fail('RECIPE_EXECUTION_FENCED');
@@ -217,18 +256,26 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
    try{await assertTaskCommandBoundary(job);if(job.autonomy)await autonomy.assertAllowed(job.projectId,job.id,'command');}
    catch{return {exitCode:130,stdout:'',stderr:'Task dependency or autonomy boundary changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
    if(fileScopeFingerprint(await currentProject())!==fileScopeFingerprint(scope))return {exitCode:130,stdout:'',stderr:'File policy changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
+   if(job.recipeCreatedInputs?.length){
+    try{await assertCreatedInputs(job);}
+    catch{return {exitCode:130,stdout:'',stderr:'Recipe artifact changed before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};}
+   }
    if(closing||activeJobs.get(job.id)?.state!=='running')return {exitCode:130,stdout:'',stderr:'Command cancelled before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    // An accepted intent is not permission to begin an operation after its approval/worker lease expires.
    if(now()>=operation.expiresAt||!worker||worker.expiresAt<=now()||worker.generation!==operation.generation)return {exitCode:130,stdout:'',stderr:'Approval expired before native dispatch.',fileChanges:[] as FileChange[],cancelled:true};
    const result=await broker.execute({operationId:brokerOperationId(job,operation),argv:operation.argv,timeoutMs:operation.timeoutMs});
    const latestScope=await currentProject(),after=await captureTaskFiles(latestScope,files,redact);
+   const createdFiles:RecipeCreatedInput[]=job.recipeExecution&&result.exitCode===0?after.flatMap(file=>
+    file.sha256&&file.fileRevision&&before.some(previous=>previous.path===file.path&&previous.kind==='missing')
+     ?[{path:file.path,sha256:file.sha256,fileRevision:file.fileRevision}]:[]):[];
    const criterionStale=operation.criterionCheck?(methodologySourceRevision(latestScope,after)!==operation.criterionCheck.sourceRevision||!await criterionCurrent()):false;
-   return {...result,fileChanges:compareTaskFiles(before,after),cancelled:false,criterionStale};
+   return {...result,fileChanges:compareTaskFiles(before,after),createdFiles,cancelled:false,criterionStale};
   }).then(result=>({result}),()=>({result:null})).then(async({result})=>{
    const settle=queue.then(async()=>{const previous=await store.get(job.projectId,job.id);const current=previous?.data.appAgentRun as Job|undefined;if(!current)return;
     const op=current.operations?.find(item=>item.operationId===operation.operationId);if(!op||op.state!=='dispatching')return;
     const valid=result&&Number.isSafeInteger(result.exitCode)&&typeof result.stdout==='string'&&typeof result.stderr==='string';
     const next:Operation=valid?{...op,state:result.cancelled?'cancelled':'completed',exitCode:result.exitCode,stdout:redact(result.stdout.slice(0,32768)),stderr:redact(result.stderr.slice(0,32768)),fileChanges:result.fileChanges.map(change=>({...change,path:redact(change.path),diff:redact(change.diff)}))}:{...op,state:'recovery_required'};
+    if(valid&&'createdFiles' in result&&result.createdFiles?.length)next.createdFiles=result.createdFiles;
     if(op.criterionCheck&&valid)next.criterionCheck={...op.criterionCheck,observation:'criterionStale' in result&&result.criterionStale?'stale':result.cancelled?'pending':'current'};
     const changed:Job={...current,operations:current.operations!.map(item=>item.operationId===op.operationId?next:item),state:valid?current.state:'recovery_required'};
     await save(changed);
@@ -333,8 +380,10 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
       if(!e||e.state!=='running'||e.taskId!==task.id||e.sessionId!==binding.sessionId||e.bindingId!==binding.id||attempt?.state!=='planned'||attempt.clientMessageId!==messageId||recipeScopeHash(profile)!==e.scopeHash||profile.status!==e.transition.to)fail('RECIPE_ADMISSION_INVALID');
       const policy=await autonomy.snapshot(scope.projectId);if(policy.budgetId!==e.budgetId||recipeHash(policy.policy)!==e.policyHash)fail('AUTONOMY_RESERVATION_CONFLICT');
       job.recipeExecution=e.id;job.assetPins=e.pins[attempt.stepId];job.workflowSnapshot={...e.workflowSnapshot,executionRecipe:{id:e.recipe.id,version:String(e.workflowSnapshot.ref.version)}};
+      const verified=await recipeCreatedInputs(e,profile);
+      if(verified.length)job.recipeCreatedInputs=verified;
      }else {job.assetPins=await team.assignmentPins(scope.projectId,profile.agentAssignments);if(workflow.category!=='ready')fail('task_scope_review_required');}
-     const preflight=await taskFilePreflight(store,scope.projectId,task.id,task.revision);assertFilePreflight(preflight,row.filePreflight);
+     const preflight=await taskFilePreflight(store,scope.projectId,task.id,task.revision,job.recipeCreatedInputs);assertFilePreflight(preflight,row.filePreflight);
      if(profile.risks.includes('recovery_review'))fail('task_scope_review_required');if(!profile.acceptanceCriteria.length||!profile.acceptanceCriteria.every(item=>item.trim()))fail('saved_criteria_required');
      job.taskContext={taskId:task.id,revision:task.revision,scopeDigest:taskScopeDigest(task),taskSpecRevision:recipeScopeHash(task.data),workspaceRoot:binding.workspaceRoot,rootIdentity:binding.rootIdentity,key:profile.key,title:profile.title,files:profile.files,acceptanceCriteria:profile.acceptanceCriteria,risks:profile.risks};
      if(!executionId)extra.push({expectedRevision:task.revision,entity:{id:task.id,kind:'task',data:{...profile,status:workflow.executionState(),sessionIds:[...new Set([...profile.sessionIds,job.sessionId])]}}});
@@ -352,7 +401,7 @@ export function createAppAgentGateway(options:{store:LocalStore;profileId:string
     const decision=text(row,'decision');if(!['accept','decline','cancel'].includes(decision))fail('approval_invalid');
     if(op.decision){if(op.decision!==decision)fail('approval_conflict');return operationView(active,op);}
     if(op.state!=='awaiting_approval'||op.expiresAt<=now())fail('approval_stale');
-    if(decision==='accept'){await assertTaskCommandBoundary(active);if(active.autonomy)await autonomy.assertAllowed(active.projectId,active.id,'command');}
+    if(decision==='accept'){await assertTaskCommandBoundary(active);if(active.autonomy)await autonomy.assertAllowed(active.projectId,active.id,'command');await assertCreatedInputs(active);}
     const broker=decision==='accept'?await attachBroker(binding):undefined;
     // Boundary and broker checks await I/O. Recheck lifetime and exact owner immediately before committing a grant.
     if(now()>=op.expiresAt||!worker||worker.expiresAt<=now()||worker.generation!==op.generation||activeJobs.get(active.id)!==active||closing)fail('approval_stale');

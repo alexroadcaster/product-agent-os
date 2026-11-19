@@ -1182,7 +1182,8 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - product value delivered: An observable recommendation for a saved task.
 - actual implementation date and time: 19-11-2026 11:10
 - verification evidence: [B2 verification](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
-- residual risks: The release remains on hold. Expanded profile and human comprehension need separate evidence.
+- expanded qualification: [PMETH-23, B3/B4 profiles](../superpowers/specs/paos-pmeth-23-expanded-evidence.en.md#create-recovery-closure). Result `implemented_locally_verified`. Recovery passed for `create` and `modify` with adapter revision `05fbd1d086c8411c1ad689bbdf02671e17db3da706a5691c467f30080846d5a9`.
+- residual risks: The release remains on hold. Live-session skill invocation, usefulness, and human acceptance require separate evidence.
 - follow-up: PAOS-PMETH-20.
 
 ### Task `PAOS-PMETH-20`

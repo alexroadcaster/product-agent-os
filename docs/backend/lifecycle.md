@@ -37,6 +37,10 @@ Source status: repository_source / static_source_review + bounded_native_synthet
 Путь выбирает `runtime-selection.json` конкретного профиля. При откате версию
 брокера, бинарник и ревизию манифеста восстанавливают согласованным набором.
 
+После исправления PMETH-23 этот бинарник повторно квалифицирован с ревизией
+адаптера `05fbd1d086c8411c1ad689bbdf02671e17db3da706a5691c467f30080846d5a9`.
+Кандидат и штатный допуск прошли. [Повторная приёмка](../superpowers/specs/paos-pmeth-23-expanded-evidence.md#create-recovery-closure)
+
 ## Завершение
 
 При `quit()` сервис сначала отклоняет новые запросы и отзывает sessions, отменяет собственный desktop dialog и начинает закрытие HTTP server. Затем закрываются scheduler и recipes, дренируется selector, закрываются gateways/channel. HTTP requests дренируются до закрытия store — это защищает незавершённые import/restore handlers. Повтор `quit` использует одну pending promise; ошибки сохраняют возможность повторной попытки, а не доказывают полный останов.

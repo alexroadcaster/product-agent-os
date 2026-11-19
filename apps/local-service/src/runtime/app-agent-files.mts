@@ -1,4 +1,4 @@
-export type FileSnapshot={path:string;kind:'missing'|'present'|'excluded';sha256?:string;content?:string};
+export type FileSnapshot={path:string;kind:'missing'|'present'|'excluded';sha256?:string;fileRevision?:string;content?:string};
 export type FileChange={kind:'actual';path:string;operation:'add'|'modify'|'delete';diff:string;beforeSha256?:string;afterSha256?:string};
 import {createHash} from 'node:crypto';
 import {inventoryForProject,type SourceProject} from '../code-index/sources.mts';
@@ -41,7 +41,7 @@ async function observe(project:SourceProject,path:string,remaining:number,redact
   if(byteSize>remaining)return excluded('total_byte_limit',byteSize);
   const file=await inventory.read(project,{path,revision:metadata.revision,maxBytes:EXECUTION_FILE_LIMITS.fileBytes,redactSensitive:true});
   const display=file.redacted?file.text.replaceAll('[redacted]','[REDACTED]'):file.text;
-  return {snapshot:{path,kind:'present',sha256:file.hash,content:redact(scrub(display))},byteSize:file.byteSize,fileRevision:file.fileRevision,redacted:file.redacted};
+  return {snapshot:{path,kind:'present',sha256:file.hash,fileRevision:file.fileRevision,content:redact(scrub(display))},byteSize:file.byteSize,fileRevision:file.fileRevision,redacted:file.redacted};
  }catch(error){const code=String((error as {code?:string}).code??'source_unavailable');if(code==='PROJECT_ROOT_UNAVAILABLE')fail('project_root_changed');if(code==='ENOENT')return {snapshot:{path,kind:'missing'},byteSize:0};
   const reasons:Record<string,string>={INVENTORY_LINKED_SOURCE:'linked_source',INVENTORY_FILE_TOO_LARGE:'file_byte_limit',INVENTORY_BINARY_FILE:'binary_file',INVENTORY_ENCODING_UNSUPPORTED:'encoding_unsupported',INVENTORY_SENSITIVE_CONTENT:'sensitive_content',INVENTORY_SOURCE_DRIFT:'revision_changed',INVENTORY_POLICY_DRIFT:'policy_changed',INVENTORY_REVISION_STALE:'revision_changed',INVENTORY_SOURCE_FORBIDDEN:'policy_excluded',EACCES:'unreadable',EPERM:'unreadable'};
   return excluded(reasons[code]??'source_unavailable',byteSize);

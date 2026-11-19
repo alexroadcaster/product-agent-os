@@ -1,5 +1,19 @@
 # TEST.md
 
+## PAOS-PMETH-23 — закрытие восстановления create {#pmeth-23-create-closure}
+
+`node --test --test-concurrency=1 tests/web/recipe-recovery.test.mts tests/web/execution-recipes.test.mts tests/web/app-agent-gateway.test.mts tests/web/file-preflight.test.mts` — 56/56. Сценарии `m3-recovery-acceptance.mts` с `--synthetic-browser` и `--synthetic-browser-modify` прошли по 68/68. Вариант `create` проверяет эксклюзивную запись `wx`, продолжение с checkpoint и чтение без повтора создания. Отдельно проверена подмена с теми же байтами на трёх этапах допуска.
+
+Для обновления `adapterRevision` прошли `sandbox-broker-acceptance.mts --run-once --candidate-inspection --binary <abs>` и штатный повтор без `--candidate-inspection`. Бинарник Codex CLI `0.170.0` сохранил SHA-256. [Команды расширенного прогона](#pmeth-23-expanded) · [Точные доказательства](docs/superpowers/specs/paos-pmeth-23-expanded-evidence.md#create-recovery-closure)
+
+На окончательной ревизии `node --test --test-concurrency=1 tests/web/*.test.mts` на Windows с изолированными `TEMP` и `TMP` — 733/733, без пропусков. Целевой Python — 109/109. Браузер рекомендаций — 53/53. FSD-пилот, сквозной F13, `npm run check:web-m1` и `npm run build:web` прошли.
+
+## PAOS-PMETH-23 — расширенная приёмка B3/B4 {#pmeth-23-expanded}
+
+На Windows с отдельными `TEMP` и `TMP` полный `node --test --test-concurrency=1 tests/web/*.test.mts` — 729/729. `python -B -m unittest tests.product_agent_os.test_pmeth_b1 tests.product_agent_os.test_pmeth_b4 tests.product_agent_os.test_project_formation tests.product_agent_os.test_merge_infrastructure tests.product_agent_os.test_codex_runtime_runner_cli -v` — 109/109. `npm run check:web-m1` и `npm run build:web` прошли.
+
+В `tests/web/single-window/` запущены `methodology-advice-browser-acceptance.mts --synthetic-browser --playwright-core <abs> --chromium <abs> --evidence <abs>` (53/53), `sandbox-broker-acceptance.mts --run-once --binary <abs>` (штатный допуск), `pmeth-23-fsd-acceptance.mts --synthetic-pilot` и `pmeth-23-write-acceptance.mts --synthetic-write --binary <abs>` (оба прошли). `m3-recovery-acceptance.mts --synthetic-browser-modify --binary <abs> --playwright-core <abs> --chromium <abs> --screenshots <abs>` прошёл 68/68. Вариант `--synthetic-browser` с `create` дал 46/47 и код 1 из-за `FILE_PREFLIGHT_BLOCKED`. [Отчёты и хеши](docs/superpowers/specs/paos-pmeth-23-expanded-evidence.md#receipts)
+
 ## Project Scan — гонка в проверке запоздалого результата {#project-scan-regression}
 
 Объявление стадии `code` предшествует проверке снимка и входу в анализатор. Запись во время проверки снимка воспроизвела `INVENTORY_SOURCE_DRIFT` до запуска анализатора. Тест теперь ждёт `onProgress` от анализатора и проверяет `PROJECT_SCAN_SOURCE_STALE`, отмену стадии, отсутствие опубликованных счётчиков и `lastSuccessful`, а также отказ при подмене корня. Повтор с увеличенным инвентарём — 20/20.

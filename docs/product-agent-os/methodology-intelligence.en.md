@@ -42,6 +42,12 @@ change requires reviewing the link. Owner decisions keep their reason and histor
 If the outcome is unknown, open the original run in Sessions and reconcile the
 checkpoint before continuing.
 
+A recipe successor can read a file created by a previous step when the file
+is a declared input and its SHA-256 and file revision match the successful
+native observation. A replacement or missing observation blocks admission.
+Continuation uses the recorded create attempt.
+[PMETH-23 qualification](../superpowers/specs/paos-pmeth-23-expanded-evidence.en.md#create-recovery-closure)
+
 For a bundle of documents and project infrastructure, use G9 `--formation-context`,
 `--dry-run`, staging with `--preview-digest` and the existing merge approval.
 For a single linked document, use F13. Its optional `methodology` object carries

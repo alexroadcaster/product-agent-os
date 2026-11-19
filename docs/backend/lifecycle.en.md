@@ -38,6 +38,11 @@ adapter revision drift fail before spawn. Each profile selects the binary via
 `runtime-selection.json`. Rollback restores the matching broker version, binary
 and manifest revision together.
 
+The PMETH-23 recovery fix qualified the same binary with adapter revision
+`05fbd1d086c8411c1ad689bbdf02671e17db3da706a5691c467f30080846d5a9`.
+Candidate and standard admission passed.
+[Repeat qualification](../superpowers/specs/paos-pmeth-23-expanded-evidence.en.md#create-recovery-closure)
+
 ## Shutdown
 
 On `quit()`, the service first rejects new requests and revokes sessions, cancels its own desktop dialog and begins HTTP server closure. Scheduler and recipes close, the selector drains, gateways/channel close. HTTP requests drain before store closure, preserving in-flight import/restore handlers. Repeated `quit` calls share one pending promise; errors permit a subsequent retry and do not prove complete shutdown.

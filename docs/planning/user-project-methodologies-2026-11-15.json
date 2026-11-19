@@ -1451,7 +1451,18 @@
       "verification_profile": "PV-E2E",
       "implementation_at": "19-11-2026 11:10",
       "execution_authority": "owner_authorized_b2_local_slice",
-      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md"
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b2-evidence.md",
+      "expanded_qualification": {
+        "status": "implemented_locally_verified",
+        "tested_git_head": "4f2d3400b29e014fb9887dcaca681cd8a525818d",
+        "source_basis": "git_head_plus_qualified_worktree",
+        "adapter_revision": "05fbd1d086c8411c1ad689bbdf02671e17db3da706a5691c467f30080846d5a9",
+        "evidence": "docs/superpowers/specs/paos-pmeth-23-expanded-evidence.md",
+        "evidence_en": "docs/superpowers/specs/paos-pmeth-23-expanded-evidence.en.md",
+        "blocked_scenarios": [],
+        "open_evidence": ["live_skill_invocation", "actual_agent_usefulness", "human_acceptance"],
+        "release_disposition": "hold"
+      }
     },
     {
       "id": "PAOS-PMETH-24",
