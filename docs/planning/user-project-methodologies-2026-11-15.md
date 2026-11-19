@@ -1,6 +1,6 @@
 # Product-Agent OS — направление B: методологии для проектов пользователей
 
-Source status: repository_source / owner_requested_plan / B1_B2_B3_locally_verified; release_hold; remaining_slices_planned.
+Source status: repository_source / owner_requested_plan / B1_B2_B3_B4_locally_verified; release_hold.
 Дата создания: 15.11.2026. Редакция: 19.11.2026. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Назначение и два независимых направления
@@ -86,6 +86,8 @@ P1 — обязательные основы и защита корректно�
 **Статус B2.** Выполнены 6 из 6 задач. Read-only CLI/Web профиль локально проверен, пилот из четырёх прогонов дал недостаточно данных для вывода о пользе, владелец утвердил `hold` для поставки. [Проверки и решение](../superpowers/specs/paos-pmeth-b2-evidence.md).
 
 **Статус B3.** Выполнены 5 из 5 задач. Дизайн-сценарии и выводы F14 проверены локально. При неполном анализе предложение о переносе не выдаётся. По зависимостям доступны входы B4 PAOS-PMETH-06 и PAOS-PMETH-13. [Доказательства B3](../superpowers/specs/paos-pmeth-b3-evidence.md).
+
+**Статус B4.** Восемь карточек проверены локально. CLI показывает изменившийся контекст и зависимости исполнения. Web/Desktop сохраняет решение и показывает технические наблюдения по критериям. Запись и восстановление проверены на одноразовых проектах. [Доказательства B4](../superpowers/specs/paos-pmeth-b4-evidence.md).
 
 **Первый принимаемый результат — read-only CLI+Web.** Жёсткие зависимости: PMETH 01 → 02 → 22 → 03 → 04 → 05 → 07 → 19 → 20 → 26. В одном disposable проекте backend bug и docs-only дают одинаковые выводы CLI/Web при равных данных и покрытии, с основанием и следующим проверяемым шагом. PMETH-26 закрепляет проверенные RU/EN примеры. Для приёмки нужны наблюдаемые CLI/HTTP/browser проверки и отрицательные случаи, результат проверки понимания или явный gap. PMETH-06, PMETH-08–18 и PMETH-21/23–25 за пределами prerequisites этапа.
 
@@ -459,7 +461,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 - Task: PAOS-PMETH-06
 - Task name: Отслеживать изменения спецификации и устаревший контекст
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -468,7 +470,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-05
 - Blocks: PAOS-PMETH-16, PAOS-PMETH-17
 - External references: PAOS-FUNC-02, PAOS-FUNC-25
@@ -497,15 +499,15 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: CLI сравнивает ревизии задачи, критериев и входов, выводит владельцев для пересмотра.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-07`
 
@@ -823,7 +825,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 - Task: PAOS-PMETH-13
 - Task name: Встроить ADD-контракт исполнения и ownership
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -832,7 +834,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-04
 - Blocks: PAOS-PMETH-14, PAOS-PMETH-15
 - External references: PAOS-FUNC-15, PAOS-FUNC-16
@@ -861,21 +863,21 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Назначение задачи связывает область, проверки и остановку с текущим контекстом.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-14`
 
 - Task: PAOS-PMETH-14
 - Task name: Связать выбранные методологии с доступными skills и инструментами
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B4
@@ -884,7 +886,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-13
 - Blocks: Нет.
 - External references: PAOS-FUNC-12
@@ -913,21 +915,21 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Подбираются канонические skills и процессы, видны границы подтверждённой доступности.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-15`
 
 - Task: PAOS-PMETH-15
 - Task name: Объединить методологии в один соразмерный delivery plan
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -936,7 +938,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-07, PAOS-PMETH-13
 - Blocks: PAOS-PMETH-16, PAOS-PMETH-17
 - External references: Нет; internal A не является prerequisite.
@@ -965,21 +967,21 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Явный режим объединяет методологии и владельцев в зависимые срезы.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-16`
 
 - Task: PAOS-PMETH-16
 - Task name: Подключить безопасные staging, preview и разрешённое применение
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -988,7 +990,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-06, PAOS-PMETH-15
 - Blocks: PAOS-PMETH-21
 - External references: PAOS-FUNC-13
@@ -1017,21 +1019,21 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: G9 и F13 привязывают согласование к ревизиям, сохраняют пользовательские изменения и восстановление.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-17`
 
 - Task: PAOS-PMETH-17
 - Task name: Собирать evidence и вычислять готовность по критериям
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -1040,7 +1042,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-06, PAOS-PMETH-15
 - Blocks: PAOS-PMETH-18
 - External references: PAOS-FUNC-02
@@ -1069,21 +1071,21 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Техническое наблюдение связывается с одним критерием и текущей ревизией, отдельно от решения владельца.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-18`
 
 - Task: PAOS-PMETH-18
 - Task name: Определить durable state методологий в Web/desktop
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B4
@@ -1092,7 +1094,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-17, PAOS-PMETH-19
 - Blocks: PAOS-PMETH-21
 - External references: PAOS-FUNC-02, PAOS-FUNC-08, PAOS-FUNC-22, PAOS-FUNC-28, PAOS-FUNC-29
@@ -1121,15 +1123,15 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Web/Desktop хранит решение, область, автора и историю с проверкой ревизий.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-19`
 
@@ -1239,7 +1241,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 - Task: PAOS-PMETH-21
 - Task name: Обрабатывать drift, остановку, возобновление и аудит
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -1248,7 +1250,7 @@ Stop при неподтверждённом source/authority, stale approval, o
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-16, PAOS-PMETH-18, PAOS-PMETH-20
 - Blocks: Нет.
 - External references: PAOS-FUNC-21
@@ -1277,15 +1279,15 @@ Stop при неподтверждённом source/authority, stale approval, o
 
 #### Completion Report
 
-- status: planned
-- what was done: Сформирована карточка; реализация не начата.
-- files touched / work locations: Implementation files не менялись этой записью; будущие locations в Scope.
-- technical value delivered: Не заявлена до исполнения AC.
-- product value delivered: Не заявлена до исполнения AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Только static authoring/split checks; будущие AC не выполнены.
-- residual risks: Baseline может измениться; applicability/authority/activation и model usefulness требуют evidence выбранного slice.
-- follow-up: Следующий разрешённый slice по DAG, без автоматического запуска.
+- status: implemented
+- what was done: Неизвестный исход виден в задаче, а восстановление использует штатный checkpoint.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- technical value delivered: Проверены локальный контракт и его отрицательные сценарии.
+- product value delivered: У задачи есть проверяемые наблюдения и следующий шаг.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.md)
+- residual risks: Расширенная профильная проверка PMETH-23 и решение о поставке требуют отдельных доказательств.
+- follow-up: Сохраняется утверждённый владельцем hold.
 
 ### Task `PAOS-PMETH-22`
 

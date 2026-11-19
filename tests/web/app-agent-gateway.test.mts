@@ -192,6 +192,78 @@ test('App command approval decline is durable and does not execute; accept dispa
  for(let i=0;i<20;i++){const state=await f.gateway.agent('operation',{...f.auth,runId:run.id,operationId:'read-2'});if(state.state==='completed')break;await new Promise(resolve=>setImmediate(resolve));}
  assert.equal(calls,1);assert.equal((await f.gateway.agent('command',{...command,operationId:'read-2'})).stdout,'checked');
 });
+test('criterion evidence uses a settled broker receipt on matching source bytes and leaves other criteria unverified',async t=>{
+ const {readMethodologyEvidence}=await import('../../apps/local-service/src/project-analysis/methodology-evidence.mts');
+ const f=await setup(t,{executorFactory:brokerFactory(async()=>({exitCode:0,stdout:'checked',stderr:''}))});
+ await writeFile(join(f.root,'scope.txt'),'before');
+ await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'evidence-task',expectedAuthorityEpoch:1,changes:[{
+  expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),
+   acceptanceCriteria:['Named behavior passes','Another behavior is observed'],
+   files:[{relativePath:'scope.txt',plannedOperation:'modify',actualOperation:null}]}},
+ }]});
+ const b=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'});
+ const run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:b.bindingId,taskId:runtimeTaskId});
+ await f.gateway.agent('claim',f.auth);
+ await f.gateway.agent('command',{...f.auth,runId:run.id,operationId:'check-criterion',argv:['tool','check'],criterionId:'AC-1'});
+ await f.gateway.runtime.dispatch('approve',{projectId:'p',sessionId:'s',bindingId:b.bindingId,runId:run.id,
+  requestId:'check-criterion',generation:'generation',decision:'accept'});
+ for(let i=0;i<30;i++){
+  if((await f.gateway.agent('operation',{...f.auth,runId:run.id,operationId:'check-criterion'})).state==='completed')break;
+  await new Promise(resolve=>setTimeout(resolve,10));
+ }
+ const report=await readMethodologyEvidence(f.store,'p',runtimeTaskId);
+ assert.deepEqual(report.criteria.map(row=>row.technical),['passed','missing']);
+ assert.equal(report.criteria[0].receipt?.route,'native_command_broker');
+ assert.equal(report.humanAcceptance,'not_observed');
+ assert.equal(report.releaseAcceptance,'not_evaluated');
+ assert.equal((await readMethodologyEvidence(f.store,'p',runtimeTaskId,undefined,'other-profile')).criteria[0].technical,'stale');
+ await f.gateway.agent('report',{...f.auth,runId:run.id,seq:1,idempotencyKey:'observe-then-review',status:'completed',text:'Synthetic check recorded.'});
+ const {recordManualCheck,acceptTask}=await import('../../apps/local-service/src/tasks/user-commands.mts');
+ const saved=(await f.store.get('p',runtimeTaskId))!;
+ await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'await-owner',expectedAuthorityEpoch:1,changes:[{
+  expectedRevision:saved.revision,entity:{id:saved.id,kind:'task',data:{...saved.data,status:'awaiting_acceptance'}},
+ }]});
+ const owner={projectId:'p',actorId:'user',taskId:runtimeTaskId,expectedAuthorityEpoch:1,expectedRevision:saved.revision+1,
+  note:'Synthetic owner observed both criteria'};
+ const {checkId}=await recordManualCheck(f.store,{...owner,idempotencyKey:'manual-observation',outcome:'passed'});
+ await acceptTask(f.store,{...owner,idempotencyKey:'owner-acceptance',checkId,accepted:true});
+ const accepted=await readMethodologyEvidence(f.store,'p',runtimeTaskId);
+ assert.deepEqual(accepted.criteria.map(row=>row.human),['accepted','accepted']);
+ assert.deepEqual(accepted.criteria.map(row=>row.technical),['passed','missing']);
+ await writeFile(join(f.root,'scope.txt'),'modified after observation');
+ assert.deepEqual((await readMethodologyEvidence(f.store,'p',runtimeTaskId)).criteria.map(row=>row.technical),['stale','missing']);
+});
+test('a lost criterion result remains pending reconciliation across an App-agent restart',async t=>{
+ const {readMethodologyEvidence}=await import('../../apps/local-service/src/project-analysis/methodology-evidence.mts');
+ let dispatches=0;
+ const factory=brokerFactory(async()=>{dispatches++;throw new Error('Unknown synthetic command outcome');});
+ const f=await setup(t,{executorFactory:factory});
+ await writeFile(join(f.root,'scope.txt'),'preserved source');
+ await f.store.write({projectId:'p',actorId:'user',idempotencyKey:'unknown-criterion-task',expectedAuthorityEpoch:1,changes:[{
+  expectedRevision:0,entity:{id:runtimeTaskId,kind:'task',data:{...fixtureTask(),
+   files:[{relativePath:'scope.txt',plannedOperation:'modify',actualOperation:null}]}},
+ }]});
+ const binding=await f.gateway.runtime.dispatch('bindings',{projectId:'p',sessionId:'s',mode:'execution'});
+ const run=await f.gateway.runtime.dispatch('send',{...f.input,bindingId:binding.bindingId,taskId:runtimeTaskId});
+ await f.gateway.agent('claim',f.auth);
+ await f.gateway.agent('command',{...f.auth,runId:run.id,operationId:'unknown-check',argv:['tool','check'],criterionId:'AC-1'});
+ await f.gateway.runtime.dispatch('approve',{projectId:'p',sessionId:'s',bindingId:binding.bindingId,runId:run.id,
+  requestId:'unknown-check',generation:'generation',decision:'accept'});
+ for(let i=0;i<30;i++){
+  if((await readMethodologyEvidence(f.store,'p',runtimeTaskId)).recovery?.state==='reconcile_required')break;
+  await new Promise(resolve=>setTimeout(resolve,10));
+ }
+ await f.gateway.close();
+ const restarted=createAppAgentGateway({store:f.store,profileId:'profile_fixture',actorId:'restart',executorFactory:factory});
+ try{
+  await restarted.connection.connect({});
+  const result=await readMethodologyEvidence(f.store,'p',runtimeTaskId);
+  assert.equal(result.recovery?.state,'reconcile_required');
+  assert.equal(result.recovery?.operationId,'unknown-check');
+  assert.equal(result.criteria[0].technical,'partial');
+  assert.equal(dispatches,1);
+ }finally{await restarted.close();}
+});
 test('Stop and heartbeat remain responsive during command; interrupted report waits for settled process',async(t)=>{
  let finish!:(result:any)=>void,started!:(value?:unknown)=>void;const start=new Promise(resolve=>{started=resolve;});let stops=0;
  const f=await setup(t,{executorFactory:brokerFactory(async()=>{started();return new Promise(resolve=>{finish=resolve;});},async()=>{stops++;})});

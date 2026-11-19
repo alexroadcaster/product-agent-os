@@ -18,7 +18,7 @@ const reasons=inspectRuntimeTuple(manifest,currentTuple);
 // This explicit offline acceptance mode can qualify changed local sources/dependencies only.
 // Binary, Node, platform, SQLite and capability admission stay pinned; production inspection has no exception.
 const candidateDrift=new Set(['adapter_mismatch','package_lock_mismatch']);
-assert.equal(manifest.codex.version,'0.167.0');assert.deepEqual(reasons.filter(reason=>!candidate||!candidateDrift.has(reason)),[]);
+assert.equal(manifest.codex.version,'0.170.0');assert.deepEqual(reasons.filter(reason=>!candidate||!candidateDrift.has(reason)),[]);
 const root=await mkdtemp(join(scratch,'broker-acceptance-'));assert.ok(root.startsWith(scratch+sep));
 const evidence:Record<string,unknown>={claim:candidate?'candidate_native_command_broker':'qualified_native_command_broker',candidateInspection:candidate,binarySha256:fingerprint.sha256,adapterRevision:currentRevision,manifestAdapterRevision:manifest.adapterRevision,packageLockSha256:currentTuple.packageLockSha256,manifestPackageLockSha256:manifest.packageLockSha256,prequalificationReasons:reasons,currentTuple,providerRequests:0,modelTurns:0,credentialOperations:0,cases:[],driftRejections:[]};
 let broker:SandboxBroker|undefined;

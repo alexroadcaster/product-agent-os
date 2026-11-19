@@ -6,6 +6,7 @@ import {scanCheckedSources,readCheckedSource,assertSourceProject,inventoryForPro
 import {assertCurrentSourceProject} from '../project-inventory/scope.mts';
 import {taskPathReferences,sameRelativePath} from './references.mts';
 import {createDocumentWriter,type DocumentWriterOptions} from './document-writer/service.mts';
+import {assertDocumentMethodologyTask,decodeDocumentMethodologyLink} from './document-writer/methodology-link.mts';
 const hash=(value:unknown)=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 function fail(code:string):never{throw Object.assign(new Error(code),{code});}
 const text=(value:unknown):string|null=>typeof value==='string'?safePersistedText(value):null;
@@ -75,8 +76,43 @@ export function createArtifactCatalog(store:LocalStore,graph?:{status(id:string)
    if(row.data.category==='document_proposal'){const d=row.data;let state:any=d.applyState??'staged';if(state==='staged'){try{const pin=d.targetSource as any;if(pin?.origin==='workspace_file'&&pin.rootIdentity===p.rootIdentity){const known=sourceEntries.get(projectId)??new Map();known.set(String(d.targetId),{path:pin.path,version:pin.rawHash});sourceEntries.set(projectId,known);}const target=await read(projectId,String(d.targetId),String(d.targetVersion));if(target.state!=='available')state='stale';}catch{state='stale';}}return {item:selected,body,outline:[],redacted,state:'available',proposal:{before:safePersistedText(String(d.before??'')),after:body,targetId:String(d.targetId),targetVersion:String(d.targetVersion),state,applied:state==='applied',accepted:false,...(d.documentOperation?{operation:d.documentOperation as any}:{}),...(d.documentApply?{apply:d.documentApply as any}:{})}};}}
   const outline=body.split(/\r?\n/).flatMap((line,i)=>{const m=/^(#{1,6})\s+(.+)$/.exec(line);return m?[{level:m[1].length,text:m[2].slice(0,200),line:i+1}]:[]}).slice(0,200);return {item:selected,body,outline,redacted,state:'available'};
  }
- async function preview(projectId:string,input:any){if(typeof input.body!=='string'||Buffer.byteLength(input.body)>512*1024||safePersistedText(input.body)!==input.body)fail('DOCUMENT_PROPOSAL_INVALID');const document=await read(projectId,input.documentId,input.sourceVersion);if(document.item.kind!=='document'||document.state!=='available')fail('DOCUMENT_PROPOSAL_STALE');return {documentId:input.documentId,sourceVersion:document.item.source.version,before:document.body,after:input.body,previewDigest:hash([projectId,input.documentId,document.item.source.version,input.body]),applied:false,policy:'staged_only'};}
+ async function preview(projectId:string,input:any){
+  if(typeof input.body!=='string'||Buffer.byteLength(input.body)>512*1024||safePersistedText(input.body)!==input.body)fail('DOCUMENT_PROPOSAL_INVALID');
+  const document=await read(projectId,input.documentId,input.sourceVersion);
+  if(document.item.kind!=='document'||document.state!=='available')fail('DOCUMENT_PROPOSAL_STALE');
+  const methodology=input.methodology===undefined?undefined:decodeDocumentMethodologyLink(input.methodology);
+  if(methodology){
+   assertDocumentMethodologyTask(methodology,await store.get(projectId,methodology.taskId));
+   if(!document.item.taskIds.includes(methodology.taskId))fail('DOCUMENT_METHODOLOGY_SCOPE_CONFLICT');
+  }
+  const material=[projectId,input.documentId,document.item.source.version,input.body];
+  if(methodology)material.push(methodology);
+  return {documentId:input.documentId,sourceVersion:document.item.source.version,before:document.body,after:input.body,
+   previewDigest:hash(material),applied:false,policy:'staged_only',...(methodology?{methodology,writer:'document_apply' as const}:{})};
+ }
  return {catalog,read,preview,...writer,
-  async saveProposal(projectId:string,actorId:string,input:any){if(typeof input.idempotencyKey!=='string'||input.idempotencyKey.length>200||!Number.isSafeInteger(input.epoch))fail('DOCUMENT_PROPOSAL_INVALID');const id='doc-proposal-'+hash([projectId,input.idempotencyKey]),requestHash=hash([input.documentId,input.sourceVersion,input.body,input.previewDigest]);const old=await store.get(projectId,id);if(old){if(old.data.requestHash!==requestHash)fail('IDEMPOTENCY_CONFLICT');return {id,staged:true,replayed:true};}const plan=await preview(projectId,input);if(plan.previewDigest!==input.previewDigest)fail('DOCUMENT_PROPOSAL_STALE');const target=await read(projectId,input.documentId,input.sourceVersion);const targetSource=target.item.source.origin==='workspace_file'?{origin:'workspace_file',path:target.item.source.path,rootIdentity:target.item.source.rootIdentity,policyVersion:target.item.source.policyVersion,fileRevision:target.item.source.fileRevision,rawHash:target.item.source.version}:{origin:'local_store',entityId:input.documentId,entityRevision:Number(target.item.source.version.slice('entity:'.length))};await store.stageDocumentProposal({projectId,actorId,expectedAuthorityEpoch:input.epoch,idempotencyKey:input.idempotencyKey,changes:[{expectedRevision:0,entity:{id,kind:'document',title:'Proposal: '+target.item.title,body:input.body,data:{category:'document_proposal',targetId:input.documentId,targetVersion:plan.sourceVersion,targetSource,before:plan.before,requestHash,taskIds:target.item.taskIds}}}]});return {id,staged:true,replayed:false};}
+  async saveProposal(projectId:string,actorId:string,input:any){
+   if(typeof input.idempotencyKey!=='string'||input.idempotencyKey.length>200||!Number.isSafeInteger(input.epoch))fail('DOCUMENT_PROPOSAL_INVALID');
+   const methodology=input.methodology===undefined?undefined:decodeDocumentMethodologyLink(input.methodology);
+   const material=[input.documentId,input.sourceVersion,input.body,input.previewDigest];
+   if(methodology)material.push(methodology);
+   const id='doc-proposal-'+hash([projectId,input.idempotencyKey]),requestHash=hash(material);
+   const old=await store.get(projectId,id);
+   if(old){if(old.data.requestHash!==requestHash)fail('IDEMPOTENCY_CONFLICT');return {id,staged:true,replayed:true};}
+   const plan=await preview(projectId,input);
+   if(plan.previewDigest!==input.previewDigest)fail('DOCUMENT_PROPOSAL_STALE');
+   const target=await read(projectId,input.documentId,input.sourceVersion);
+   if(target.state!=='available')fail('DOCUMENT_PROPOSAL_STALE');
+   const source=target.item.source;
+   const targetSource=source.origin==='workspace_file'
+    ? {origin:'workspace_file',path:source.path,rootIdentity:source.rootIdentity,policyVersion:source.policyVersion,fileRevision:source.fileRevision,rawHash:source.version}
+    : {origin:'local_store',entityId:input.documentId,entityRevision:Number(source.version.slice('entity:'.length))};
+   await store.stageDocumentProposal({projectId,actorId,expectedAuthorityEpoch:input.epoch,idempotencyKey:input.idempotencyKey,changes:[{
+    expectedRevision:0,entity:{id,kind:'document',title:'Proposal: '+target.item.title,body:input.body,
+     data:{category:'document_proposal',targetId:input.documentId,targetVersion:plan.sourceVersion,targetSource,before:plan.before,
+      requestHash,taskIds:target.item.taskIds,...(methodology?{methodology}:{})}},
+   }]});
+   return {id,staged:true,replayed:false};
+  },
  };
 }

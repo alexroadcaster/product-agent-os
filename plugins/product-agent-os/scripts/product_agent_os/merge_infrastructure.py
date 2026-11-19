@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
+import tempfile
 import time
 from datetime import UTC, datetime
 from pathlib import Path, PureWindowsPath
@@ -58,6 +60,8 @@ def apply_merge_plan(
         raise MergeInfrastructureError("; ".join(hook_approval_errors))
 
     current_plan = _build_merge_plan(workspace_path, stage_path, enable_hooks=False)
+    if enable_hooks and current_plan.get('task_binding'):
+        raise MergeInfrastructureError('formation apply does not activate hooks')
     effective_current_plan = _with_hook_activation(current_plan, workspace_path, enable_hooks)
     if effective_current_plan.get("status") == "blocked" or effective_current_plan.get("blocked"):
         raise MergeInfrastructureError(
@@ -77,8 +81,19 @@ def apply_merge_plan(
     _preflight_apply(workspace_path, rollback_path, required_decisions)
     entries: list[dict[str, Any]] = []
     results: list[dict[str, Any]] = []
-    _write_rollback_manifest(rollback_path, workspace_path, entries)
-    formation_apply = "formation" in load_stage_manifest(stage_path)
+    formation_apply = current_plan['stage_kind'] == 'formation'
+    if formation_apply:
+        # One stage is one admitted apply. A failed attempt retains its own journal;
+        # a reviewed new stage is required after reconciliation.
+        try:
+            with rollback_path.open('xb') as stream:
+                stream.write(_rollback_manifest_bytes(workspace_path, entries))
+                stream.flush()
+                os.fsync(stream.fileno())
+        except FileExistsError as exc:
+            raise MergeInfrastructureError('formation stage already attempted; reconcile its rollback manifest') from exc
+    else:
+        _write_rollback_manifest(rollback_path, workspace_path, entries)
     for decision in required_decisions:
         current_decision = _decision_by_target(effective_current_plan, decision["target_path"])
         if current_decision["action"] != decision["action"]:
@@ -111,6 +126,7 @@ def apply_merge_plan(
         "merge_plan_id": effective_current_plan["id"],
         "results": results,
         "rollback_manifest": str(rollback_path),
+        **({"task_binding": current_plan['task_binding']} if current_plan.get('task_binding') else {}),
     }
 
 
@@ -252,6 +268,9 @@ def _merge_plan(
             "symlink_safety_checked": True,
         },
         "approval_template_path": str(approval_template_path),
+        "stage_kind": "formation" if "formation" in manifest else "legacy",
+        **({"task_binding": manifest['formation']['task_binding']} if isinstance(manifest.get('formation'), dict)
+           and manifest['formation'].get('task_binding') else {}),
     }
 
 
@@ -419,10 +438,7 @@ def _apply_decision(workspace: Path, stage_root: Path, decision: dict[str, Any])
         target.parent.mkdir(parents=True, exist_ok=True)
         if decision["action"] == "create_file":
             if decision.get('formation_atomic_create'):
-                from product_agent_os.control_plane_compaction import _write
-                if target.exists():
-                    raise MergeInfrastructureError('formation target appeared during apply')
-                _write(target, staged.read_bytes())
+                _create_formation_file(workspace, target, staged, decision['staged_digest'])
                 return
             shutil.copyfile(staged, target)
             return
@@ -435,6 +451,30 @@ def _apply_decision(workspace: Path, stage_root: Path, decision: dict[str, Any])
         raise MergeInfrastructureError(f"unable to merge managed section for {decision['target_path']}: {exc}") from exc
     except (OSError, UnicodeError) as exc:
         raise MergeInfrastructureError(f"unable to apply merge decision for {decision['target_path']}: {exc}") from exc
+
+
+def _create_formation_file(workspace: Path, target: Path, staged: Path, expected_digest: str) -> None:
+    """Publish complete bytes atomically, failing if another writer created the target."""
+    raw = staged.read_bytes()
+    if content_digest(raw) != expected_digest:
+        raise MergeInfrastructureError('formation staged bytes changed during apply')
+    fd, temporary = tempfile.mkstemp(prefix='.paos-formation-', dir=target.parent)
+    try:
+        with os.fdopen(fd, 'wb') as stream:
+            stream.write(raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        _reject_symlink_path(target, workspace, include_file=True)
+        try:
+            if os.name == 'nt':
+                # Windows rename refuses an existing name. POSIX rename replaces it.
+                os.rename(temporary, target)
+            else:
+                os.link(temporary, target)
+        except FileExistsError as exc:
+            raise MergeInfrastructureError('formation target appeared during apply') from exc
+    finally:
+        Path(temporary).unlink(missing_ok=True)
 
 
 def _preflight_apply(workspace: Path, rollback_path: Path, decisions: list[dict[str, Any]]) -> None:
@@ -509,12 +549,16 @@ def _rollback_entry(workspace: Path, stage_root: Path, decision: dict[str, Any])
     }
 
 
+def _rollback_manifest_bytes(workspace: Path, entries: list[dict[str, Any]]) -> bytes:
+    payload = {'schema_version': 1, 'workspace': str(workspace),
+               'generated_at': datetime.now(UTC).replace(microsecond=0).isoformat(), 'entries': entries}
+    return json.dumps(payload, indent=2, sort_keys=True).encode('utf-8')
+
+
 def _write_rollback_manifest(path: Path, workspace: Path, entries: list[dict[str, Any]]) -> None:
     """Atomically retain the last complete recovery receipt on interruption."""
     from product_agent_os.control_plane_compaction import _write
-    payload = {'schema_version': 1, 'workspace': str(workspace),
-               'generated_at': datetime.now(UTC).replace(microsecond=0).isoformat(), 'entries': entries}
-    raw = json.dumps(payload, indent=2, sort_keys=True).encode('utf-8')
+    raw = _rollback_manifest_bytes(workspace, entries)
     for attempt in range(3):
         try:
             _write(path, raw)

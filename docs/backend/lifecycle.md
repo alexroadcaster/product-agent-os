@@ -17,7 +17,25 @@ Source status: repository_source / static_source_review + bounded_native_synthet
 
 15.11.2026 исходный mismatch воспроизведён. Явный `sandbox-broker-acceptance.mts --run-once --candidate-inspection --binary <verified-local-binary>` проверил candidate на disposable roots, после чего manifest обновлён; повтор без candidate mode прошёл через production loader. Execution записывает внутри разрешённого root, outside/private temp получают `EPERM`; Discussion и Planning не записывают. Подмена binary, lockfile или adapter отклоняется до spawn. Первый отказ executor (`native MXC unavailable`) сохранён отдельно от успешного native прогона.
 
-Это bounded native offline evidence без provider/model calls и human acceptance. После любого изменения pinned source нужен новый candidate receipt и повтор production admission. Карточка [PAOS-FUNC-01](../planning/functional-remediation-2026-11-15.md#task-paos-func-01) владеет актуальными receipts; Повторная квалификация после F08 выполнена на итоговых исходниках; final receipts указаны в карточке.
+Это bounded native offline evidence без provider/model calls и human acceptance. После любого изменения pinned source нужен новый candidate receipt и повтор production admission. В карточке [PAOS-FUNC-01](../planning/functional-remediation-2026-11-15.md#task-paos-func-01) сохранены исходные проверки и повторная квалификация после F08.
+
+### Квалификация Codex 0.170.0 {#codex-0170-qualification}
+
+19.11.2026 для нативного брокера квалифицирован установленный Codex CLI `0.170.0`
+на Windows x64 (`10.0.26200`). SHA-256 бинарника
+`8d06dc231dba649c7d48d3eecab239c452a1ac498c41dd6492a6f301b90a22ce`,
+ревизия адаптера `fb6db331a76a9acac5d5244400741483524a91fd53ae57aebd3bc8cb080b839b`.
+На изолированной копии проверен штатный загрузчик с манифестом кандидата. После
+обновления манифеста и брокера повторён тот же сценарий в рабочей копии.
+Оба отчёта имеют SHA-256 `6eff0f2013db861528b3458ac7b030b43f780f4fabcf14621cf2e321f072d437`.
+Отчёты сохранены в `.tmp/native-codex-0.170.0/`.
+
+В `Discussion` и `Planning` запись внутри проекта получила `EPERM`. В
+`Execution` запись внутри проекта прошла, запись за его пределами и в приватный
+временный каталог получила `EPERM`. Остановка завершила активную команду.
+Подмена хеша бинарника, lockfile или ревизии адаптера отклоняется до запуска.
+Путь выбирает `runtime-selection.json` конкретного профиля. При откате версию
+брокера, бинарник и ревизию манифеста восстанавливают согласованным набором.
 
 ## Завершение
 

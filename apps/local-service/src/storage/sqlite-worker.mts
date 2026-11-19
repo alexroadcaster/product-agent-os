@@ -18,6 +18,7 @@ import type {TeamRegistry} from '../../../../packages/contracts/team/assets.ts';
 import {sourceCatalog,sourceAsset,projectAssetRoots,type AssetRoot} from '../team/sources.mts';
 import type { EntityKind, Project, PromoteLegacy, StoreWrite, StoredEntity } from '../../../../packages/contracts/storage/local-store.ts';
 import {inventoryScopeFingerprint} from '../project-inventory/scope.mts';
+import {assertDocumentMethodologyTask,decodeDocumentMethodologyLink} from '../artifacts/document-writer/methodology-link.mts';
 import type {DocumentApplyJournal,DocumentApplyRecord} from '../../../../packages/contracts/artifacts/document-apply.ts';
 
 function fail(code: string, message = code): never { throw Object.assign(new Error(message), { code }); }
@@ -222,7 +223,23 @@ function write(command: StoreWrite, promotion?: PromoteLegacy,teamOperation?:any
     const scope = project(command.projectId);
     if (!scope) fail('PROJECT_NOT_FOUND');
     if (scope.authorityEpoch !== command.expectedAuthorityEpoch) fail('AUTHORITY_CONFLICT');
+    if(command.methodologyDecisionScope){
+      const pin=command.methodologyDecisionScope,task=get(scope.id,pin.taskId);
+      if(!task||task.kind!=='task'||task.deleted||task.revision!==pin.taskRevision
+        ||projectFreshness(scope.id).generation!==pin.generation||inventoryScopeFingerprint(scope)!==pin.inventoryScope)
+        fail('METHODOLOGY_DECISION_STALE');
+    }
     for(const change of command.changes){const previous=get(scope.id,change.entity.id);if((previous?.data.category==='document_proposal'||(change.entity.data as any)?.category==='document_proposal')&&!documentOperation?.trusted)fail('DOCUMENT_PROPOSAL_WRITE_AUTHORITY_REQUIRED');}
+    if(documentOperation?.trusted){
+      for(const change of command.changes){
+        const data=change.entity.data as Record<string,unknown>|undefined;
+        if(data?.category!=='document_proposal'||data.methodology===undefined)continue;
+        const link=decodeDocumentMethodologyLink(data.methodology);
+        const operation=data.documentOperation as {action?:string}|undefined;
+        if(change.expectedRevision===0||command.requireIdle&&operation?.action==='apply')
+          assertDocumentMethodologyTask(link,get(scope.id,link.taskId));
+      }
+    }
     if(promotion)assertDocumentIdle(scope.id);
     if(documentOperation?.journal){if(command.requireIdle)assertIdle(scope.id);saveDocumentJournal(scope,documentOperation.journal);}
     if(command.agentTaskCreation){const pin=command.agentTaskCreation,job=get(scope.id,pin.runId)?.data.appAgentRun as any;
@@ -699,6 +716,27 @@ function dispatch(method: string, params: any, requestId: number): unknown {
       return projectRows(params.projectId,params);
     }
     case 'projectFreshness': return projectFreshness(params.projectId);
+    case 'methodologyEvidenceRows': {
+      const observations=db.prepare(`SELECT r.id AS runId,
+        json_extract(op.value,'$.operationId') AS operationId,
+        json_extract(op.value,'$.state') AS state, json_extract(op.value,'$.decision') AS decision,
+        json_extract(op.value,'$.exitCode') AS exitCode, json_extract(op.value,'$.criterionCheck') AS criterionCheck
+        FROM entities r, json_each(r.data,'$.appAgentRun.operations') op
+        WHERE r.project_id=? AND r.kind='run' AND r.deleted=0
+        AND json_extract(r.data,'$.appAgentRun.projectId')=r.project_id
+        AND json_extract(r.data,'$.appAgentRun.taskContext.taskId')=?
+        AND json_type(op.value,'$.criterionCheck')='object'
+        ORDER BY r.rowid DESC, CAST(op.key AS INTEGER) DESC LIMIT 201`).all(params.projectId,params.taskId)
+        .map(row=>({...row,criterionCheck:JSON.parse(String(row.criterionCheck))}));
+      const dispositions=db.prepare(`SELECT json_extract(data,'$.taskSpecRevision') AS taskSpecRevision,
+        json_extract(data,'$.accepted') AS accepted FROM entities
+        WHERE project_id=? AND parent_id=? AND kind='comment' AND deleted=0
+        AND json_extract(data,'$.category')='owner_acceptance'
+        AND json_type(data,'$.accepted') IN ('true','false')
+        ORDER BY rowid DESC LIMIT 101`).all(params.projectId,params.taskId)
+        .map(row=>({...row,accepted:row.accepted===1}));
+      return {observations,dispositions};
+    }
     case 'runtimeFileScope': {
       db.exec('BEGIN');
       try{const scope={project:project(params.projectId),task:get(params.projectId,params.taskId)};db.exec('COMMIT');return scope;}

@@ -11,7 +11,7 @@ async function fixture(t:TestContext,overrides:Record<string,unknown>={}) {
  const profileDirectory=join(root,'profile'),workspaceRoot=join(root,'workspace');await mkdir(profileDirectory);await mkdir(workspaceRoot);
  const options:SandboxBrokerOptions={binaryPath:process.execPath,profileDirectory,workspaceRoot,mode:'execution'};
  const calls:{method:string;params:any}[]=[];let closed=false;let plan:SandboxBrokerSpawnPlan|undefined;let release:((value:RpcMessage)=>void)|undefined;
- const inspect=async()=>({qualified:true,reasons:[],binaryPath:options.binaryPath,fingerprint:{version:'0.167.0',sha256:'a'.repeat(64)},expected:{version:'0.167.0',sha256:'a'.repeat(64)}});
+ const inspect=async()=>({qualified:true,reasons:[],binaryPath:options.binaryPath,fingerprint:{version:'0.170.0',sha256:'a'.repeat(64)},expected:{version:'0.170.0',sha256:'a'.repeat(64)}});
  const spawnRpc=async(input:SandboxBrokerSpawnPlan):Promise<RuntimeRpc>=>{
   plan=input;const home=input.env.CODEX_HOME;
   return {generation:'synthetic-generation',notify(){},respond(){},respondError(){},subscribe(){return()=>{};},onClosed(){return()=>{};},snapshot(){return {generation:'synthetic-generation',status:closed?'closed':'open',pending:0,stderrBytes:0};},close:async()=>{closed=true;},
@@ -36,6 +36,16 @@ async function fixture(t:TestContext,overrides:Record<string,unknown>={}) {
 
 test('unqualified runtime fails before any child launch',async(t)=>{
  const f=await fixture(t);await assert.rejects(createSandboxBroker(f.options,{inspect:async()=>({qualified:false,reasons:['mismatch'],fingerprint:null,expected:null}),spawnRpc:f.spawnRpc}),{code:'BROKER_RUNTIME_UNQUALIFIED'});assert.equal(f.plan,undefined);
+});
+test('the previous Codex pin cannot launch even when inspection reports it qualified',async(t)=>{
+ const f=await fixture(t);
+ const old={version:'0.167.0',sha256:'a'.repeat(64)};
+ let spawned=false;
+ await assert.rejects(createSandboxBroker(f.options,{
+  inspect:async()=>({qualified:true,reasons:[],binaryPath:f.options.binaryPath,fingerprint:old,expected:old}),
+  spawnRpc:async()=>{spawned=true;throw new Error('Unexpected launch under the previous pin');},
+ }),{code:'BROKER_RUNTIME_UNQUALIFIED'});
+ assert.equal(spawned,false);
 });
 test('broker profile cannot be inside the bound workspace in any mode',async(t)=>{
  const f=await fixture(t);

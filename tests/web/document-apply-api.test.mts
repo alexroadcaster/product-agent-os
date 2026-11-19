@@ -28,4 +28,38 @@ test('paired document API applies a staged proposal, preserves conflicts and sup
  const fresh=await request('/artifacts/proposals/rollback-preview',{proposalId:saved.body.id,proposalRevision:r});assert.equal(fresh.body.before,'# External\n');
  const restored=await request('/artifacts/proposals/rollback',{...rollbackInput,previewDigest:fresh.body.previewDigest,idempotencyKey:'rollback-reviewed'});assert.equal(restored.body.state,'rolled_back');assert.equal((await request('/artifacts/doc')).body.body,'# Before\n');
  assert.ok(!JSON.stringify([preview.body,applied.body,restored.body,(await request('/artifacts')).body]).includes('beforeBase64'));
+
+ const task=await f.create('Document acceptance', {acceptanceCriteria:['The example matches the canonical source','The owner can review the diff']});
+ await f.store.write({projectId:'p',actorId:'fixture',expectedAuthorityEpoch:1,idempotencyKey:'linked-document',changes:[
+  {expectedRevision:0,entity:{id:'linked-doc',kind:'document',title:'Linked fixture document',body:'# Before\n',data:{taskIds:[task.id]}}},
+ ]});
+ const link={taskId:task.id,taskRevision:task.revision,criterionIds:['AC-1']};
+ const scopedInput={documentId:'linked-doc',sourceVersion:'entity:1',body:'# Proposed\n',methodology:link};
+ const scoped=await request('/artifacts/proposals/preview',scopedInput);
+ assert.equal(scoped.status,200);
+ assert.deepEqual(scoped.body.methodology,link);
+ assert.equal(scoped.body.writer,'document_apply');
+ assert.equal((await request('/artifacts/proposals/preview',{...scopedInput,methodology:{...link,criterionIds:['AC-9']}})).status,400);
+ const scopedProposal=await request('/artifacts/proposals',{...scopedInput,previewDigest:scoped.body.previewDigest,epoch:1,idempotencyKey:'linked-stage'});
+ assert.equal(scopedProposal.status,200);
+ const scopedPreview=await request('/artifacts/proposals/apply-preview',{proposalId:scopedProposal.body.id,proposalRevision:1});
+ assert.deepEqual(scopedPreview.body.methodology,link);
+ await f.command({action:'save',task:{...task.data,title:'New task revision'},expectedRevision:task.revision});
+ const staleApply=await request('/artifacts/proposals/apply',{proposalId:scopedProposal.body.id,proposalRevision:1,
+  previewDigest:scopedPreview.body.previewDigest,epoch:1,idempotencyKey:'linked-apply'});
+ assert.equal(staleApply.status,409);
+ assert.equal((await request('/artifacts/linked-doc')).body.body,'# Before\n');
+
+ const latest=(await f.store.get('p',task.id))!;
+ const refreshed={...scopedInput,methodology:{...link,taskRevision:latest.revision}};
+ const reviewed=await request('/artifacts/proposals/preview',refreshed);
+ const freshProposal=await request('/artifacts/proposals',{...refreshed,previewDigest:reviewed.body.previewDigest,epoch:1,idempotencyKey:'linked-stage-fresh'});
+ const applyInput={proposalId:freshProposal.body.id,proposalRevision:1};
+ const approved=await request('/artifacts/proposals/apply-preview',applyInput);
+ assert.equal((await request('/artifacts/proposals/apply',{...applyInput,previewDigest:approved.body.previewDigest,epoch:1,idempotencyKey:'linked-apply-fresh'})).status,200);
+ await f.store.write({projectId:'p',actorId:'fixture',expectedAuthorityEpoch:1,idempotencyKey:'linked-later-edit',changes:[{
+  expectedRevision:2,entity:{id:'linked-doc',kind:'document',title:'Linked fixture document',body:'# Later owner edit\n',data:{taskIds:[task.id]}},
+ }]});
+ assert.equal((await request('/artifacts/proposals/rollback-preview',{...applyInput,proposalRevision:2})).status,409);
+ assert.equal((await request('/artifacts/linked-doc')).body.body,'# Later owner edit\n');
 });

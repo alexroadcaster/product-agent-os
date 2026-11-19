@@ -4,6 +4,7 @@ import type { EntityInput, StoreWrite } from '../../../../packages/contracts/sto
 import { decodeTaskProfile as decodeM1TaskProfile } from '../../../../packages/contracts/issues/task-profile.ts';
 import {runtimeWorkflow} from '../workflows/runtime.mts';
 import {categoryState} from '../workflows/registry.mts';
+import {recipeScopeHash} from '../execution-recipes/contract.mts';
 
 function fail(code: string): never { throw Object.assign(new Error(code), { code }); }
 const userKinds = new Set(['task', 'session', 'comment', 'draft']);
@@ -122,6 +123,7 @@ export async function acceptTask(store: LocalStore, input: Omit<CheckInput, 'out
     idempotencyKey: input.idempotencyKey, requireIdle: true,...(profile.schemaVersion==='m2_task_profile_v1'?{taskManagerAction:'transition' as const,taskManagerReason:input.note||'Owner acceptance'}:{}), changes: [
       { expectedRevision: task.revision, entity: { id: task.id, kind: 'task', data: profile } },
       { expectedRevision: 0, entity: { id: acceptanceId, kind: 'comment', parentId: task.id, title: 'Owner acceptance',
-        body: input.note, data: { category: 'owner_acceptance', accepted: input.accepted, checkId: input.checkId, requestHash } } },
+        body: input.note, data: { category: 'owner_acceptance', accepted: input.accepted, checkId: input.checkId,
+          taskSpecRevision:recipeScopeHash(task.data),requestHash } } },
     ] });
 }

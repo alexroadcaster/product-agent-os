@@ -33,13 +33,13 @@ async function directory(path:string) {
  return info;
 }
 /** One immutable workspace/mode binding. command/exec is standalone, so threadId records policy qualification, not command membership.
- * Protocol: pinned Codex 0.167.0 CommandExecParams/CommandExecTerminateParams. All worker fields except argv/id/timeout are broker-owned.
+ * Protocol: pinned Codex 0.170.0 CommandExecParams/CommandExecTerminateParams. All worker fields except argv/id/timeout are broker-owned.
  */
 export async function createSandboxBroker(options:SandboxBrokerOptions,deps:SandboxBrokerDependencies={}):Promise<SandboxBroker> {
  if(!['discussion','planning','execution'].includes(options.mode)||![options.binaryPath,options.profileDirectory,options.workspaceRoot].every(isAbsolute))throw fail('BROKER_OPTIONS_INVALID');
  if(!deps.spawnRpc&&process.platform!=='win32')throw fail('BROKER_PLATFORM_UNSUPPORTED');
  const inspected=await(deps.inspect??inspectConfiguredRuntime)(options.profileDirectory);
- if(!inspected.qualified||inspected.binaryPath!==options.binaryPath||inspected.fingerprint?.version!=='0.167.0'||inspected.expected?.version!=='0.167.0'
+ if(!inspected.qualified||inspected.binaryPath!==options.binaryPath||inspected.fingerprint?.version!=='0.170.0'||inspected.expected?.version!=='0.170.0'
   ||!inspected.fingerprint?.sha256||inspected.fingerprint.sha256!==inspected.expected.sha256)throw fail('BROKER_RUNTIME_UNQUALIFIED');
  const workspaceRoot=resolve(options.workspaceRoot),profileDirectory=resolve(options.profileDirectory);
  const profileRelative=relative(workspaceRoot,profileDirectory);
@@ -73,7 +73,7 @@ export async function createSandboxBroker(options:SandboxBrokerOptions,deps:Sand
   if(!file.isFile()||file.isSymbolicLink()||file.nlink!==1)throw fail('BROKER_CONFIG_DRIFT');
   const bytes=await readFile(configFile,'utf8');
   if(bytes!==pinnedConfiguration) {
-   // Codex 0.167.0 may append its repository trust decision on an execution thread/start.
+   // Codex 0.170.0 may append its repository trust decision on an execution thread/start.
    // Accept only this exact table in the isolated home; every effective setting and project layer is still checked below.
    if(!acceptNativeTrust||pinnedConfiguration!==sandboxBrokerConfiguration)throw fail('BROKER_CONFIG_DRIFT');
    const added=bytes.startsWith(sandboxBrokerConfiguration)?bytes.slice(sandboxBrokerConfiguration.length):'';

@@ -44,6 +44,8 @@ export type StoreWrite = Readonly<{
   /** Private claimed job: owner-authorized Bug metadata only, never a runtime grant. */
   agentTaskCreation?: {runId:string;workerId:string;generation:string;initiatedBy:string;actorId:string;leaseExpiresAt:number;validationTime?:number};
   decisionCommand?: {id:string;revision:number;taskId:string|null;scopeHash:string|null;rootIdentity:string;expiresAt:number;validationTime?:number};
+  /** Service-only compare-and-set against the task and project authority of a methodology decision. */
+  methodologyDecisionScope?: {taskId:string;taskRevision:number;generation:string;inventoryScope:string};
   changes: readonly { entity: EntityInput; expectedRevision: number; delete?: boolean }[];
   outbox?: readonly { kind: string; payload: Record<string, unknown> }[];
 }>;

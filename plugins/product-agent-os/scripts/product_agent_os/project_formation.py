@@ -6,6 +6,7 @@ reviewed plan to bounded source observations; it cannot grant write authority.
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 from dataclasses import replace
@@ -16,6 +17,8 @@ from urllib.parse import quote
 from product_agent_os.control_plane_compaction import _authority, _path
 from product_agent_os.control_plane_documents import DOCUMENT_CONTRACTS, document_readiness
 from product_agent_os.discovery import analyze_workspace
+from product_agent_os.methodology_decision import build_methodology_decision
+from product_agent_os.methodology_profile import scoped_paths
 from product_agent_os.stage_manifest import content_digest, canonical_json
 from product_agent_os.task_routing import build_task_routing, validate_task_context
 from product_agent_os.templates import TemplateSpec, required_templates, selected_templates
@@ -210,7 +213,12 @@ def formation_plan(root: Path, request: dict[str, Any], audit: dict[str, Any] | 
         if task.get('release_or_readiness'):
             domain_reasons['operations'] = 'explicit_release_scope'
             domain_reasons['evidence'] = 'explicit_release_scope'
-    decision = build_task_routing(root, audit, task)
+    decision = build_task_routing(root, audit, task, include_revision_sources=True)
+    revisions = decision.pop('revision_sources')
+    advice = build_methodology_decision(root, audit, task, decision, revisions)
+    task_inputs = {scoped_paths([path])[0]: digest for path, digest in revisions.items()}
+    for path in task_inputs:
+        _path(root, path)
     specs, selection = selected_templates(decision, set(inventory), evals_applicable=bool(
         task.get('evals_required') or 'EVALS.md' in task.get('documents', {})))
     # Missing application checks block implementation, not an honest scaffold.
@@ -296,6 +304,14 @@ def formation_plan(root: Path, request: dict[str, Any], audit: dict[str, Any] | 
             'runtime_dependencies': ([{'path': '.codex/product-agent-os/lifecycle-state.json', 'state': 'requires_session_start_not_staged'}] if surfaces else []),
             'request_digest': content_digest(canonical_json(request)), 'activation': 'not_activated',
             'acceptance': 'not_accepted', 'deletion_policy': 'never_automatic'}
+    root_identity = root.stat()
+    plan['task_binding'] = {
+        'scope': advice['scope'], 'input_digest': decision['input_digest'], 'files': task_inputs,
+        'root_identity': [root_identity.st_dev, root_identity.st_ino],
+        'criteria': [row['id'] for row in advice['requirements']['criteria']],
+        'methods': [row['method'] for row in advice['decisions'] if row['applicability'] != 'not_applicable'],
+        'writer': 'merge_infrastructure',
+    }
     plan['digest'] = content_digest(canonical_json(plan))
     return {'plan': plan, 'templates': tuple(selected.values()), 'contents': contents, 'task': task}
 
@@ -354,6 +370,24 @@ def formation_binding_errors(root: Path, binding: Any, target_paths: list[str]) 
             return ['formation stack changed since preview']
         if current != binding.get('source_snapshot'):
             return ['formation sources changed since preview']
+        task_binding = binding.get('task_binding')
+        if task_binding is not None:  # Legacy staged manifests retain their original contract.
+            hashes = task_binding.get('files') if isinstance(task_binding, dict) else None
+            if not isinstance(hashes, dict) or not hashes or len(hashes) > 4096:
+                return ['invalid formation task binding']
+            info = root.stat()
+            if task_binding.get('root_identity') != [info.st_dev, info.st_ino]:
+                return ['formation workspace identity changed since preview']
+            for name, expected in hashes.items():
+                if expected != 'missing' and (not isinstance(expected, str) or not re.fullmatch('[a-f0-9]{64}', expected)):
+                    return ['invalid formation task source digest']
+                path = _path(root, name)
+                actual = 'missing'
+                if path.is_file():
+                    with path.open('rb') as stream:
+                        actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+                if actual != expected:
+                    return ['formation task inputs changed since preview']
         _authority(root, target_paths)
     except (OSError, ValueError, KeyError) as exc:
         return ['formation binding invalid: ' + str(exc)]

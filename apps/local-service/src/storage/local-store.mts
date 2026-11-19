@@ -55,6 +55,10 @@ export async function openLocalStore(options: { databasePath: string;assetRoots?
     projectEntities: (projectId:string,options:{kinds?:readonly EntityKind[];includeManagedAttachments?:true}={})=>call<StoredEntity[]>('projectEntities',{projectId,...options}),
     projectFreshness: (projectId:string)=>call<import('../../../../packages/contracts/project-freshness.ts').ProjectFreshness>('projectFreshness',{projectId}),
     runtimeFileScope: (projectId:string,taskId:string)=>call<{project:Project|null;task:StoredEntity|null}>('runtimeFileScope',{projectId,taskId}),
+    methodologyEvidenceRows: (projectId:string,taskId:string) => call<{
+      observations:import('../project-analysis/methodology-evidence.mts').MethodologyObservation[];
+      dispositions:{taskSpecRevision:string;accepted:boolean}[];
+    }>('methodologyEvidenceRows',{projectId,taskId}),
     projectSnapshot: (projectId:string,options:{kinds?:readonly EntityKind[];includeManagedAttachments?:true}={})=>call<{entities:StoredEntity[];freshness:import('../../../../packages/contracts/project-freshness.ts').ProjectFreshness}>('projectSnapshot',{projectId,...options}),
     historyRows:(projectId:string)=>call<StoredEntity[]>('historyRows',{projectId}),
     historySnapshotPage:(projectId:string,input:Omit<import('./history-snapshots.mts').HistorySnapshotInput,'projectId'>)=>call<import('./history-snapshots.mts').HistorySnapshotResult>('historySnapshotPage',{projectId,...input}),

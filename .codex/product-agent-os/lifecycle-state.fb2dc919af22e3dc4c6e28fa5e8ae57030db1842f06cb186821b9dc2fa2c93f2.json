@@ -1,0 +1,19 @@
+{
+  "session_id": "01a1f328-4111-7ae3-8471-529a465b0323",
+  "task_id": "Codex 0.170.0 native runtime qualification",
+  "scope": "Qualify the installed Windows binary on disposable offline profiles; update the broker and exact runtime manifest after native acceptance.",
+  "approval_boundary": "Local qualification, scoped repository changes, synthetic targets and receipts. Existing release hold applies.",
+  "previous_task_id": "B4",
+  "lifecycle_scope": {
+    "work_type": "implementation", "size": "bounded", "risk": "high", "financially_material": false,
+    "release_or_readiness": true, "explicit_packet_request": false, "reason": "The binary pin controls native sandbox admission."
+  },
+  "status": "ready_for_completion_ledger",
+  "completion_ready": true,
+  "updated_at": "2026-11-19T13:41:37+03:00",
+  "brief_digest": "sha256:413414b536f822b21e741d9ae797f1f2fd03c726b904cfa6ef369ac909aec9df",
+  "brief_schema_version": "task_start_brief_v2",
+  "brief_format": "bold_fields",
+  "brief_fields_present": ["Request", "Goal", "Context", "Scope", "Value", "Execution", "Acceptance", "Risks / approvals", "Next step"],
+  "task_start_brief_shown": true
+}

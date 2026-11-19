@@ -6,8 +6,8 @@
   "direction_id": "B",
   "source_plan": "docs/planning/user-project-methodologies-2026-11-15.md",
   "english_plan": "docs/planning/user-project-methodologies-2026-11-15.en.md",
-  "status": "in_progress",
-  "execution_authority": "owner_authorized_bounded_b1_b2_local_implementation_and_synthetic_pilot_and_b3_local_read_only_verification",
+  "status": "implemented",
+  "execution_authority": "owner_authorized_bounded_b1_b2_b3_b4_local_implementation_and_synthetic_verification",
   "internal_plan_reference": "docs/planning/methodology-improvement-2026-11-15.json",
   "internal_plan_reference_semantics": "independent_direction_no_hard_dependency",
   "source_snapshot": {
@@ -405,7 +405,7 @@
       "id": "PAOS-PMETH-06",
       "title": "Отслеживать изменения спецификации и устаревший контекст",
       "title_en": "Track specification changes and stale context",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -456,7 +456,8 @@
       ],
       "verification_profile": "PV-ENGINE",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-07",
@@ -794,7 +795,7 @@
       "id": "PAOS-PMETH-13",
       "title": "Встроить ADD-контракт исполнения и ownership",
       "title_en": "Integrate ADD execution and ownership contracts",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -845,13 +846,14 @@
       ],
       "verification_profile": "PV-ADD",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-14",
       "title": "Связать выбранные методологии с доступными skills и инструментами",
       "title_en": "Connect methodology decisions to available skills and tools",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -897,13 +899,14 @@
       ],
       "verification_profile": "PV-ADD",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-15",
       "title": "Объединить методологии в один соразмерный delivery plan",
       "title_en": "Compose methodologies into one proportionate delivery plan",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -956,13 +959,14 @@
       ],
       "verification_profile": "PV-ENGINE",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-16",
       "title": "Подключить безопасные staging, preview и разрешённое применение",
       "title_en": "Integrate safe staging, previews and authorized application",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -1015,13 +1019,14 @@
       ],
       "verification_profile": "PV-STAGE",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-17",
       "title": "Собирать evidence и вычислять готовность по критериям",
       "title_en": "Collect evidence and compute criterion-based readiness",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -1077,13 +1082,14 @@
       ],
       "verification_profile": "PV-EVIDENCE",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-18",
       "title": "Определить durable state методологий в Web/desktop",
       "title_en": "Define durable methodology state in Web/desktop",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P2",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -1139,7 +1145,8 @@
       ],
       "verification_profile": "PV-STORAGE",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-19",
@@ -1272,7 +1279,7 @@
       "id": "PAOS-PMETH-21",
       "title": "Обрабатывать drift, остановку, возобновление и аудит",
       "title_en": "Handle drift, stopping, resumption and audit",
-      "status": "planned",
+      "status": "implemented",
       "priority": "P1",
       "direction_id": "B",
       "delivery_group_id": "B4",
@@ -1321,7 +1328,8 @@
       ],
       "verification_profile": "PV-RECOVERY",
       "implementation_at": "pending_execution_timestamp",
-      "execution_authority": "not_authorized_by_this_plan"
+      "execution_authority": "owner_authorized_b4_local_and_disposable_verification",
+      "implementation_evidence": "docs/superpowers/specs/paos-pmeth-b4-evidence.md"
     },
     {
       "id": "PAOS-PMETH-22",

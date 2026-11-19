@@ -182,6 +182,26 @@ try{
  await page.setViewportSize({width:1360,height:1000});
  checked('wide expanded task keeps its context to the right',await panel.evaluate((el:HTMLElement)=>
   el.getBoundingClientRect().right<=el.closest('.task-detail-body')!.querySelector('.task-context')!.getBoundingClientRect().left));
+ const evidence=page.getByTestId('methodology-evidence-panel');
+ await evidence.locator(':scope > summary').focus();await page.keyboard.press('Enter');
+ checked('keyboard opens methodology evidence',await evidence.getAttribute('open')!==null);
+ await evidence.getByRole('button',{name:'Show observations',exact:true}).click();
+ await evidence.getByText('AC-1',{exact:true}).waitFor();
+ checked('unknown evidence is explicit',(await evidence.innerText()).includes('No observation'));
+ await evidence.getByLabel('Decision',{exact:true}).selectOption('accepted_gap');
+ await evidence.getByLabel('Criterion',{exact:true}).selectOption('AC-1');
+ await evidence.getByLabel('Reason',{exact:true}).fill('Synthetic acceptance gap for the reviewed criterion');
+ await evidence.getByRole('button',{name:'Save decision',exact:true}).click();
+ await evidence.getByText('Gap accepted by owner',{exact:false}).waitFor();
+ checked('accepted gap keeps technical result absent',(await evidence.innerText()).includes('AC-1')&&(await evidence.innerText()).includes('No observation'));
+ await evidence.getByRole('button',{name:'Refresh observations',exact:true}).click();
+ await evidence.getByText('Gap accepted by owner',{exact:false}).waitFor();
+ checked('saved decision survives a real API reload',true);
+ await page.setViewportSize({width:400,height:900});
+ checked('methodology evidence remains contained on narrow screens',await evidence.evaluate((el:HTMLElement)=>el.scrollWidth<=el.clientWidth+1));
+ const evidenceScreenshot=join(out,'b4-evidence-narrow.png');await evidence.screenshot({path:evidenceScreenshot});report.screenshots.push(evidenceScreenshot);
+ await page.setViewportSize({width:1360,height:1000});
+ await evidence.locator(':scope > summary').click();
  const was=adviceRequests;
  await panel.locator('[name=advice-source]').fill('.env');
  checked('unsubmitted inputs clear obsolete advice without sending',adviceRequests===was&&await panel.getByTestId('task-advice-result').count()===0);

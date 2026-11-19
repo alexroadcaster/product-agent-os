@@ -5,15 +5,15 @@
   "arch": "x64",
   "windowsRelease": "10.0.26200",
   "codex": {
-    "version": "0.167.0",
-    "sha256": "edfdd48f8b458af0906e507b4cb05217b326c3d6e515e9f024e05e3b8d650f70"
+    "version": "0.170.0",
+    "sha256": "8d06dc231dba649c7d48d3eecab239c452a1ac498c41dd6492a6f301b90a22ce"
   },
   "node": {
     "version": "v26.5.0",
     "sha256": "119d6fa70e6ae1b15b90688ab6bcc8e3a2819acea021af196895cab1843645af"
   },
   "sqliteVersion": "3.53.3",
-  "adapterRevision": "c4c90577acecd765aaf85d60acae9f2a1de37efdcb7865aaba96fcc88005cf9f",
+  "adapterRevision": "fb6db331a76a9acac5d5244400741483524a91fd53ae57aebd3bc8cb080b839b",
   "packageLockSha256": "f126e4dceeb06cb9644fe1167cbb5b2b2689fb8022325d54292445398ad30aac",
   "schema": {
     "sha256": "486c7c8daa5dc7f3ab2a1fb56de5316804caf7a4210fda1dc28d3f0f4e90cfe1",
@@ -61,6 +61,8 @@
     "funcG05NativeCandidateReceiptSha256": "01ccff13f508a4cb6ac030da8edef3d61daf98340dbdc62e0357989ed066e8e1",
     "funcG06NativeCandidateReceiptSha256": "c9edae03dd738071ce613c4aa01c879955de5c5195c8764a32c3ae46afdf2037",
     "pmethB2NativeCandidateReceiptSha256": "0e3a4f63375048bd069441695a18bf8b53a0e988bdebd05141a41f448a87a1d5",
-    "pmethB3NativeCandidateReceiptSha256": "99908f16a5489206fc0d5764e8751c04c6ac4c7e86746d55f96a28cb1403a7dd"
+    "pmethB3NativeCandidateReceiptSha256": "99908f16a5489206fc0d5764e8751c04c6ac4c7e86746d55f96a28cb1403a7dd",
+    "pmethB4NativeCandidateReceiptSha256": "6e9cd688ef2a3680ca73c40bc6c81da1c467078e160967351cc2803ca8ed1591",
+    "codex0170NativeCandidateReceiptSha256": "6eff0f2013db861528b3458ac7b030b43f780f4fabcf14621cf2e321f072d437"
   }
 }

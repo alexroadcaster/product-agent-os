@@ -1,6 +1,6 @@
 # Product-Agent OS — direction B: methodologies for user projects
 
-Source status: repository_source / owner_requested_plan / B1_B2_B3_locally_verified; release_hold; remaining_slices_planned.
+Source status: repository_source / owner_requested_plan / B1_B2_B3_B4_locally_verified; release_hold.
 Created: 2026-11-15. Revised: 2026-11-19. Schema version: task_matrix_plan_v1. Timezone: Europe/Moscow.
 
 ## Purpose and two independent directions
@@ -86,6 +86,8 @@ Groups organize tasks by outcome. Each task can start when its own `depends_on` 
 **B2 status.** Six of six tasks complete. The read-only CLI/Web profile is locally qualified, the four-run pilot returned insufficient evidence of benefit, and the owner approved a release `hold`. [Evidence and disposition](../superpowers/specs/paos-pmeth-b2-evidence.en.md).
 
 **B3 status.** All five tasks complete. Design journeys and F14 findings were verified locally. A migration proposal requires complete relevant coverage. B4 entry points PAOS-PMETH-06 and PAOS-PMETH-13 meet their dependencies. [B3 evidence](../superpowers/specs/paos-pmeth-b3-evidence.en.md).
+
+**B4 status.** All eight cards have local verification. The CLI explains drift and plans dependent work. Web/Desktop separates technical observations from owner dispositions and recovers through existing checkpoints. Write evidence comes from disposable targets. [B4 evidence](../superpowers/specs/paos-pmeth-b4-evidence.en.md).
 
 **First accepted outcome: read-only CLI+Web.** Hard prerequisites: PMETH 01 → 02 → 22 → 03 → 04 → 05 → 07 → 19 → 20 → 26. In one disposable project, backend bug and docs-only give matching CLI/Web decisions with the same data and coverage, as well as reasons and the next verifiable step. PMETH-26 captures verified RU/EN examples. Acceptance requires observed CLI/HTTP/browser checks and negatives, plus a comprehension observation or explicit gap. PMETH-06, PMETH-08–18 and PMETH-21/23–25 are outside this milestone’s prerequisites.
 
@@ -459,7 +461,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-06
 - Task name: Track specification changes and stale context
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -468,7 +470,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-05
 - Blocks: PAOS-PMETH-16, PAOS-PMETH-17
 - External references: PAOS-FUNC-02, PAOS-FUNC-25
@@ -497,15 +499,15 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The CLI compares task, criterion and source revisions and identifies the owners who need to review them.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-07`
 
@@ -823,7 +825,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-13
 - Task name: Integrate ADD execution and ownership contracts
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -832,7 +834,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-04
 - Blocks: PAOS-PMETH-14, PAOS-PMETH-15
 - External references: PAOS-FUNC-15, PAOS-FUNC-16
@@ -861,21 +863,21 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Assignments bind scope, checks and stop conditions to the current context.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-14`
 
 - Task: PAOS-PMETH-14
 - Task name: Connect methodology decisions to available skills and tools
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B4
@@ -884,7 +886,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-13
 - Blocks: None.
 - External references: PAOS-FUNC-12
@@ -913,21 +915,21 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Applicable methods select canonical skills and workflows with explicit availability evidence.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-15`
 
 - Task: PAOS-PMETH-15
 - Task name: Compose methodologies into one proportionate delivery plan
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -936,7 +938,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-07, PAOS-PMETH-13
 - Blocks: PAOS-PMETH-16, PAOS-PMETH-17
 - External references: None; internal A is not a prerequisite.
@@ -965,21 +967,21 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: An explicit mode composes methods and artifact owners into one dependency graph.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-16`
 
 - Task: PAOS-PMETH-16
 - Task name: Integrate safe staging, previews and authorized application
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -988,7 +990,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-06, PAOS-PMETH-15
 - Blocks: PAOS-PMETH-21
 - External references: PAOS-FUNC-13
@@ -1017,21 +1019,21 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: G9 and F13 bind approval to reviewed revisions and preserve independent edits and recovery history.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-17`
 
 - Task: PAOS-PMETH-17
 - Task name: Collect evidence and compute criterion-based readiness
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -1040,7 +1042,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-06, PAOS-PMETH-15
 - Blocks: PAOS-PMETH-18
 - External references: PAOS-FUNC-02
@@ -1069,21 +1071,21 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Technical observations bind one criterion to a current revision independently of owner acceptance.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-18`
 
 - Task: PAOS-PMETH-18
 - Task name: Define durable methodology state in Web/desktop
-- Status: planned
+- Status: implemented
 - Priority: P2
 - Direction: B — user projects
 - Delivery group: B4
@@ -1092,7 +1094,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-17, PAOS-PMETH-19
 - Blocks: PAOS-PMETH-21
 - External references: PAOS-FUNC-02, PAOS-FUNC-08, PAOS-FUNC-22, PAOS-FUNC-28, PAOS-FUNC-29
@@ -1121,15 +1123,15 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: Web/Desktop persists the disposition, scope, actor and history with revision checks.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-19`
 
@@ -1239,7 +1241,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 - Task: PAOS-PMETH-21
 - Task name: Handle drift, stopping, resumption and audit
-- Status: planned
+- Status: implemented
 - Priority: P1
 - Direction: B — user projects
 - Delivery group: B4
@@ -1248,7 +1250,7 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 - Timezone: Europe/Moscow
 - Plan trigger: Owner-requested user-project methodology capability plan; planning only.
 - Validator target: detailed task blocks
-- Date and time of task implementation: pending_execution_timestamp
+- Date and time of task implementation: 19-11-2026 13:14
 - Depends on: PAOS-PMETH-16, PAOS-PMETH-18, PAOS-PMETH-20
 - Blocks: None.
 - External references: PAOS-FUNC-21
@@ -1277,15 +1279,15 @@ This verifies plan preparation, not A/B execution. Review mode: self_review; no 
 
 #### Completion Report
 
-- status: planned
-- what was done: Task card authored; implementation not started.
-- files touched / work locations: This authoring changed no implementation files; future locations appear in Scope.
-- technical value delivered: Not claimed before executing AC.
-- product value delivered: Not claimed before executing AC.
-- actual implementation date and time: pending_execution_timestamp
-- verification evidence: Static authoring/split checks only; future AC are not executed.
-- residual risks: Baselines may change; applicability/authority/activation and model usefulness require selected-slice evidence.
-- follow-up: Next authorized slice from the DAG, without automatic execution.
+- status: implemented
+- what was done: The task shows an unknown outcome and directs recovery to the existing checkpoint.
+- files touched / work locations: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- technical value delivered: Verified the local execution contract and its negative cases.
+- product value delivered: The task has a reviewable next action and evidence tied to its scope.
+- actual implementation date and time: 19-11-2026 13:14
+- verification evidence: [B4](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+- residual risks: Extended PMETH-23 profile qualification and owner release approval remain separate.
+- follow-up: Keep the approved release hold.
 
 ### Task `PAOS-PMETH-22`
 

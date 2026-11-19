@@ -308,8 +308,10 @@ def _input_file_hashes(root: Path, task: dict[str, Any], sources: dict[str, str]
                 "poetry.lock", "requirements.txt", "package-lock.json", "pnpm-lock.yaml", "yarn.lock",
                 "Cargo.lock", "go.sum", "tsconfig.json", "ruff.toml", ".ruff.toml", ".importlinter",
                 ".dependency-cruiser.cjs", "stryker.config.json"}
-    names = set(task["changed_paths"]) | set(task.get("verification_paths", [])) | relevant | {
-        name for name in audit.get("detected_files", []) if Path(name).name in relevant}
+    contracts = {"REQUIREMENTS.md", "PLAN.md", "EVALS.md", "openapi.json", "openapi.yaml", "openapi.yml",
+                 "schema.sql", ".codex/config.toml", ".codex/hooks.json"}
+    names = set(task["changed_paths"]) | set(task.get("verification_paths", [])) | relevant | contracts | {
+        name for name in audit.get("detected_files", []) if Path(name).name in relevant | contracts}
     for name in sorted(names):
         path = workspace_path(root, name)
         try:

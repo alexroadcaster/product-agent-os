@@ -23,6 +23,8 @@ import {createCodeDatabase} from '../code-database/service.mts';
 import {createProjectFiles} from '../project-files/service.mts';
 import {createProjectAnalysis,unavailableProjectAnalysis} from '../project-analysis/service.mts';
 import {createTaskAdvice} from '../project-analysis/task-advice.mts';
+import {readMethodologyEvidence} from '../project-analysis/methodology-evidence.mts';
+import {createMethodologyDecisions} from '../project-analysis/methodology-decisions.mts';
 import type {ProjectAnalysisView} from '../../../../packages/contracts/project-analysis.ts';
 import {taskFilePreflight} from '../runtime/task-file-preflight.mts';
 import {sameSourceRevision} from '../../../../packages/contracts/project-freshness.ts';
@@ -40,6 +42,7 @@ import { loadUiPreferences, saveUiPreferences } from '../../../../packages/contr
 
 export type ApplicationOptions = {
   store: LocalStore; origin: string; instanceId: string; profileDirectory: string; staticDirectory?: string;
+  runtimeProfileId?:string;
   writerInventory?: (projectId: string) => Promise<WriterInventory>;
   runtimeCapable?: () => boolean;
   onQuit?: () => void;
@@ -90,6 +93,7 @@ async function body(request: Request, limit = 1024 * 1024) {
 /** Direct Request/Response entry point. Tests exercise the real service without opening a socket. */
 export async function createLocalApplication(options: ApplicationOptions) {
   const { store, origin, instanceId, profileDirectory } = options;
+  const methodologyDecisions=createMethodologyDecisions(store);
   const autonomy=autonomyService(store);
   const executionRecipes=options.executionRecipes??createRecipeService({store,assetRoots:options.assetRoots,automatic:false});
   await executionRecipes.initialized();
@@ -494,6 +498,21 @@ export async function createLocalApplication(options: ApplicationOptions) {
         return json(await applyUserCommand(store, { projectId, actorId: principal.actorId,
           idempotencyKey: string(input.idempotencyKey), expectedAuthorityEpoch: integer(input.expectedAuthorityEpoch),
           changes: input.changes as StoreWrite['changes'] }));
+      }
+      const methodologyEvidence=/^tasks\/([^/]+)\/methodology\/evidence$/.exec(action);
+      if(methodologyEvidence&&request.method==='GET'){
+        const revision=url.searchParams.get('taskRevision');
+        return json(await readMethodologyEvidence(store,projectId,decodeURIComponent(methodologyEvidence[1]),
+          revision===null?undefined:integer(Number(revision)),options.runtimeProfileId));
+      }
+      const methodologyDecision=/^tasks\/([^/]+)\/methodology\/decision$/.exec(action);
+      if(methodologyDecision){
+        const taskId=decodeURIComponent(methodologyDecision[1]);
+        if(request.method==='GET')return json(await methodologyDecisions.get(projectId,taskId));
+        if(request.method==='POST'){
+          if(migration.frozen(projectId))fail('MIGRATION_BUSY');
+          return json(await methodologyDecisions.save(projectId,taskId,principal.actorId,await body(request,4096)));
+        }
       }
       const manual = /^tasks\/([^/]+)\/(check|accept)$/.exec(action);
       if (manual && request.method === 'POST') {

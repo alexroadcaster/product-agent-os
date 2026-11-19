@@ -23,6 +23,31 @@ The recommendation shows applicability and depth, scope, source revision and obs
 
 The route uses `POST /api/v1/projects/{projectId}/analysis/task-advice` with the local session and CSRF. Requests are limited to 4,096 bytes. The service resolves the saved task and current analysis observation. The projection may cover fewer files than the CLI. Equivalent evidence and inputs give matching decisions. Unobserved required sources or checks yield a partial result with a reason. Override, apply, Design-DD and FSD follow separate plan paths. [B2 qualification and limits](../superpowers/specs/paos-pmeth-b2-evidence.en.md)
 
+## Delivery, evidence and decisions {#methodology-execution}
+
+Add `--methodology-delivery-plan` to the CLI call with task JSON when you need
+dependencies and artifact owners. `route_packet.methodology_delivery_plan` holds
+the graph, stop conditions and checks. The ordinary call stays compact. Keep
+`route_packet.methodology_context.snapshot` outside the target and send that object
+on stdin on a later call with `--compare-methodology-context`. The CLI returns
+`needs_context` when the snapshot is stale. `--review-methodology-handoff` reads
+`scope`, `input_digest`, `status` and `evidence_refs` from stdin. A reported
+completion still requires independent verification.
+
+In Web/Desktop, open Teams & Tasks → the task → Evidence and decision → Show
+observations. Each `AC-n` shows its current technical outcome and operation ID
+when available. Criterion verification uses an App-agent `command` with
+`criterionId` and explicit operation approval. A source, specification or profile
+change requires reviewing the link. Owner decisions keep their reason and history.
+If the outcome is unknown, open the original run in Sessions and reconcile the
+checkpoint before continuing.
+
+For a bundle of documents and project infrastructure, use G9 `--formation-context`,
+`--dry-run`, staging with `--preview-digest` and the existing merge approval.
+For a single linked document, use F13. Its optional `methodology` object carries
+`taskId`, `taskRevision` and `criterionIds`. The owner approves the exact preview
+in the current scope. [B4 evidence and limits](../superpowers/specs/paos-pmeth-b4-evidence.en.md)
+
 ## UI planning and FSD assessment {#frontend-methodology}
 
 `node tools/project-methodology.mts design <workspace> <context.json>` produces a JSON journey and verification plan. Supply the outcome, states, data source, existing design references, available checks and owners. See `tests/fixtures/product_agent_os/pmeth-b3-design.json` for the input form. The result binds to the workspace revision and requests refreshed sources if a supplied revision is stale. Data source labels are declarations. Running evidence is verified separately.

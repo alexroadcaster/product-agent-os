@@ -9,6 +9,7 @@ import {inventoryScopeFingerprint,assertCurrentSourceProject} from '../../projec
 import {safePersistedText} from '../../redaction/persisted.mts';
 import {normaliseRelativePath} from '../../project-inventory/service.mts';
 import {openDocumentHandle} from './native.mts';
+import {assertDocumentMethodologyTask,decodeDocumentMethodologyLink} from './methodology-link.mts';
 
 const fail=(code:string):never=>{throw Object.assign(new Error(code),{code});};
 const hash=(value:Buffer|string)=>createHash('sha256').update(value).digest('hex');
@@ -33,18 +34,29 @@ export function createDocumentWriter(store:LocalStore,options:DocumentWriterOpti
  async function proposal(projectId:string,id:unknown){if(typeof id!=='string'||id.length>200)fail('DOCUMENT_APPLY_INVALID');const row=await store.get(projectId,id as string);if(!row||row.kind!=='document'||row.data.category!=='document_proposal')fail('DOCUMENT_PROPOSAL_NOT_FOUND');return row!;}
  function eligible(path:string){normaliseRelativePath(path);if(!['.md','.txt'].includes(extname(path).toLowerCase())||path.split('/').some(part=>/^(?:AGENTS(?:\.override)?\.md|CLAUDE\.md|GEMINI\.md|copilot-instructions\.md|SKILL\.md|\.codex|\.agents|\.cursor|\.clinerules|\.windsurf|config|hooks|rules|plugins|skills)$/i.test(part)||/\.instructions\.md$/i.test(part)))fail('DOCUMENT_WRITE_FORBIDDEN');}
  function safe(bytes:Buffer){if(bytes.length>limit)fail('DOCUMENT_TOO_LARGE');let value:string;try{value=decode(bytes);}catch{fail('DOCUMENT_ENCODING_UNSUPPORTED');}if(safePersistedText(value!)!==value!)fail('DOCUMENT_SENSITIVE_CONTENT');return value!;}
+ function methodologyLink(row:StoredEntity){
+  return row.data.methodology===undefined?undefined:decodeDocumentMethodologyLink(row.data.methodology);
+ }
+ async function assertMethodologyCurrent(projectId:string,row:StoredEntity,action:'apply'|'rollback'){
+  const link=methodologyLink(row);
+  if(link&&action==='apply')assertDocumentMethodologyTask(link,await store.get(projectId,link.taskId));
+  return link;
+ }
  async function target(projectId:string,row:StoredEntity,action:'apply'|'rollback'){
   const p=await project(projectId),generation=(await store.projectFreshness(projectId)).generation,source=row.data.targetSource as DocumentTargetSource|undefined;
   if(!source||!['workspace_file','local_store'].includes(source.origin))fail('DOCUMENT_SOURCE_PIN_REQUIRED');
-  let before:Buffer,after:Buffer,targetRow:StoredEntity|null=null;
+  const methodology=await assertMethodologyCurrent(projectId,row,action);
+  let before:Buffer,after:Buffer,targetRow:StoredEntity|null=null,expectedRollbackPreimage:string|undefined;
   const journal=await store.documentJournal(projectId);
   if(action==='rollback'){
    const previous=journal.records.find(record=>record.operationId===(row.data.documentApply as DocumentApplyOutcome|undefined)?.operationId&&record.action==='apply');
    if(!previous)fail('DOCUMENT_ROLLBACK_EXPIRED');after=Buffer.from(previous!.beforeBase64,'base64');
+   if(methodology)expectedRollbackPreimage=previous!.afterHash;
   }else after=Buffer.from(row.body,'utf8');
   if(source!.origin==='workspace_file'){
    eligible(source!.path);if(source!.rootIdentity!==p.rootIdentity)fail('DOCUMENT_SCOPE_STALE');
    const file=await readCheckedSource(p,source!.path,limit);
+   if(expectedRollbackPreimage&&file.hash!==expectedRollbackPreimage)fail('DOCUMENT_ROLLBACK_SOURCE_CONFLICT');
    if(file.redacted||safePersistedText(file.text)!==file.text)fail('DOCUMENT_SENSITIVE_CONTENT');
    if(action==='apply'&&(file.hash!==source!.rawHash||file.fileRevision!==source!.fileRevision||file.policyVersion!==source!.policyVersion))fail('DOCUMENT_SOURCE_CONFLICT');
    // F28 strips only the UTF-8 BOM. Normalize exact preserved bytes before preview hashing or caps.
@@ -58,17 +70,26 @@ export function createDocumentWriter(store:LocalStore,options:DocumentWriterOpti
   targetRow=await store.get(projectId,source!.entityId);if(!targetRow||targetRow.kind!=='document'||targetRow.data.category==='document_proposal')fail('DOCUMENT_TARGET_UNAVAILABLE');
   if(action==='apply'&&targetRow!.revision!==source!.entityRevision)fail('DOCUMENT_SOURCE_CONFLICT');
   before=Buffer.from(targetRow!.body,'utf8');safe(before);safe(after!);
+  if(expectedRollbackPreimage&&hash(before)!==expectedRollbackPreimage)fail('DOCUMENT_ROLLBACK_SOURCE_CONFLICT');
   return {p,generation,source:action==='rollback'?{...source!,entityRevision:targetRow!.revision}:source!,scope:inventoryScopeFingerprint(p),before,after:after!,rawBeforeHash:hash(before),fileRevision:null,targetRow,journal};
  }
  function receipt(row:StoredEntity,action:'apply'|'rollback',key:string,digest:string){const r=row.data[action==='apply'?'documentApplyReceipt':'documentRollbackReceipt'] as any;if(r?.key===key){if(r.digest!==digest)fail('IDEMPOTENCY_CONFLICT');return r.result as DocumentApplyOutcome;}return null;}
  function checkInput(input:any){if(!input||typeof input!=='object'||Object.keys(input).some(key=>!['proposalId','proposalRevision','previewDigest','epoch','idempotencyKey'].includes(key))||typeof input.idempotencyKey!=='string'||!input.idempotencyKey||input.idempotencyKey.length>200||!Number.isSafeInteger(input.epoch)||!Number.isSafeInteger(input.proposalRevision)||typeof input.previewDigest!=='string')fail('DOCUMENT_APPLY_INVALID');}
+ function previewHash(projectId:string,row:StoredEntity,action:'apply'|'rollback',selected:Awaited<ReturnType<typeof target>>){
+  const material:unknown[]=['document_apply_v1',projectId,selected.generation,selected.scope,row.id,row.revision,action,
+   selected.source,selected.fileRevision,selected.rawBeforeHash,hash(selected.after)];
+  const methodology=methodologyLink(row);
+  if(methodology)material.push(methodology,selected.p.authorityEpoch);
+  return fingerprint(material);
+ }
  async function preview(projectId:string,input:{proposalId:string;proposalRevision:number},action:'apply'|'rollback'):Promise<DocumentApplyPreview>{
   if(!input||Object.keys(input).some(key=>!['proposalId','proposalRevision'].includes(key)))fail('DOCUMENT_APPLY_INVALID');const row=await proposal(projectId,input.proposalId);
   if(row.revision!==input.proposalRevision)fail('DOCUMENT_PROPOSAL_STALE');
   const state=row.data.applyState??'staged';if(action==='apply'&&!['staged','not_applied'].includes(String(state))||action==='rollback'&&!['applied','recovery_required'].includes(String(state)))fail('DOCUMENT_APPLY_STATE_CONFLICT');
   const selected=await target(projectId,row,action);safe(selected.before);safe(selected.after);
-  const previewDigest=fingerprint(['document_apply_v1',projectId,selected.generation,selected.scope,row.id,row.revision,action,selected.source,selected.fileRevision,selected.rawBeforeHash,hash(selected.after)]);
-  return {proposalId:row.id,proposalRevision:row.revision,action,previewDigest,source:selected.source!,before:decode(selected.before),after:decode(selected.after),beforeHash:selected.rawBeforeHash,afterHash:hash(selected.after),executable:true,accepted:false};
+  const previewDigest=previewHash(projectId,row,action,selected),methodology=methodologyLink(row);
+  return {proposalId:row.id,proposalRevision:row.revision,action,previewDigest,source:selected.source!,before:decode(selected.before),after:decode(selected.after),beforeHash:selected.rawBeforeHash,afterHash:hash(selected.after),executable:true,accepted:false,
+   ...(methodology?{methodology,writer:'document_apply' as const}:{})};
  }
  function recordsWith(records:DocumentApplyRecord[],record:DocumentApplyRecord){const exists=records.some(r=>r.operationId===record.operationId);let next=records.filter(r=>r.operationId!==record.operationId);if(!exists&&next.some(r=>['prepared','recovery_required'].includes(r.state)))fail('DOCUMENT_WRITE_RECONCILIATION_REQUIRED');while(next.length>=4){const at=next.findIndex(r=>!['prepared','recovery_required'].includes(r.state));if(at<0)fail('DOCUMENT_JOURNAL_LIMIT');next.splice(at,1);}return [...next,record];}
  function change(row:StoredEntity,record:DocumentApplyRecord){const state=record.action==='rollback'&&record.state==='not_applied'?'applied':record.state;return {expectedRevision:row.revision,entity:{id:row.id,kind:'document' as const,title:row.title,body:row.body,status:state,data:{...row.data,applyState:state,documentOperation:record.result,[record.action==='apply'?'documentApply':'documentRollback']:record.result,[record.action==='apply'?'documentApplyReceipt':'documentRollbackReceipt']:{key:record.idempotencyKey,digest:record.requestDigest,result:record.result}}}};}
@@ -76,7 +97,7 @@ export function createDocumentWriter(store:LocalStore,options:DocumentWriterOpti
  async function execute(projectId:string,actorId:string,input:DocumentApplyInput,action:'apply'|'rollback'){return serial(async()=>{
   checkInput(input);let row=await proposal(projectId,input.proposalId);const requestDigest=fingerprint([action,input.proposalId,input.proposalRevision,input.previewDigest,input.epoch]);const operationId='doc-write-'+fingerprint([projectId,action,input.idempotencyKey]),durable=await store.receipt(projectId,`document-outcome:${operationId}`);if(durable?.documentApply){if(durable.documentApply.requestDigest!==requestDigest)fail('IDEMPOTENCY_CONFLICT');return durable.documentApply.result;}const replay=receipt(row,action,input.idempotencyKey,requestDigest);if(replay)return replay;
   const plan=await preview(projectId,{proposalId:input.proposalId,proposalRevision:input.proposalRevision},action);if(plan.previewDigest!==input.previewDigest)fail('DOCUMENT_PREVIEW_STALE');const selected=await target(projectId,row,action);if(input.epoch!==selected.p.authorityEpoch)fail('AUTHORITY_CONFLICT');
-  if(fingerprint(['document_apply_v1',projectId,selected.generation,selected.scope,row.id,row.revision,action,selected.source,selected.fileRevision,selected.rawBeforeHash,hash(selected.after)])!==input.previewDigest)fail('DOCUMENT_PREVIEW_STALE');
+  if(previewHash(projectId,row,action,selected)!==input.previewDigest)fail('DOCUMENT_PREVIEW_STALE');
   let before=selected.before,after=selected.after,handle:Awaited<ReturnType<typeof openDocumentHandle>>|undefined;
   if(selected.source!.origin==='workspace_file'){
    await options.beforeAcquire?.();
@@ -96,6 +117,7 @@ export function createDocumentWriter(store:LocalStore,options:DocumentWriterOpti
    await options.afterPrepare?.({processId:handle.processId,temporaryDirectory:handle.temporaryDirectory,directoryIdentity:handle.directoryIdentity});
    await assertCurrentSourceProject(store,selected.p);
    const entry=await inventoryForProject(selected.p).inspect(selected.p,selected.source!.origin==='workspace_file'?selected.source!.path:'');if(!entry.access.readable)fail('DOCUMENT_WRITE_FORBIDDEN');if(entry.revision!==selected.fileRevision)fail('DOCUMENT_SOURCE_CONFLICT');
+   await assertMethodologyCurrent(projectId,row,action);
    await handle.commit(after,record.beforeHash);await handle.close();handle=undefined;
    row=await proposal(projectId,row.id);record.state=action==='apply'?'applied':'rolled_back';record.result={...result,state:record.state};await persist(projectId,actorId,row,record,selected);return record.result;
   }catch(error){

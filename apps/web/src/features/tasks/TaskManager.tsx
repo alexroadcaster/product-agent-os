@@ -7,6 +7,7 @@ import {label,statusText,typeText,priorityText,errorText,type Locale,type Word} 
 import {defaultView,hierarchyStats,readView,selectTasks,isBlocked,isM2,profile,targetStatuses,issueTypes,priorities,durationText,dueState,semanticStatus,stateName,userTargets,categoryTargets,type View} from './model.ts';
 import {TaskEditor} from './Editor.tsx';
 import {TaskAdvicePanel} from './TaskAdvicePanel.tsx';
+import {MethodologyEvidencePanel} from './MethodologyEvidencePanel.tsx';
 import {ProjectFreshnessNotice} from '../../ui/ProjectFreshness.tsx';
 import {LifecyclePanel,LinkedIssues,Attachments,CommentsPanel,ReferencesPanel,ManagerHistory,type Command} from './Panels.tsx';
 import {ManagerSettings,FullArchive} from './Settings.tsx';
@@ -97,6 +98,7 @@ export function TaskManager({api,projectId,projectName,locale,onOpenSession,init
 
     <div className="task-detail-body"><div id="task-panel" role="tabpanel" aria-labelledby={`task-tab-${tab}`}>
     {tab==='summary'&&<><section className="task-compact-summary" hidden={expanded}><p>{String(task.data?.summary??task.body??'')}</p><h3>{locale==='ru'?'Критерии приёмки':'Acceptance criteria'}</h3><ul>{((task.data?.acceptanceCriteria??[]) as string[]).map((c,i)=><li key={i}>{c}</li>)}</ul><dl className="task-summary-properties"><dt>{locale==='ru'?'Задача':'Task'}</dt><dd>{task.publicKey??task.id}</dd><dt>{t('agents')}</dt><dd>{((task.data?.agentAssignments??[]) as string[]).join(', ')||'—'}</dd><dt>{locale==='ru'?'Проект':'Project'}</dt><dd>{projectName??projectId}</dd><dt>{locale==='ru'?'Процесс':'Workflow'}</dt><dd>{data?.workflow?.id??'—'} / v{data?.workflow?.version??'—'}</dd><dt>{t('priority')}</dt><dd>{priorityText(locale,String(task.data?.priority??''))}</dd><dt>{t('estimate')}</dt><dd>{durationText(task.data?.estimateSeconds)}</dd><dt>{t('dueDate')}</dt><dd>{String(task.data?.dueDate??'—')}</dd></dl><button onClick={()=>setExpanded(true)}>{locale==='ru'?'Открыть полностью':'Open full task'}</button></section><div hidden={!expanded}><TaskEditor entity={task} projectId={projectId} snapshot={snapshot} locale={locale} onPreview={async(task,revision,reason)=>command({action:'save',task,expectedRevision:revision,reason,preview:true}) as Promise<{previewDigest:string}>} onSave={async(task,revision,reason,previewDigest,workflowId)=>{await command({action:'save',task,expectedRevision:revision,reason,...(workflowId?{workflowId}:{}),...(previewDigest?{previewDigest}:{})});}}/></div><TaskAdvicePanel key={JSON.stringify([projectId,task.id,task.revision])} api={api} task={task} locale={locale}/></>}
+    {tab==='summary'&&<MethodologyEvidencePanel key={JSON.stringify([projectId,task.id,task.revision])} api={api} task={task} locale={locale}/>}
     {tab==='files'&&<ReferencesPanel api={api} entity={task} locale={locale} onOpenSession={onOpenSession}/>}
     {tab==='acceptance'&&<LifecyclePanel key={`${task.id}:${task.revision}`} entity={task} snapshot={snapshot} command={command} locale={locale} requestedStatus={requestedStatus}/>}
     {tab==='comments'&&<CommentsPanel entity={task} snapshot={snapshot} command={command} locale={locale}/>}

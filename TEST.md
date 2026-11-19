@@ -1,5 +1,15 @@
 # TEST.md
 
+## Codex 0.170.0 — нативная квалификация {#codex-0170}
+
+`node tests/web/single-window/sandbox-broker-acceptance.mts --run-once --binary <absolute-path>` прошёл на изолированной копии с манифестом кандидата и повторно в рабочей копии через штатный загрузчик. `node --test tests/web/sandbox-broker.test.mts tests/web/runtime-manifest.test.mts tests/web/runtime-adapter-native.test.mts` — 17/17. Проверены отказ для прежней версии до запуска и отказ при несовпадении SHA-256 установленного бинарника с прежним манифестом. `npm run check:web-m1` и `npm run build:web` прошли. [Ревизия и отчёты](docs/backend/lifecycle.md#codex-0170-qualification)
+
+Оба запуска `node --test --test-concurrency=1 tests/web/*.test.mts` с отдельными `TEMP` и `TMP` завершились с кодом 1 и результатом 728/729. В `project-scans.test.mts` сканирование прервалось, а ожидаемый `PROJECT_SCAN_SOURCE_STALE` отсутствовал. Сценарий вызывает сканер напрямую. Отдельный Windows-прогон `node --test --test-concurrency=1 tests/web/project-s*.test.mts` — 21/21. Полные логи `web.log` и `web-retry.log` сохранены в `.tmp/native-codex-0.170.0/`.
+
+## PMETH-B4 — локальные проверки исполнения и доказательств {#pmeth-b4}
+
+`python -B -m unittest tests.product_agent_os.test_pmeth_b4 tests.product_agent_os.test_pmeth_b1 tests.product_agent_os.test_project_formation tests.product_agent_os.test_merge_infrastructure tests.product_agent_os.test_codex_runtime_runner_cli -q` — 109/109 с отдельными `TEMP`/`TMP`. Проверяются устаревшие входы, владельцы, область записи, редактирование между предпросмотром и записью и сохранность журнала. `node --test --test-concurrency=1 tests/web/methodology-decisions.test.mts tests/web/app-agent-gateway.test.mts tests/web/document-apply-api.test.mts tests/web/recipe-recovery.test.mts` — 44/44 по связи наблюдения с критерием, ручной приёмке, CAS, backup/restore и исходу операции после перезапуска. Полный Web на Windows — 727/727, браузер — 53/53. После изменений закреплённых компонентов повторите candidate и штатный нативный допуск. [Отчёт](docs/superpowers/specs/paos-pmeth-b4-evidence.md#local-verification)
+
 ## PreToolUse — проверка маркера до записи, 19.11.2026 {#pretooluse-marker-preflight}
 
 `python -B -m unittest tests.product_agent_os.test_lifecycle_hooks tests.product_agent_os.test_task_plan_lifecycle tests.product_agent_os.test_codex_runtime_runner_guards tests.product_agent_os.test_infrastructure_renderer tests.product_agent_os.test_infrastructure_templates -q` проверяет обе копии hook, сохранность прежнего маркера при отказе, штатные переходы, строгие формы чтения и сборку staging. Используйте отдельные process-local `TEMP` и `TMP`. Дополнительно запустите `validate_hooks.py` для обоих каталогов и проверьте побайтовое совпадение копий. [Формат записи маркера](.codex/workflows/task-plan-lifecycle.md#session-isolation)

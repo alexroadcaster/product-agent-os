@@ -17,7 +17,26 @@ The current checkout is checked against the exact tuple in `packages/contracts/r
 
 On 2026-11-15 the initial mismatch was reproduced. Explicit `sandbox-broker-acceptance.mts --run-once --candidate-inspection --binary <verified-local-binary>` checked the candidate in disposable roots before manifest promotion; the subsequent run without candidate mode passed through the production loader. Execution writes inside the permitted root; outside/private temp writes receive `EPERM`. Discussion and Planning cannot write. Binary, lockfile and adapter drift is rejected before spawn. The initial executor rejection (`native MXC unavailable`) is retained separately from successful native execution.
 
-This is bounded native offline evidence without provider/model calls or human acceptance. Any pinned-source change requires a new candidate receipt and production-admission rerun. [PAOS-FUNC-01](../planning/functional-remediation-2026-11-15.en.md#task-paos-func-01) owns current receipts; Requalification after F08 passed on the combined final sources; the card records the final receipts.
+This is bounded native offline evidence without provider/model calls or human acceptance. Any pinned-source change requires a new candidate receipt and production-admission rerun. [PAOS-FUNC-01](../planning/functional-remediation-2026-11-15.en.md#task-paos-func-01) records the original checks and the requalification after F08.
+
+### Codex 0.170.0 qualification {#codex-0170-qualification}
+
+On 2026-11-19, the installed Codex CLI `0.170.0` qualified for the native broker
+on Windows x64 (`10.0.26200`). Binary SHA-256 is
+`8d06dc231dba649c7d48d3eecab239c452a1ac498c41dd6492a6f301b90a22ce`.
+Adapter revision is `fb6db331a76a9acac5d5244400741483524a91fd53ae57aebd3bc8cb080b839b`.
+An isolated copy exercised the standard loader with the candidate manifest.
+The same scenario passed in the working copy after the manifest and broker
+were updated. Both reports have SHA-256
+`6eff0f2013db861528b3458ac7b030b43f780f4fabcf14621cf2e321f072d437`.
+The reports are stored under `.tmp/native-codex-0.170.0/`.
+
+Inside the project, `Discussion` and `Planning` writes received `EPERM`.
+`Execution` wrote inside the project. Writes outside it and to private temp
+received `EPERM`. Stop terminated the active command. Binary, lockfile and
+adapter revision drift fail before spawn. Each profile selects the binary via
+`runtime-selection.json`. Rollback restores the matching broker version, binary
+and manifest revision together.
 
 ## Shutdown
 

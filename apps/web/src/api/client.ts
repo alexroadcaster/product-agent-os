@@ -203,6 +203,9 @@ export interface M1Api {
   projectScans(projectId:string,signal?:AbortSignal):Promise<ProjectScan>;
   projectAnalysis(projectId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-analysis.ts').ProjectAnalysisView>;
   taskAdvice(projectId:string,input:import('../../../../packages/contracts/project-analysis.ts').TaskAdviceRequest,signal?:AbortSignal):Promise<import('../../../../packages/contracts/project-analysis.ts').TaskAdviceView>;
+  methodologyEvidence(projectId:string,taskId:string,taskRevision:number,signal?:AbortSignal):Promise<import('../../../../packages/contracts/methodology-workspace.ts').MethodologyEvidenceView>;
+  methodologyDecision(projectId:string,taskId:string,signal?:AbortSignal):Promise<import('../../../../packages/contracts/methodology-workspace.ts').MethodologyDecisionView>;
+  saveMethodologyDecision(projectId:string,taskId:string,input:import('../../../../packages/contracts/methodology-workspace.ts').MethodologyDecisionCommand):Promise<import('../../../../packages/contracts/methodology-workspace.ts').MethodologyDecisionView>;
   startProjectScan(projectId:string,input?:{requestId?:string;revision?:string}):Promise<ProjectScan>;
   cancelProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
   retryProjectScan(projectId:string,scanId:string):Promise<ProjectScan>;
@@ -520,6 +523,9 @@ export function createHttpApi(fetcher: typeof fetch = fetch): M1Api {
     projectScans:(id,signal)=>request(`${projectPath(id)}/scans`,undefined,'GET',signal),
     projectAnalysis:(id,signal)=>request(`${projectPath(id)}/analysis`,undefined,'GET',signal),
     taskAdvice:(id,input,signal)=>request(`${projectPath(id)}/analysis/task-advice`,input,'POST',signal),
+    methodologyEvidence:(id,task,revision,signal)=>request(`${projectPath(id)}/tasks/${encodeURIComponent(task)}/methodology/evidence?taskRevision=${revision}`,undefined,'GET',signal),
+    methodologyDecision:(id,task,signal)=>request(`${projectPath(id)}/tasks/${encodeURIComponent(task)}/methodology/decision`,undefined,'GET',signal),
+    saveMethodologyDecision:(id,task,input)=>request(`${projectPath(id)}/tasks/${encodeURIComponent(task)}/methodology/decision`,input),
     startProjectScan:(id,input={})=>request(`${projectPath(id)}/scans`,input),
     cancelProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/cancel`,{}),
     retryProjectScan:(id,scanId)=>request(`${projectPath(id)}/scans/${encodeURIComponent(scanId)}/retry`,{}),
